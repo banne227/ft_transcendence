@@ -5,19 +5,19 @@
 * { user-select: none; }
 
 body {
-  background-image: url('../../images/bliss.jpg');
+  background-image: url('../../images/bliss2.jpg');
   background-size: cover;
   height: 60vh;
   position: relative;
 }
 
 h1 {
-  text-align: center;
-  margin-top: 50px;
+  margin-top: 0px;
   font-size: 20px;
   font-weight: bold;
   color: #0a246a;
   margin-bottom: 8px;
+  text-align: left;
 }
 
 p {

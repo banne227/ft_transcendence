@@ -5,8 +5,13 @@
 ============================================= */
 
 @keyframes slide-in {
-  from { transform: translateX(100%); }
-  to   { transform: translateX(0%); }
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0%);
+  }
 }
 
 .maClasse {
@@ -14,12 +19,11 @@
 }
 
 .window {
-  width: 400px;
   background-color: #ece9d8;
-  border-top:    2px solid #ffffff;
-  border-left:   2px solid #ffffff;
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
   border-bottom: 2px solid #808080;
-  border-right:  2px solid #808080;
+  border-right: 2px solid #808080;
 }
 
 .titlebar {
@@ -37,15 +41,19 @@
   font-size: 13px;
 }
 
-.titlebar-buttons { display: flex; gap: 2px; }
+.titlebar-buttons {
+  display: flex;
+  gap: 2px;
+}
 
 .btn-close {
-  width: 18px; height: 16px;
+  width: 18px;
+  height: 16px;
   background: linear-gradient(to bottom, #f55, #c00);
-  border-top:    1px solid #ff9999;
-  border-left:   1px solid #ff9999;
+  border-top: 1px solid #ff9999;
+  border-left: 1px solid #ff9999;
   border-bottom: 1px solid #800000;
-  border-right:  1px solid #800000;
+  border-right: 1px solid #800000;
   color: white;
   font-size: 10px;
   cursor: pointer;
@@ -54,4 +62,7 @@
   justify-content: center;
 }
 
-.window-body { padding: 20px; }
+.window-body {
+  padding: 10px 25px 10px 10px;
+  text-align: left;
+}

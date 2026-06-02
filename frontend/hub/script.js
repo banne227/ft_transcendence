@@ -35,6 +35,8 @@ document.querySelector('.play_button a').addEventListener('click', function(e) {
 makeDraggable(document.querySelector('#window-log'),  document.querySelector('#window-log .titlebar'));
 makeDraggable(document.querySelector('#window-title'),  document.querySelector('#window-title .titlebar'));
 makeDraggable(document.querySelector('#window-chat'),  document.querySelector('#window-chat .titlebar'));
+makeDraggable(document.querySelector('#window-login'),  document.querySelector('#window-login .titlebar'));
+makeDraggable(document.querySelector('#window-register'),  document.querySelector('#window-register .titlebar'));
 
 let count = 42;
 
@@ -71,6 +73,11 @@ document.querySelector('#chat-input-row button').addEventListener('click', funct
   input.value = '';
 });
 
-document.querySelector('#window-log').addEventListener('click', function() {
+document.querySelector('.btn-login').addEventListener('click', function(e) {
+  e.stopPropagation();
   document.getElementById('window-login').style.display = 'block';
+});
+document.getElementById('btn-inscrire').addEventListener('click', function(e) {
+  e.preventDefault();
+  document.getElementById('window-register').style.display = 'block';
 });
