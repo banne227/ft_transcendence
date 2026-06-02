@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Painter.io — Partie</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style-theme.css">
+</head>
+
+<body>
+
+  <canvas id="game-canvas"></canvas>
+
+  <div id="paint-overlay">
+
+    <!-- Barre de titre -->
+    <div class="titlebar">
+      <div class="titlebar-left">Painter.io</div>
+      <div class="win-btns">
+        <div class="win-btn">&#8211;</div>
+        <div class="win-btn">&#9633;</div>
+        <div class="win-btn close">&#10005;</div>
+      </div>
+    </div>
+
+    <!-- Barre de menu -->
+    <div class="menubar">
+      <span class="menu-item">Fichier</span>
+      <span class="menu-item">Edition</span>
+      <span class="menu-item">Affichage</span>
+      <span class="menu-item">Image</span>
+      <span class="menu-item">Couleurs</span>
+      <span class="menu-item">Aide</span>
+      <a href="../hub/page.html" title="LEAVE">LEAVE</a>
+    </div>
+
+    <!-- Corps : sidebar TOUT à gauche + zone transparente -->
+    <div class="paint-body">
+
+      <div class="sidebar">
+
+        <!-- Outils -->
+        <div class="tools-grid">
+          <div class="tool-btn">✂️</div>
+          <div class="tool-btn">⬚</div>
+          <div class="tool-btn active">✏️</div>
+          <div class="tool-btn">🪣</div>
+          <div class="tool-btn">💧</div>
+          <div class="tool-btn">🔍</div>
+          <div class="tool-btn">🖊️</div>
+          <div class="tool-btn">A</div>
+          <div class="tool-btn">/</div>
+          <div class="tool-btn">〰</div>
+          <div class="tool-btn">□</div>
+          <div class="tool-btn">◇</div>
+          <div class="tool-btn">○</div>
+          <div class="tool-btn">⬡</div>
+        </div>
+
+        <div class="sidebar-sep"></div>
+
+        <!-- Palette couleurs (dans la sidebar) -->
+        <div class="palette-inline">
+          <div class="palette-preview-small">
+            <div class="bg"></div>
+            <div class="fg"></div>
+          </div>
+          <div class="palette-colors">
+            <div class="palette-row">
+              <div class="color-swatch" style="background:#000000"></div>
+              <div class="color-swatch" style="background:#808080"></div>
+              <div class="color-swatch" style="background:#800000"></div>
+              <div class="color-swatch" style="background:#808000"></div>
+              <div class="color-swatch" style="background:#008000"></div>
+              <div class="color-swatch" style="background:#008080"></div>
+              <div class="color-swatch" style="background:#000080"></div>
+              <div class="color-swatch" style="background:#800080"></div>
+            </div>
+            <div class="palette-row">
+              <div class="color-swatch" style="background:#ffffff"></div>
+              <div class="color-swatch" style="background:#c0c0c0"></div>
+              <div class="color-swatch" style="background:#ff0000"></div>
+              <div class="color-swatch" style="background:#ffff00"></div>
+              <div class="color-swatch" style="background:#00ff00"></div>
+              <div class="color-swatch" style="background:#00ffff"></div>
+              <div class="color-swatch" style="background:#0000ff"></div>
+              <div class="color-swatch" style="background:#ff00ff"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-sep"></div>
+
+        <!-- Leaderboard -->
+        <div class="side-panel">
+          <div class="side-panel-title">🏆 Score</div>
+          <ul class="leaderboard">
+            <li><span class="lb-rank">1.</span><span class="lb-name">snakelord</span><span class="lb-score">4820</span>
+            </li>
+            <li><span class="lb-rank">2.</span><span class="lb-name">viper42</span><span class="lb-score">3310</span>
+            </li>
+            <li><span class="lb-rank">3.</span><span class="lb-name">cobrakid</span><span class="lb-score">2980</span>
+            </li>
+            <li><span class="lb-rank">4.</span><span class="lb-name">jojo</span><span class="lb-score">1540</span></li>
+            <li><span class="lb-rank">5.</span><span class="lb-name">py42</span><span class="lb-score">980</span></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-sep"></div>
+
+        <!-- Chat -->
+        <div class="side-panel">
+          <div class="side-panel-title">💬 Chat</div>
+          <div class="chat-messages">
+            <div><span class="chat-name">snakelord :</span> gg</div>
+            <div><span class="chat-name">viper42 :</span> rematch ?</div>
+            <div><span class="chat-name">jojo :</span> oui go</div>
+          </div>
+          <div class="chat-input-row">
+            <input type="text" placeholder="msg..." />
+            <button>OK</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Zone transparente = le canvas derrière -->
+      <div class="canvas-zone"></div>
+
+      <h1>ZONE OU Y'A LE JEU ((((exemple FULL PROMPTE dune idee quon avait eu)))) voir limage dans le dossier game</h1>
+    </div>
+
+    <!-- Barre de statut -->
+    <div class="statusbar">
+      <div class="status-cell">Painter.io</div>
+      <div class="status-cell" id="coords">x: 0, y: 0</div>
+      <div class="status-cell" id="canvas-size">1920 x 1080</div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+/* =============================================
+   taskbar.css — BARRE DES TÂCHES
+============================================= */
+
+.taskbar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 30px;
+  background: linear-gradient(to bottom, #1f5fa6, #1a4d8a);
+  border-top: 2px solid #5a8fd4;
+  display: flex;
+  align-items: center;
+  padding: 4px 0;
+  gap: 2px;
+}
+
+.task-btn {
+  height: 40px;
+  padding: 0 8px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  background: linear-gradient(to bottom, #f0ede4, #d4d0c8);
+  border-top:    2px solid #ffffff;
+  border-left:   2px solid #ffffff;
+  border-bottom: 2px solid #808080;
+  border-right:  2px solid #808080;
+}
+
+.task-btn.stop {
+  height: 44px;
+  padding: 0 10px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 20px;
+  font-weight: bold;
+  background: linear-gradient(to bottom, #ff6666, #cc0000);
+  color: white;
+  border-top:    2px solid #ff9999;
+  border-left:   2px solid #ff9999;
+  border-bottom: 2px solid #800000;
+  border-right:  2px solid #800000;
+}
+
+.task-info {
+  font-family: 'Press Start 2P', monospace;
+  color: white;
+  font-size: 12px;
+  padding: 0 2px;
+}
+
+.task-icon { width: 18px; height: 18px; }
