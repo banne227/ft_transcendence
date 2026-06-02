@@ -1,0 +1,182 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   style-theme.css                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jcrochet <jcrochet@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/02 01:33:18 by jcrochet          #+#    #+#             */
+/*   Updated: 2026/06/02 02:10:59 by jcrochet         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* =============================================
+   style-theme.css — THÈME WINDOWS XP
+   Couleurs, bordures, dégradés, effets visuels.
+   Ne pas mettre de layout ici.
+============================================= */
+
+/* ── Canvas ── */
+#game-canvas {
+  background: #ffffff;
+}
+
+/* ── Barre de titre ── */
+.titlebar {
+  background: linear-gradient(to right, #0054e3, #3c9ef5);
+}
+
+.titlebar-left {
+  color: white;
+}
+
+.win-btn {
+  background: linear-gradient(to bottom, #5ba3f5, #2a7ae2);
+  border-top:    1px solid #aad4ff;
+  border-left:   1px solid #aad4ff;
+  border-bottom: 1px solid #0030a0;
+  border-right:  1px solid #0030a0;
+  color: white;
+}
+
+.win-btn.close {
+  background: linear-gradient(to bottom, #f55, #c00);
+  border-top:    1px solid #ff9999;
+  border-left:   1px solid #ff9999;
+  border-bottom: 1px solid #800000;
+  border-right:  1px solid #800000;
+}
+
+.win-btn:hover { filter: brightness(1.2); }
+
+/* ── Barre de menu ── */
+.menubar {
+  background: #d4d0c8;
+  border-bottom: 1px solid #808080;
+}
+
+.menu-item { color: #000; }
+.menu-item:hover { background: #0054e3; color: white; }
+
+/* ── Sidebar ── */
+.sidebar {
+  background: #d4d0c8;
+  border-right: 2px solid #808080;
+}
+
+/* ── Grille outils ── */
+.tools-grid {
+  border-top:    2px solid #ffffff;
+  border-left:   2px solid #ffffff;
+  border-bottom: 2px solid #404040;
+  border-right:  2px solid #404040;
+  background: #808080;
+}
+
+.tool-btn {
+  background: #d4d0c8;
+  border-top:    1px solid #ffffff;
+  border-left:   1px solid #ffffff;
+  border-bottom: 1px solid #808080;
+  border-right:  1px solid #808080;
+}
+
+.tool-btn:hover { background: #c8d8f0; }
+
+.tool-btn.active {
+  border-top:    1px solid #808080;
+  border-left:   1px solid #808080;
+  border-bottom: 1px solid #ffffff;
+  border-right:  1px solid #ffffff;
+  background: #b8c8e0;
+}
+
+/* ── Séparateur ── */
+.sidebar-sep {
+  border-top: 1px solid #808080;
+  border-bottom: 1px solid #ffffff;
+}
+
+/* ── Palette ── */
+.palette-preview-small .bg {
+  background: #ffffff;
+  border: 1px solid #000;
+}
+
+.palette-preview-small .fg {
+  background: #000000;
+  border: 1px solid #000;
+}
+
+.color-swatch {
+  border-top:    1px solid #ffffff;
+  border-left:   1px solid #ffffff;
+  border-bottom: 1px solid #808080;
+  border-right:  1px solid #808080;
+}
+
+.color-swatch:hover { border: 2px solid #000; }
+
+/* ── Panels ── */
+.side-panel {
+  background: #d4d0c8;
+  border-top:    2px solid #ffffff;
+  border-left:   2px solid #ffffff;
+  border-bottom: 2px solid #404040;
+  border-right:  2px solid #404040;
+}
+
+.side-panel-title {
+  color: #000;
+  border-bottom: 1px solid #808080;
+}
+
+/* Leaderboard */
+.leaderboard li {
+  border-bottom: 1px solid #b0a890;
+}
+
+.leaderboard li:last-child { border-bottom: none; }
+.lb-rank { color: #555; }
+.lb-score { color: #0054e3; font-weight: bold; }
+
+/* Chat */
+.chat-messages {
+  background: #fff;
+  border-top:    1px solid #808080;
+  border-left:   1px solid #808080;
+  border-bottom: 1px solid #dfdfdf;
+  border-right:  1px solid #dfdfdf;
+}
+
+.chat-name { font-weight: bold; color: #0054e3; }
+
+.chat-input-row input {
+  background: #fff;
+  border-top:    1px solid #808080;
+  border-left:   1px solid #808080;
+  border-bottom: 1px solid #dfdfdf;
+  border-right:  1px solid #dfdfdf;
+}
+
+.chat-input-row button {
+  background: linear-gradient(to bottom, #f0ede4, #d4d0c8);
+  border-top:    1px solid #ffffff;
+  border-left:   1px solid #ffffff;
+  border-bottom: 1px solid #808080;
+  border-right:  1px solid #808080;
+}
+
+/* ── Barre de statut ── */
+.statusbar {
+  background: #d4d0c8;
+  border-top: 2px solid #ffffff;
+}
+
+.status-cell {
+  color: #000;
+  border-top:    1px solid #808080;
+  border-left:   1px solid #808080;
+  border-bottom: 1px solid #ffffff;
+  border-right:  1px solid #ffffff;
+}

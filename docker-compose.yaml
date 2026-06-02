@@ -1,0 +1,42 @@
+services:
+    nginx:
+        build:
+            context: ./services/nginx
+        ports:
+            - 0.0.0.0:80:80
+            - 0.0.0.0:443:443
+        secrets:
+            - nginx.crt
+            - nginx.key
+        restart: 'on-failure:5'
+    mangodb:
+        build:
+            context: ./services/mango
+        command: --config /etc/mongod.conf
+        secrets:
+            - mongo.key
+        volumes:
+            - mongodb:/data/db
+        restart: 'on-failure:5'
+networks:
+    internal:
+        driver: bridge
+
+secrets:
+    nginx.key:
+        file: ./cert/nginx.key
+    nginx.crt:
+        file: ./cert/nginx.crt
+    mongo.key:
+        file: ./cert/mongo.key
+    mongo.crt:
+        file: ./cert/mongo.crt
+
+volumes:
+    mongodb:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: $PWD/data/mongodb
+        name: ft_transcendence_mongodb
