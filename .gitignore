@@ -1,8 +1,9 @@
+data
 .env
 *.crt
 *.key
+
 node_modules
 **/node_modules
 dist
 **/dist
-data

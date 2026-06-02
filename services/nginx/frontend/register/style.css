@@ -1,0 +1,127 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: url('../images/bliss.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: Tahoma, sans-serif;
+  font-size: 13px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.window {
+  width: 400px;
+  background-color: #ece9d8;
+  border-top:    2px solid #ffffff;
+  border-left:   2px solid #ffffff;
+  border-bottom: 2px solid #808080;
+  border-right:  2px solid #808080;
+}
+
+.titlebar {
+  background: linear-gradient(to right, #0054e3, #3c9ef5);
+  padding: 4px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titlebar-title {
+  color: white;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.titlebar-buttons {
+  display: flex;
+  gap: 2px;
+}
+
+.btn-close {
+  width: 18px;
+  height: 16px;
+  background: linear-gradient(to bottom, #f55, #c00);
+  border-top:    1px solid #ff9999;
+  border-left:   1px solid #ff9999;
+  border-bottom: 1px solid #800000;
+  border-right:  1px solid #800000;
+  color: white;
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.window-body {
+  padding: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 4px;
+  margin-top: 12px;
+}
+
+input {
+  width: 100%;
+  padding: 4px 6px;
+  font-family: Tahoma, sans-serif;
+  font-size: 13px;
+  background: #ffffff;
+  border-top:    2px solid #808080;
+  border-left:   2px solid #808080;
+  border-bottom: 2px solid #ffffff;
+  border-right:  2px solid #ffffff;
+  outline: none;
+}
+
+button {
+  margin-top: 16px;
+  padding: 5px 20px;
+  font-family: Tahoma, sans-serif;
+  font-size: 13px;
+  background: linear-gradient(to bottom, #f0ede4, #d4d0c8);
+  cursor: pointer;
+  border-top:    2px solid #ffffff;
+  border-left:   2px solid #ffffff;
+  border-bottom: 2px solid #808080;
+  border-right:  2px solid #808080;
+}
+
+button:hover {
+  background: linear-gradient(to bottom, #dde8f8, #aec8ef);
+}
+
+button:active {
+  border-top:    2px solid #808080;
+  border-left:   2px solid #808080;
+  border-bottom: 2px solid #ffffff;
+  border-right:  2px solid #ffffff;
+}
+
+a {
+  color: #0054e3;
+  font-size: 12px;
+}
+
+p {
+  margin-top: 16px;
+  font-size: 12px;
+  color: #555;
+}
+
+h1 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #0a246a;
+  margin-bottom: 8px;
+}
