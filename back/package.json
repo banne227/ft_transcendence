@@ -1,17 +1,17 @@
 {
   "name": "back",
   "version": "1.0.0",
-  "description": "",  
+  "description": "",
   "main": "index.js",
   "engines": {
     "node": ">=18"
   },
-"scripts": {
-  "predev": "node ../scripts/check-node.js",
-  "dev": "ts-node src/server.ts",
-  "pretest": "node ../scripts/check-node.js",
-  "test": "ts-node src/testRunner.ts"
-},
+  "scripts": {
+    "predev": "node ../scripts/check-node.js",
+    "dev": "ts-node src/server.ts",
+    "pretest": "node ../scripts/check-node.js",
+    "test": "ts-node src/testRunner.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -25,6 +25,7 @@
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.2.1",
-    "socket.io": "^4.8.3"
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3"
   }
 }
