@@ -15,7 +15,7 @@ up:
 	@sh ./services/genCert.sh &>/dev/null
 	@mkdir -p ./data/mongodb
 	@printf "\x1b[0;32m[+] Starting every running container ...\n\x1b[0m"
-	@$(DC) up
+	@$(DC) up -d
 
 re: down
 	@printf "\x1b[0;32m[+] Rebuilding container ...\n\x1b[0m"
