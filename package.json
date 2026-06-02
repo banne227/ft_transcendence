@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "name": "ft_transcendence",
   "private": true,
   "version": "1.0.0",
@@ -9,15 +8,4 @@
     "pretest": "node ./scripts/check-node.js",
     "test": "npm --prefix back run test"
   }
-=======
-	"name": "ft_transcendence",
-	"private": true,
-	"version": "1.0.0",
-	"scripts": {
-		"predev": "node ./scripts/check-node.js",
-		"dev": "npm --prefix back run dev",
-		"pretest": "node ./scripts/check-node.js",
-		"test": "npm --prefix back run test"
-	}
->>>>>>> origin/infra
 }
