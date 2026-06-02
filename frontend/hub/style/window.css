@@ -1,0 +1,57 @@
+/* =============================================
+   window.css — FENÊTRE XP GÉNÉRIQUE
+   .window, .titlebar, .btn-close, .window-body
+   Réutilisé sur toutes les pages
+============================================= */
+
+@keyframes slide-in {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0%); }
+}
+
+.maClasse {
+  animation: 3s linear 1s infinite alternate slide-in;
+}
+
+.window {
+  width: 400px;
+  background-color: #ece9d8;
+  border-top:    2px solid #ffffff;
+  border-left:   2px solid #ffffff;
+  border-bottom: 2px solid #808080;
+  border-right:  2px solid #808080;
+}
+
+.titlebar {
+  background: linear-gradient(to right, #0054e3, #3c9ef5);
+  padding: 4px 8px;
+  display: flex;
+  cursor: grab;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titlebar-title {
+  color: white;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.titlebar-buttons { display: flex; gap: 2px; }
+
+.btn-close {
+  width: 18px; height: 16px;
+  background: linear-gradient(to bottom, #f55, #c00);
+  border-top:    1px solid #ff9999;
+  border-left:   1px solid #ff9999;
+  border-bottom: 1px solid #800000;
+  border-right:  1px solid #800000;
+  color: white;
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.window-body { padding: 20px; }
