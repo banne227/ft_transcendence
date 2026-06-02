@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "",  
   "main": "index.js",
+  "engines": {
+    "node": ">=18"
+  },
 "scripts": {
+  "predev": "node ../scripts/check-node.js",
   "dev": "ts-node src/server.ts",
+  "pretest": "node ../scripts/check-node.js",
   "test": "ts-node src/testRunner.ts"
 },
   "keywords": [],

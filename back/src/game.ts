@@ -42,33 +42,11 @@ interface Game{
 
 
 //=fonctions utils
-function spawnFood(): Food{
+function spawnFood(state: Game): Food{
     const id = FOOD_ID++
-    const minDist = 120
-    let x: number, y: number
-    let attempts = 0
-    outer: while (true) {
-        x = Math.floor(Math.random() * MAP_SIZE.width)
-        y = Math.floor(Math.random() * MAP_SIZE.height)
-        attempts++
-        for (const p of Object.values(state.players)) {
-            for (const seg of p.body) {
-                const dx = Math.abs(seg.x - x)
-                const dy = Math.abs(seg.y - y)
-                if (dx < minDist && dy < minDist) {
-                    if (attempts > 1000) break outer
-                    continue outer
-                }
-            }
-        }
-        break
-    }
-    return {
-        id,
-        x,
-        y,
-        feed: (id % 5) + 1
-    }
+    let x = Math.floor(Math.random() * (MAP_SIZE.width - 100)) + 50
+    let y = Math.floor(Math.random() * (MAP_SIZE.height - 100)) + 50
+    return {id, x, y, feed: (id % 5) + 1}
 }
 
 export function displayState(state: Game): void {
@@ -101,7 +79,7 @@ let state: Game = {
 //creation de 100 nourritures au lancement
 for (let i = 0; i < 100; i++)
 {
-    state.foods.push(spawnFood())
+    state.foods.push(spawnFood(state))
 }
 
 
@@ -127,7 +105,17 @@ export function addPlayer(id: string, name: string): void{
 
 export function setDirection(id: string, dir:Player['direction']): void {
     if (state.players[id])
-        state.players[id].direction = dir
+    {
+        if ((state.players[id].direction === 'DOWN' || state.players[id].direction === 'UP') 
+            && (dir === 'DOWN' || dir === 'UP'))
+            return
+        else if ((state.players[id].direction === 'RIGHT' || state.players[id].direction === 'LEFT') 
+            && (dir === 'RIGHT' || dir === 'LEFT'))
+            return
+        else
+            state.players[id].direction = dir
+    }
+       
 }
 
 export function removePlayer(id: string): void {
@@ -135,7 +123,7 @@ export function removePlayer(id: string): void {
         delete state.players[id]
 }
 
-//permet de regarder si la tete du joueur entre en collision avec de la nourriture ou un joueur
+//permet de regarder si la tete du joueur entre en collision avec un joueur
 function findCollision(head: Segment, segments: Segment[]): number {
     let distance = 15
     return segments.findIndex(segment =>
@@ -194,7 +182,7 @@ export function movePlayer(id: string): boolean {
             player.score += food.feed //ajt au score
             console.log(`Player ${id} ate food ${food.id} (+${food.feed})`)
             state.foods.splice(foodIndex, 1) //suprimer ce qui a ete manger
-            state.foods.push(spawnFood()) //spawn une nouvelle            
+            state.foods.push(spawnFood(state)) //spawn une nouvelle            
         }
     }
     player.body.unshift(newhead) //ajouter la tete au debut de la liste 
