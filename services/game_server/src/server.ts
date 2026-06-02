@@ -3,10 +3,11 @@ import { createServer } from 'http'
 import { Server } from 'socket.io'
 import { addPlayer, removePlayer, setDirection, startGameLoop } from './game'
 
-const app = express()
-const httpServer = createServer(app)
-const io = new Server(httpServer, { cors: { origin: '*' } })
+const app = express() //gestion requete http
+const httpServer = createServer(app) //socket.io pour la transmission client serv
+const io = new Server(httpServer, { cors: { origin: '*' } }) 
 
+//permet de verifier que le server est en place http://localhost:3000/health
 app.get('/health', (_req, res) => {
     res.json({ status: 'ok' })
 })
@@ -32,6 +33,7 @@ startGameLoop((state) => {
     io.emit('gameState', state)
 })
 
+//message envoyer quand le server est pret
 httpServer.listen(3000, () => {
     console.log('Serveur sur http://localhost:3000')
 })

@@ -1,5 +1,6 @@
 const { io } = require("socket.io-client");
 
+//la ou est-ce-que j'ecoute
 const socket = io("http://localhost:3000");
 
 socket.on("connect", () => {
