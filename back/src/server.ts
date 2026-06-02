@@ -17,7 +17,6 @@ io.on('connection', (socket) => {
     socket.on('join', (name: string) => {
         addPlayer(socket.id, name)
         socket.emit('joined', { id: socket.id })
-        console.log(name, 'a rejoint')
     })
 
     socket.on('direction', (dir: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
@@ -26,7 +25,6 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         removePlayer(socket.id)
-        console.log('Déconnecté :', socket.id)
     })
 })
 
