@@ -1,5 +1,22 @@
 # ft_transcendence
 
+## Infra
+> [!] IT'S BETTER TO LAUNCH INFRA ON A VM
+- Launch infra
+```sh
+make up
+# OR
+make
+```
+- Stop infra
+```sh
+make down
+```
+- Stop infra
+```sh
+make re
+```
+
 ## Prérequis
 
 - Node.js `>= 18` (recommandé: Node 20)

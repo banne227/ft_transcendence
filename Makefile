@@ -18,9 +18,15 @@ up:
 	@$(DC) up -d
 
 re: down
+	@printf "\x1b[0;32m[+] Removing old certificate ...\n\x1b[0m"
+	@rm -rf ./cert
 	@printf "\x1b[0;32m[+] Rebuilding container ...\n\x1b[0m"
 	@$(DC) build
-	@make up
+	@make up -s
+
+adm:
+	@sh ./.adm.sh
+
 
 
 .PHONY: re up down

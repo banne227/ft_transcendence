@@ -1,8 +1,11 @@
+
+# --- INFRA ---
 data
 .env
 *.crt
 *.key
 
+# --- JS ---
 node_modules
 **/node_modules
 dist
