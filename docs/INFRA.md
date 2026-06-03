@@ -1,5 +1,5 @@
 <div align="center">
-	<h1>"< STILL IN BUILD >"</h1>
+	<h1>< STILL IN BUILD ></h1>
 </div>
 
 # Infra
@@ -10,9 +10,11 @@
 - In our infrastructure NGINX are acting like a web server that serve the html pages statically and secured with encryption between the client and the NGINX server using TLS 1.2 or TLS 1.3
 - Every client-side content should be put on the "frontend" directory in services/nginx
 ### MangoDB
-- MangoDB is a free source-available NoSQL (Not Only SQL) documents-oriented databased that doesnt use BJSON (Binary JavaScript Object Notation) instead of SQL to add, remove or find data. 
+- MangoDB is a free source-available NoSQL (Not Only SQL) documents-oriented databased who use BJSON (Binary JavaScript Object Notation) instead of SQL to add, remove or find data. 
 ### game_server
+- Host the game server
 ### RESTApi
+- Host API
 
 ## TROUBLESHOOT
 ```

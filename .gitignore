@@ -1,7 +1,9 @@
 
 # --- INFRA ---
 data
+data/*
 .env
+cert
 *.crt
 *.key
 

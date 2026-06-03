@@ -8,8 +8,8 @@ all: up
 down:
 	@printf "\x1b[0;32m[+] Shutdown every running container ...\n\x1b[0m"
 	@$(DC) down
-	@printf "\x1b[0;32m[+] Shutdown every running network connection ...\n\x1b[0m"
-	@yes | docker network prune
+	@printf "\x1b[0;32m[+] Shutdown every running docker network connection ...\n\x1b[0m"
+	@yes | docker network prune &>/dev/null
 
 up:
 	@sh ./services/genCert.sh &>/dev/null
