@@ -1,7 +1,8 @@
 import express from 'express'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
-import { addPlayer, removePlayer, setDirection, startGameLoop, setBoost, unsetBoost } from './game'
+import { startGameLoop} from './game'
+import { addPlayer, removePlayer, setDirection, setBoost, unsetBoost } from './player'
 
 const app = express() //gestion requete http
 const httpServer = createServer(app) //socket.io pour la transmission client serv
