@@ -74,3 +74,9 @@ document.querySelector('#chat-input-row button').addEventListener('click', funct
 document.querySelector('#window-log').addEventListener('click', function() {
   document.getElementById('window-login').style.display = 'block';
 });
+
+document.querySelector('#chat-input-row input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    document.querySelector('#chat-input-row button').click();
+  }
+});
