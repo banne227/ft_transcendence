@@ -7,9 +7,9 @@
 		"node": ">=18"
 	},
 	"scripts": {
-		"predev": "node ./check-node.js",
+		"predev": "node scripts/check-node.js",
 		"dev": "ts-node src/server.ts",
-		"pretest": "node ./check-node.js",
+		"pretest": "node scripts/check-node.js",
 		"test": "ts-node src/testRunner.ts"
 	},
 	"keywords": [],
