@@ -1,7 +1,7 @@
 import express from 'express'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
-import { addPlayer, removePlayer, setDirection, startGameLoop } from './game'
+import { addPlayer, removePlayer, setDirection, startGameLoop, setBoost, unsetBoost } from './game'
 
 const app = express() //gestion requete http
 const httpServer = createServer(app) //socket.io pour la transmission client serv
@@ -26,6 +26,14 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         removePlayer(socket.id)
+    })
+
+    socket.on('boost', (id: string) => {
+        setBoost(id)
+    })
+
+    socket.on('stop_boost', (id: string) => {
+        unsetBoost(id)
     })
 })
 

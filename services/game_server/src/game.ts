@@ -25,6 +25,7 @@ interface Player{
     alive: boolean
     score: number
     direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT'
+    boost: boolean
 }
 
 interface Food{
@@ -37,15 +38,18 @@ interface Food{
 interface Game{
     players: Record<string, Player> //liste de tous mes joueurs par id
     foods: Food[] //liste de la nouriture
+    leaderbord: Player[] //liste trier de jouer par score
     mapSize: { width: number, height: number }
 }
 
 
 //=fonctions utils
-function spawnFood(state: Game): Food{
+function spawnFood(poop: boolean): Food{
     const id = FOOD_ID++
     let x = Math.floor(Math.random() * (MAP_SIZE.width - 100)) + 50
     let y = Math.floor(Math.random() * (MAP_SIZE.height - 100)) + 50
+    if (poop)
+        return {id, x, y, feed: 1}
     return {id, x, y, feed: (id % 5) + 1}
 }
 
@@ -69,9 +73,38 @@ function setDead(id: string): boolean {
     return false
 }
 
+function update_leaderboard(state: Game): void {
+    const players = Object.values(state.players);
+
+    if (players.length === 0)
+        return;
+
+    const leaderboard: Player[] = [];
+
+    for (let i = 0; i < players.length; i++) 
+    {
+        let max: Player | undefined = undefined;
+
+        for (let j = 0; j < players.length; j++) {
+            const player = players[j];
+    
+            if (!player || !player.alive || leaderboard.includes(player))
+                continue;
+    
+            if (!max || player.score > max.score)
+                max = player;
+        }
+
+        if (max)
+            leaderboard.push(max);
+    }
+    state.leaderbord = leaderboard;
+}
+
 //===init du jeu
 let state: Game = {
     players: {},
+    leaderbord: [],
     foods: [],
     mapSize: MAP_SIZE
 }
@@ -79,7 +112,7 @@ let state: Game = {
 //creation de 100 nourritures au lancement
 for (let i = 0; i < 100; i++)
 {
-    state.foods.push(spawnFood(state))
+    state.foods.push(spawnFood(false))
 }
 
 
@@ -97,8 +130,9 @@ export function addPlayer(id: string, name: string): void{
             }
         ],
         alive: true,
-        score: 0,
-        direction: 'RIGHT'
+        score: 10,
+        direction: 'RIGHT',
+        boost: false
     }
 }
 
@@ -143,6 +177,28 @@ function findFoodCollision(head: Segment, foods: Food[]): number {
     )
 }
 
+export function setBoost(id: string): void{
+    if (state.players[id])
+    {
+        if (state.players[id].score <= 0)
+            return
+        state.players[id].boost = true
+    }
+}
+
+export function unsetBoost(id: string): void{
+    if (state.players[id])
+        state.players[id].boost = false
+}
+
+function dropPoop(id: string): void {
+    if (state.players[id] && state.players[id].alive)
+    {
+        state.foods.push(spawnFood(true))
+        state.players[id].score -= 1
+    }   
+}
+
 export function movePlayer(id: string): boolean {
     const player = state.players[id]
     if (!player)
@@ -153,11 +209,12 @@ export function movePlayer(id: string): boolean {
     if (!head) return false
     const newhead: Segment = { x: head.x, y: head.y }
 
+    let speed = player.boost ? SPEED + 2 : SPEED
     // Déplacer selon la direction
-    if (player.direction === 'UP')    newhead.y -= SPEED
-    if (player.direction === 'DOWN')  newhead.y += SPEED
-    if (player.direction === 'LEFT')  newhead.x -= SPEED
-    if (player.direction === 'RIGHT') newhead.x += SPEED
+    if (player.direction === 'UP')    newhead.y -= speed
+    if (player.direction === 'DOWN')  newhead.y += speed
+    if (player.direction === 'LEFT')  newhead.x -= speed
+    if (player.direction === 'RIGHT') newhead.x += speed
 
     //si la tete touche un mur
     if (newhead.x <= 0 || newhead.x >= MAP_SIZE.width || newhead.y <= 0 || newhead.y >= MAP_SIZE.height)
@@ -184,7 +241,7 @@ export function movePlayer(id: string): boolean {
             player.score += food.feed //ajt au score
             console.log(`Player ${id} ate food ${food.id} (+${food.feed})`)
             state.foods.splice(foodIndex, 1) //suprimer ce qui a ete manger
-            state.foods.push(spawnFood(state)) //spawn une nouvelle            
+            state.foods.push(spawnFood(false)) //spawn une nouvelle            
         }
     }
     player.body.unshift(newhead) //ajouter la tete au debut de la liste 
@@ -198,8 +255,13 @@ export function startGameLoop(makeAction: (state: Game) => void): void {
         for (const player of Object.values(state.players)) 
         {
             if (player.alive)
+            {
+                if (player.boost)
+                    dropPoop(player.id)
                 movePlayer(player.id)
+            }
         }
+        update_leaderboard(state)
         makeAction(state)
     }, TICK_RATE)
 }
