@@ -24,9 +24,10 @@ re: down
 	@$(DC) build
 	@make up -s
 
-adm:
-	@sh ./.adm.sh
+reset:
+	@sh ./.reset.sh
+
+setup:
 
 
-
-.PHONY: re up down
+.PHONY: re up down reset

@@ -4,6 +4,8 @@ if [ $EUID -ne 0 ]; then
 	exit 1
 fi
 
+printf "\x1b[0;32m[+] Shutting down infrastructure ...\n\x1b[0m"
+make down
 printf "\x1b[0;32m[+] Removing volumes ...\n\x1b[0m"
 docker volume rm $(docker volume ls | grep "ft_transcendence" | awk '{print $2}') || true
 printf "\x1b[0;32m[+] Removing content of the volumes ...\n\x1b[0m"
