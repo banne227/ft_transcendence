@@ -7,6 +7,12 @@ elif [ "$1" == "" ]; then
 	exit 1
 fi
 
-if [ "$(cat /etc/hosts | tail -n1 | awk -F\t '{print $2}')" != "transcendence.42.fr" ]; then
+last_line=$(cat /etc/hosts | tail -n1)
 
+echo $last_line
+if [ "$(echo $last_line | awk -F\t '{print $2}')" != "transcendence.42.fr" ] && [ "$(echo $last_line | awk -F\t '{print $2}')" != "$1" ]; then
+	printf "[-] Putting transcendence.42.fr pointing to $1\n"
+	printf "$1\ttranscendence.42.fr" >> /etc/hosts
+else
+	printf "[-] Putting transcendence.42.fr pointing to $1\n"
 fi
