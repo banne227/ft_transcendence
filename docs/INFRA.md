@@ -14,7 +14,7 @@
 ### game_server
 - Host the game server
 ### RESTApi
-- Host API
+- API container
 
 ## TROUBLESHOOT
 ```
@@ -34,5 +34,16 @@ Error response from daemon: error while mounting volume '/var/lib/docker/volumes
 Potential solution :
 ```sh
 # Try to delete every volumes folder (in sudo)
-make adm
+make reset
+```
+---
+- Firefox can't connect to to the site
+Potential solution :
+```md
+## Firefox
+1. Go to your Firefox settings
+2. Go to the "Privacy & Security" section
+3. Go at the bottom of the page
+4. In "DNS over HTTPS" you have a "Manage Exceptions..." button
+5. On the textbox "Enter website domain name" put "127.0.0.1" or the hostname you assiates in /etc/hosts
 ```
