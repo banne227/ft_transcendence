@@ -33,16 +33,9 @@ npm install
 
 ## Lancer le projet (backend)
 
-Option 1 (depuis la racine):
+Depuis le dossier services/game_serve/src:
 
 ```bash
-npm run dev
-```
-
-Option 2 (depuis `back/`):
-
-```bash
-cd back
 npm run dev
 ```
 
@@ -54,17 +47,16 @@ http://localhost:3000
 
 ## Lancer les tests backend
 
-Depuis la racine:
+Depuis services/game_serve/src:
 
 ```bash
 npm test
 ```
 
-Ou depuis `back/`:
+Ou depuis pour coonnecter un client:
 
 ```bash
-cd back
-npm run test
+node test-client.ts
 ```
 
 ## Dépannage rapide
