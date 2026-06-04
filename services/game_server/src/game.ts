@@ -1,12 +1,9 @@
-import { movePlayer, dropPoop } from './player'
+import { movePlayer, dropPoop, update_width } from './player'
 
 
 export const MAP_SIZE = { width: 2000, height: 2000 }
-const TICK_RATE = 200   // on met à jour le jeu toutes les 50ms = 20 fois/seconde
+const TICK_RATE = 500   // on met à jour le jeu toutes les 50ms = 20 fois/seconde
 let FOOD_ID = 0
-
-
-//=======    object pour le jeu
 
 //partie du serpent juste des positions
 export interface Segment{
@@ -21,7 +18,8 @@ export interface Player{
     alive: boolean
     score: number
     direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT'
-    boost: boolean
+    boost: boolean,
+    width: number
 }
 
 export interface Food{
@@ -111,6 +109,7 @@ export function startGameLoop(makeAction: (state: Game) => void): void {
                 if (player.boost)
                     dropPoop(player.id)
                 movePlayer(player.id)
+                update_width(player.id)
             }
         }
         update_leaderboard(state)

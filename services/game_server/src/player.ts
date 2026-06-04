@@ -18,8 +18,14 @@ export function addPlayer(id: string, name: string): void{
 		alive: true,
 		score: 10,
 		direction: 'RIGHT',
-		boost: false
+		boost: false,
+		width: 1
 	}
+}
+
+export function update_width(id: string): void{
+	if (state.players[id] && state.players[id].alive)
+		state.players[id].width = state.players[id].score / 10
 }
 
 function setDead(id: string): boolean {
@@ -90,6 +96,7 @@ export function dropPoop(id: string): void {
 	{
 		state.foods.push(spawnFood(true))
 		state.players[id].score -= 1
+        update_width(id)
 	}   
 }
 
