@@ -9,10 +9,10 @@ down:
 	@printf "\x1b[0;32m[+] Shutdown every running container ...\n\x1b[0m"
 	@$(DC) down
 	@printf "\x1b[0;32m[+] Shutdown every running docker network connection ...\n\x1b[0m"
-	@yes | docker network prune &>/dev/null
+	@yes | docker network prune > /dev/null 2>&1
 
 up:
-	@sh ./services/genCert.sh &>/dev/null
+	@sh ./services/genCert.sh > /dev/null 2>&1
 	@mkdir -p ./data/mongodb
 	@printf "\x1b[0;32m[+] Starting every running container ...\n\x1b[0m"
 	@$(DC) up -d
