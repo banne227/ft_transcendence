@@ -11,11 +11,7 @@ elif [ "$1" == "" ]; then
 	exit 1
 fi
 
-if [ "$2" == "" ]; then
-	domain="transcendence.42.fr"
-else
-	domain="$2"
-fi
+domain="transcendence.42.fr"
 
 hostsLastLine=$(cat /etc/hosts | tail -n1 | sed -z "s/\n//")
 
