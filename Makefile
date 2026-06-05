@@ -12,7 +12,7 @@ down:
 	@yes | docker network prune > /dev/null 2>&1
 
 up:
-	@sh ./services/genCert.sh > /dev/null 2>&1
+	@sh ./.scripts/genCert.sh > /dev/null 2>&1
 	@mkdir -p ./data/mongodb
 	@printf "\x1b[0;32m[+] Starting every running container ...\n\x1b[0m"
 	@$(DC) up -d
@@ -25,9 +25,9 @@ re: down
 	@make up -s
 
 reset: down
-	@sh ./.reset.sh
+	@sh ./.scripts/.reset.sh
 
 setup:
-	@sh ./setup.sh $(IP) $(HOST)
+	@sh ./.scripts/setup.sh $(IP) $(HOST)
 
 .PHONY: re up down reset
