@@ -4,6 +4,7 @@
 
 # Infra
 ## Description
+
 - Our transcendence infrastructure is composed by four services who are containerized in docker container:
 ### NGINX
 - Nginx is a free and opensource software that can do a lot of thing different like web server, reverse proxy, load balancer, mail proxy or HTTP cache.
@@ -13,7 +14,7 @@
 - MangoDB is a free source-available NoSQL (Not Only SQL) documents-oriented databased who use BJSON (Binary JavaScript Object Notation) instead of SQL to add, remove or find data. 
 ### game_server
 - Host the game server
-### RESTApi
+### API
 - API container
 
 ## TROUBLESHOOT

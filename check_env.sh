@@ -1,7 +1,8 @@
 FILENAME=template.env
 
-cat $FILENAME &>/dev/null
+CONTENT=$(cat $FILENAME)
 
+echo $CONTENT | awk '{print $2}'
 if [ $? -ne 0 ]; then
 	exit 1
 elif [ "$(cat $FILENAME | grep MONGODB_PORT | awk -F= '{print $2}')" == "" ]; then

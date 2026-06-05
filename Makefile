@@ -24,10 +24,10 @@ re: down
 	@$(DC) build
 	@make up -s
 
-reset:
+reset: down
 	@sh ./.reset.sh
 
 setup:
-
+	@sh ./setup.sh $(IP) $(HOST)
 
 .PHONY: re up down reset
