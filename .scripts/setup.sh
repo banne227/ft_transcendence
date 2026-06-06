@@ -3,11 +3,7 @@ if [ $EUID -ne 0 ]; then
 	printf "\x1b[31m[!] SUDO privileges is required\x1b[0m\n"
 	exit 1
 elif [ "$1" == "" ]; then
-	if [ $3 == "" ]; then
-		printf "\x1b[31m[!] Usage script w make: make setup IP={IP_OF_THE_SERVER} HOST={ASSOCIATED_DOMAIN}\x1b[0m\n"
-	else
-		printf "\x1b[31m[!] Usage: $0 {IP_OF_THE_SERVER} {ASSOCIATED_DOMAIN}\x1b[0m\n"
-	fi
+	printf "\x1b[31m[!] Usage script w make: make setup IP={IP_OF_THE_SERVER}\x1b[0m\n"
 	exit 1
 fi
 
@@ -23,6 +19,9 @@ printf "\n"
 if [ "$(echo -n $hostsLastLine | awk -F'[ \t]+' '{print $2}')" == "$domain" ] && [ "$(echo -n $hostsLastLine | awk -F'[ \t]+' '{print $1}')" == "$1" ]; then
 	printf "[-] $1:$domain is already in /etc/hosts\n"
 else
+	if [ "$(echo -n $hostsLastLine | awk -F'[ \t]+' '{print $2}')" == "$domain" ]; then
+		sed -i '$d' /etc/hosts
+	fi
 	printf "[-] $1:$domain have been added to /etc/hosts\n"
 	printf "$1\t$domain" >> /etc/hosts
 fi

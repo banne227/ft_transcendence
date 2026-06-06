@@ -7,6 +7,5 @@ COPY . /srv/game_server/
 WORKDIR /srv/game_server/
 
 EXPOSE 3000
-
 RUN npm install
 CMD [ "npm", "run", "dev" ]
