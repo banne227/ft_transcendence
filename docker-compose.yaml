@@ -22,6 +22,13 @@ services:
     networks:
       - internal
     restart: "on-failure:5"
+    ports:
+      - 0.0.0.0:27017:27017
+    environment:
+      - MONGO_USER=$MONGO_USER
+      - MONGO_PASS=$MONGO_PASS
+      - MONGO_ADMIN_USER=$MONGO_ADMIN_USER
+      - MONGO_ADMIN_PASS=$MONGO_ADMIN_PASS
   game:
     build:
       context: ./services/game_server

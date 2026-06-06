@@ -1,1 +1,2 @@
-FROM debian:trixie
+FROM alpine:3.22
+RUN apk add --no-cache npm nodejs
