@@ -2,7 +2,7 @@
 	<h1>< STILL IN BUILD ></h1>
 </div>
 
-# Infra
+# "ft_transcendence" infrastructure :
 ## Description
 
 - Our transcendence infrastructure is composed by four services who are containerized in docker container:
@@ -35,11 +35,21 @@ Error response from daemon: error while mounting volume '/var/lib/docker/volumes
 Potential solution :
 ```sh
 # Try to delete every volumes folder (in sudo)
-make reset
+sudo make reset
 ```
 ---
-- Firefox can't connect to to the site
+- Firefox can't connect to to the site while being launch
 Potential solution :
+```sh
+# Check that every container is launched
+docker ps
+
+# EXPECTED OUTPUT :
+CONTAINER ID   IMAGE                      COMMAND                  CREATED              STATUS              PORTS                                      NAMES
+<rand_id>   ft_transcendence-mangodb   "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:27017->27017/tcp                   ft_transcendence-mangodb-1
+<rand_id>   ft_transcendence-nginx     "/docker-entrypoint.…"   About a minute ago   Up About a minute   0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   ft_transcendence-nginx-1
+<rand_id>   ft_transcendence-game      "npm run dev"            About a minute ago   Up About a minute   3000/tcp                                   ft_transcendence-game-1
+```
 ```md
 ## Firefox
 1. Go to your Firefox settings
