@@ -4,8 +4,7 @@
 
 # "ft_transcendence" infrastructure :
 ## Description
-
-- Our transcendence infrastructure is composed by four services who are containerized in docker container:
+- "ft_transcendence" infrastructure is composed by four services who are containerized in docker container:
 ### NGINX
 - Nginx is a free and opensource software that can do a lot of thing different like web server, reverse proxy, load balancer, mail proxy or HTTP cache.
 - In our infrastructure NGINX are acting like a web server that serve the html pages statically and secured with encryption between the client and the NGINX server using TLS 1.2 or TLS 1.3
