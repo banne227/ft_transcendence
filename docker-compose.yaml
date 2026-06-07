@@ -11,6 +11,9 @@ services:
     networks:
       - internal
     restart: "on-failure:5"
+    depends_on:
+      - mangodb
+      - game
   mangodb:
     build:
       context: ./services/mango
@@ -33,6 +36,8 @@ services:
     networks:
       - internal
     restart: "on-failure:5"
+    depends_on:
+      - mangodb
 
 networks:
   internal:
