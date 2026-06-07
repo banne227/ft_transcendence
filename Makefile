@@ -15,11 +15,13 @@ up:
 	@sh ./.scripts/genCert.sh > /dev/null 2>&1
 	@mkdir -p ./data/mongodb
 	@printf "\x1b[0;32m[+] Starting every running container ...\n\x1b[0m"
+	@sh ./.scripts/checkEnv.sh
 	@$(DC) up -d
 
 re: down
 	@printf "\x1b[0;32m[+] Removing old certificate ...\n\x1b[0m"
 	@rm -rf ./cert
+	@sh ./.scripts/checkEnv.sh
 	@printf "\x1b[0;32m[+] Rebuilding container ...\n\x1b[0m"
 	@$(DC) build
 	@make up -s
