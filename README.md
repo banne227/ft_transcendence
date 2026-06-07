@@ -45,14 +45,21 @@ sudo make setup IP={IP_OF_THE_SERVER}
 - [Infrastructures](https://github.com/banne227/ft_transcendence/blob/main/docs/INFRA.md)
 - [API](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md)
 
+## Preview: 
+<div align=center>
+	<img src="">
+	<img src="">
+	<img src="">
+</div>
+
 <!-- "Powered By:" badges -->
 <div align="center">
   <h2>Powered By:</h2>
 	<a rel="Nginx" href="https://nginx.org/"><img src="https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white"></a>
 	<a rel="MongoDB" href="https://www.mongodb.com/"><img src="https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white"></a>
 	<a rel="NodeJS" href="https://nodejs.org"><img src="https://img.shields.io/badge/node.js-6DA55F.svg?style=for-the-badge&logo=node.js&logoColor=white"></a>
-	<a rel="Docker" href="https://www.docker.com/"><img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white"></a>
 	<a rel="Typescript" href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white"></a>
+	<a rel="Docker" href="https://www.docker.com/"><img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white"></a>
 	<a rel="ExpressJS" href="https://expressjs.com/en/"><img src="https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB"></a>
 	<a rel="Socket.IO" href="https://socket.io/"><img src="https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&badgeColor=010101"></a>
 </div>
