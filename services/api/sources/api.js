@@ -1,14 +1,27 @@
-import { createServer } from "node:net";
+// Initialized ExpressJS framework
+const express = require('express')
+const mongoose = require('mongoose')
 
-// Define the IP and PORT to use
-const IP = "127.0.0.1";
-const PORT = process.env("PORT");
+const db = {}
+const api = express()
+const PORT = 444
 
-// Check if the PORT is on the environment variable
-if (typeof PORT === "undefined") {
-	console.log("FAILURE: The environment variable 'PORT' in undefined");
-}
+/*
+ * When stopping docker container, docker send SIGTERM
+ * and then send a SIGKILL to stop the container
+ */
+process.on('SIGTERM', (code_signal_error) => {
+	process.exit(0)
+})
 
-const SERVER = createServer();
+/*
+ * Endpoint to check from the client if the api is up
+ */
+api.get('/api/health', (req, res) => {
+	res.send('API status : OK')
+})
 
-SERVER.on();
+// Start to listening for connection
+api.listen(PORT, () => {
+	console.log(`Listening on http://api:${PORT}`)
+})
