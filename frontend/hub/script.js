@@ -80,3 +80,4 @@ document.querySelector('#chat-input-row input').addEventListener('keydown', func
     document.querySelector('#chat-input-row button').click();
   }
 });
+

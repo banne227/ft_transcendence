@@ -28,15 +28,13 @@ document.querySelector('.play_button a').addEventListener('click', function(e) {
   e.preventDefault(); // bloque la redirection
   son.play();
   setTimeout(function() {
-    window.location.href = 'https://127.0.0.1/game'; // redirige après le son
+    window.location.href = '../game/game.html'; // redirige après le son
   }, 3000); // attend 500ms
 });
 
 makeDraggable(document.querySelector('#window-log'),  document.querySelector('#window-log .titlebar'));
 makeDraggable(document.querySelector('#window-title'),  document.querySelector('#window-title .titlebar'));
 makeDraggable(document.querySelector('#window-chat'),  document.querySelector('#window-chat .titlebar'));
-makeDraggable(document.querySelector('#window-login'),  document.querySelector('#window-login .titlebar'));
-makeDraggable(document.querySelector('#window-register'),  document.querySelector('#window-register .titlebar'));
 
 let count = 42;
 
@@ -75,27 +73,4 @@ document.querySelector('#chat-input-row button').addEventListener('click', funct
 
 document.querySelector('#window-log').addEventListener('click', function() {
   document.getElementById('window-login').style.display = 'block';
-});
-
-document.querySelector('#chat-input-row input').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') {
-    document.querySelector('#chat-input-row button').click();
-  }
-});
-
-
-
-document.querySelector('.btn-login').addEventListener('click', function(e) {
-  e.stopPropagation();
-  document.getElementById('window-login').style.display = 'block';
-});
-document.getElementById('btn-inscrire').addEventListener('click', function(e) {
-  e.preventDefault();
-  document.getElementById('window-register').style.display = 'block';
-});
-
-document.querySelectorAll('.btn-close').forEach(function(btn) {
-  btn.addEventListener('click', function() {
-    btn.closest('.window').style.display = 'none';
-  });
 });
