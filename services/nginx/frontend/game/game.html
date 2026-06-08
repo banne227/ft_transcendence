@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="UTF-8" />
 		<title>Painter.io — Partie</title>
-		<link rel="stylesheet" href="game/style.css" />
-		<link rel="stylesheet" href="game/style-theme.css" />
+		<link rel="stylesheet" href="style/style.css" />
+		<link rel="stylesheet" href="style/style-theme.css" />
 	</head>
 
 	<body>
@@ -21,7 +21,7 @@
 				</div>
 			</div>
 
-			<!-- Barre de menu -->
+			<!-- Barre de menu --> 
 			<div class="menubar">
 				<span class="menu-item">Fichier</span>
 				<span class="menu-item">Edition</span>
@@ -29,7 +29,7 @@
 				<span class="menu-item">Image</span>
 				<span class="menu-item">Couleurs</span>
 				<span class="menu-item">Aide</span>
-				<a href="../hub/page.html" title="LEAVE">LEAVE</a>
+				<a href="https://127.0.0.1" title="LEAVE">LEAVE</a>
 			</div>
 
 			<!-- Corps : sidebar TOUT à gauche + zone transparente -->
@@ -193,11 +193,10 @@
 
 				<!-- Zone transparente = le canvas derrière -->
 				<div class="canvas-zone"></div>
-
-				<h1>
-					ZONE OU Y'A LE JEU ((((exemple FULL PROMPTE dune idee quon
-					avait eu)))) voir limage dans le dossier game
-				</h1>
+			<h1>
+				<div id="output"></div>
+				<div id="feur"></div>
+			</h1>
 			</div>
 
 			<!-- Barre de statut -->
@@ -208,6 +207,6 @@
 			</div>
 		</div>
 
-		<script src="game/script.js"></script>
+		<script src="script.js"></script>
 	</body>
 </html>
