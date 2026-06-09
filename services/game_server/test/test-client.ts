@@ -1,3 +1,5 @@
+import {state} from '../src/game'
+
 const { io } = require("socket.io-client");
 
 //la ou est-ce-que j'ecoute
@@ -15,11 +17,11 @@ socket.on("connect", () => {
 	//}, 1000);
 });
 
-socket.on("joined", (data) => {
+socket.on("joined", (data: any) => {
 	console.log("Réponse joined :", data);
 });
 
-socket.on("gameState", (state) => {
+socket.on("gameState", (state: any) => {
 	console.log(state.players[socket.id].body, "\n");
 });
 

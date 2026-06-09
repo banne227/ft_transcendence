@@ -1,4 +1,6 @@
-import { addPlayer, startGameLoop, state, setDirection, displayState} from './game'
+import { state, startGameLoop} from '../src/game'
+import { displayState } from '../src/utils'
+import {addPlayer, setDirection} from '../src/player'
 
 addPlayer('p1', 'Alice')
 addPlayer('p2', 'Bob')

@@ -1,8 +1,10 @@
 import { movePlayer, dropPoop, update_width } from './player'
+import { displayState} from './utils'
+import { spawnFood } from './food'
+import { update_leaderboard } from './leaderboard'
 
 export const MAP_SIZE = { width: 2000, height: 2000 }
 const TICK_RATE = 500 // on met à jour le jeu toutes les 50ms = 20 fois/seconde
-let FOOD_ID = 0
 
 //partie du serpent juste des positions
 export interface Segment {
@@ -28,55 +30,11 @@ export interface Food {
 	feed: number
 }
 
-interface Game {
+export interface Game {
 	players: Record<string, Player> //liste de tous mes joueurs par id
 	foods: Food[] //liste de la nouriture
 	leaderbord: Player[] //liste trier de jouer par score
 	mapSize: { width: number; height: number }
-}
-
-//=fonctions utils
-export function spawnFood(poop: boolean): Food {
-	const id = FOOD_ID++
-	let x = Math.floor(Math.random() * (MAP_SIZE.width - 100)) + 50
-	let y = Math.floor(Math.random() * (MAP_SIZE.height - 100)) + 50
-	if (poop) return { id, x, y, feed: 1 }
-	return { id, x, y, feed: (id % 5) + 1 }
-}
-
-export function displayState(state: Game): void {
-	console.log('--- tick ---')
-	for (const player of Object.values(state.players)) {
-		const head = player.body && player.body[0]
-		const headStr = head ? `(${head.x},${head.y})` : '(no-head)'
-		console.log(
-			`${player.id} ${player.name} alive=${player.alive} score=${player.score} head=${headStr} len=${player.body.length}`,
-		)
-	}
-}
-
-function update_leaderboard(state: Game): void {
-	const players = Object.values(state.players)
-
-	if (players.length === 0) return
-
-	const leaderboard: Player[] = []
-
-	for (let i = 0; i < players.length; i++) {
-		let max: Player | undefined = undefined
-
-		for (let j = 0; j < players.length; j++) {
-			const player = players[j]
-
-			if (!player || !player.alive || leaderboard.includes(player))
-				continue
-
-			if (!max || player.score > max.score) max = player
-		}
-
-		if (max) leaderboard.push(max)
-	}
-	state.leaderbord = leaderboard
 }
 
 //===init du jeu
@@ -103,7 +61,6 @@ export function startGameLoop(makeAction: (state: Game) => void): void {
 			}
 		}
 		update_leaderboard(state)
-		displayState(state)
 		makeAction(state)
 	}, TICK_RATE)
 }
