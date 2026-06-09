@@ -42,16 +42,16 @@ function setDead(id: string): boolean {
 export function setDirection(id: string, dir:Player['direction']): void {
 	if (state.players[id])
 	{
-		if ((state.players[id].direction === 'DOWN' || state.players[id].direction === 'UP') 
+		if ((state.players[id].direction === 'DOWN' || state.players[id].direction === 'UP')
 			&& (dir === 'DOWN' || dir === 'UP'))
 			return
-		else if ((state.players[id].direction === 'RIGHT' || state.players[id].direction === 'LEFT') 
+		else if ((state.players[id].direction === 'RIGHT' || state.players[id].direction === 'LEFT')
 			&& (dir === 'RIGHT' || dir === 'LEFT'))
 			return
 		else
 			state.players[id].direction = dir
 	}
-	   
+
 }
 
 export function removePlayer(id: string): void {
@@ -98,7 +98,7 @@ export function dropPoop(id: string): void {
 		state.foods.push(spawnFood(true))
 		state.players[id].score -= 1
         update_width(id)
-	}   
+	}
 }
 
 export function movePlayer(id: string): boolean {
@@ -135,7 +135,7 @@ export function movePlayer(id: string): boolean {
 	const foodIndex = findFoodCollision(newhead, state.foods)
 	if (foodIndex === -1)  // pas de nourriture
 		player.body.pop()
-	else 
+	else
 	{
 		const food = state.foods[foodIndex]
 		if (food)
@@ -143,9 +143,9 @@ export function movePlayer(id: string): boolean {
 			player.score += food.feed //ajt au score
 			console.log(`Player ${id} ate food ${food.id} (+${food.feed})`)
 			state.foods.splice(foodIndex, 1) //suprimer ce qui a ete manger
-			state.foods.push(spawnFood(false)) //spawn une nouvelle            
+			state.foods.push(spawnFood(false)) //spawn une nouvelle
 		}
 	}
-	player.body.unshift(newhead) //ajouter la tete au debut de la liste 
+	player.body.unshift(newhead) //ajouter la tete au debut de la liste
 	return true
 }
