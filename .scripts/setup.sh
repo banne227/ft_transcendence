@@ -1,3 +1,4 @@
+#!/bin/bash
 
 if [ $EUID -ne 0 ]; then
 	printf "\x1b[31m[!] SUDO privileges is required\x1b[0m\n"
