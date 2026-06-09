@@ -3,7 +3,7 @@ import {state} from '../src/game'
 const { io } = require("socket.io-client");
 
 //la ou est-ce-que j'ecoute
-const socket = io("https://127.0.0.1/ws/serv");
+const socket = io("http://127.0.0.1:3000/");
 
 console.log("HERE");
 
