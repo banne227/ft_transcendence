@@ -29,7 +29,7 @@ process.on("SIGTERM", function (code_signal_error) {
 });
 
 //permet de verifier que le server est en place http://localhost:3000/health
-app.get("/health", (_req, res) => {
+app.get("ws/serv/health", (_req, res) => {
 	res.json({ status: "ok" });
 });
 
