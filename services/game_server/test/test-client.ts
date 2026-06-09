@@ -13,7 +13,7 @@ socket.on("connect", () => {
 	socket.emit("join", "Banne");
 
 	//setInterval(() => {
-	//    socket.emit("direction", "UP");
+	    //socket.emit("direction", "UP");
 	//}, 1000);
 });
 
