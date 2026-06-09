@@ -13,11 +13,15 @@ import { userInfo } from "os";
 
 const app = express(); //gestion requete http
 const httpServer = createServer(app); //socket.io pour la transmission client serv
+<<<<<<< HEAD
 const io = new Server(httpServer, {
 	cors: { origin: "*" },
 	path: "/ws/serv",
 	transports: ["websocket"],
 });
+=======
+const io = new Server(httpServer, { cors: { origin: "*" }, path: "/" });
+>>>>>>> a4ba2c4 (Enhancements in infra)
 
 // Better docker stop handling by treated SIGTERM signals
 // ref : https://docs.docker.com/reference/cli/docker/container/stop/
