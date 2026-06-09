@@ -66,7 +66,12 @@ export function startGameLoop(makeAction: (state: Game) => void): void {
 }
 
 for (const food of state.foods) {
+<<<<<<< HEAD
 	console.log(food.x, food.y, food.feed);
+=======
+
+  console.log(food.x, food.y, food.feed)
+>>>>>>> a4ba2c4 (Enhancements in infra)
 }
 
 export { state };
