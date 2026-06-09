@@ -10,7 +10,7 @@
 		"predev": "node scripts/check-node.js",
 		"dev": "ts-node src/server.ts",
 		"pretest": "node scripts/check-node.js",
-		"test": "ts-node test/test-client.ts"
+		"test": "ts-node test/testRunner.ts"
 	},
 	"keywords": [],
 	"author": "",

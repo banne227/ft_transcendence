@@ -1,7 +1,7 @@
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { startGameLoop, state } from "./game";
+import { startGameLoop } from "./game";
 import {
 	addPlayer,
 	removePlayer,
@@ -31,7 +31,6 @@ io.on("connection", (socket) => {
 	socket.on("join", (name: string) => {
 		addPlayer(socket.id, name);
 		socket.emit("joined", { id: socket.id });
-		console.log(`${name} join serv`)
 	});
 
 	socket.on("direction", (dir: "UP" | "DOWN" | "LEFT" | "RIGHT") => {
@@ -40,7 +39,6 @@ io.on("connection", (socket) => {
 
 	socket.on("disconnect", () => {
 		removePlayer(socket.id);
-		console.log(`${state.players[socket.id]} join serv`)
 	});
 
 	socket.on("boost", (id: string) => {
