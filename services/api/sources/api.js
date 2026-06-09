@@ -17,7 +17,7 @@ process.on("SIGTERM", (code_signal_error) => {
 /*
  * Endpoint to check from the client if the api is up
  */
-api.get("/api/health", (req, res) => {
+api.get("/health", (req, res) => {
 	res.send("API status : OK");
 });
 

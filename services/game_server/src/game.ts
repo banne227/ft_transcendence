@@ -66,7 +66,7 @@ export function startGameLoop(makeAction: (state: Game) => void): void {
 }
 
 for (const food of state.foods) {
-	
+
   console.log(food.x, food.y, food.feed)
 }
 

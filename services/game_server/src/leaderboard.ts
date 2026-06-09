@@ -23,4 +23,3 @@ export function update_leaderboard(state: Game): void {
 	}
 	state.leaderbord = leaderboard
 }
-

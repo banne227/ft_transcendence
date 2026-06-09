@@ -1,11 +1,12 @@
 import {state} from '../src/game'
 
 const { io } = require("socket.io-client");
+const url = "https://127.0.0.1/ws/serv";
 
 //la ou est-ce-que j'ecoute
-const socket = io("http://127.0.0.1:3000/");
+const socket = io(url, {path: "/", transports: ["websocket"],});
 
-console.log("HERE");
+console.log(`Start trying to connect to ${url}`);
 
 socket.on("connect", () => {
 	console.log("Connecté au serveur :", socket.id);

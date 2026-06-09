@@ -14,7 +14,7 @@ import { userInfo } from "os";
 const { join } = require('node:path');
 const app = express(); //gestion requete http
 const httpServer = createServer(app); //socket.io pour la transmission client serv
-const io = new Server(httpServer, { cors: { origin: "*" } });
+const io = new Server(httpServer, { cors: { origin: "*" }, path: "/" });
 
 app.use('/ws/serv/leaderboard', express.static(join(__dirname, 'leaderboard')));
 
@@ -25,7 +25,7 @@ process.on("SIGTERM", function (code_signal_error) {
 });
 
 //permet de verifier que le server est en place http://localhost:3000/health
-app.get("/ws/serv/health", (_req, res) => {
+app.get("/health", (_req, res) => {
 	res.json({ status: "ok" });
 });
 
