@@ -36,8 +36,16 @@ sudo make reset
 ```
 - For collaborative work, 
 ```sh
+# PUT YOUR TWO VM IN BRIDGE ADAPTER
+# --- ON THE SERVER ---
+# Get the enp0s3/eth0 IP
+ip addr
 # SUDO IS REQUIRED TO ADD YOUR USER TO THE DOCKER GROUP AND APPEND YOUR IP TO /etc/hosts
-sudo make setup IP={IP_OF_THE_SERVER}
+sudo make setup IP=IP_GET_FROM_THE_SERVER_IPADDR
+
+# --- ON THE CLIENT ---
+# SUDO IS REQUIRED TO ADD YOUR USER TO THE DOCKER GROUP AND APPEND YOUR IP TO /etc/hosts
+sudo make setup IP=IP_GET_FROM_THE_SERVER_IPADDR
 ```
 
 ## Docs :
