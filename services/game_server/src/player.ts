@@ -1,4 +1,5 @@
-import { spawnFood, state, Segment, Player, Food , MAP_SIZE} from './game'
+import { state, Segment, Player, Food , MAP_SIZE} from './game'
+import { spawnFood } from './food'
 
 const SPEED = 4
 
