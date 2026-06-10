@@ -1,6 +1,6 @@
-// Initialized ExpressJS framework & mongoose lib (communicate with the db)
+// Initialized ExpressJS framework
 const express = require("express");
-const mongoose = require("mongoose");
+// const mongoose = require('mongoose')
 
 const db = {};
 const api = express();
