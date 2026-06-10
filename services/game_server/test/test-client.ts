@@ -3,11 +3,11 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 import { state } from "../src/game";
 
 const { io } = require("socket.io-client");
-const url = "https://127.0.0.1/ws/serv";
 // const url = "http://127.0.0.1:3000";
+const url = "https://127.0.0.1/ws/serv/";
 
 //la ou est-ce-que j'ecoute
-const socket = io(url, { path: "/" });
+const socket = io(url);
 
 console.log(`Start trying to connect to ${url}`);
 

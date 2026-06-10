@@ -12,8 +12,8 @@ RUN mkdir -p /srv/webapp
 COPY . /srv/webapp/
 WORKDIR /srv/webapp
 
-# API listen on port 444
-EXPOSE 444
+# API listen on port 4444
+EXPOSE 4444
 # Install every JS dependancy with bun
 RUN /root/.bun/bin/bun install
 # Launch the API
