@@ -14,15 +14,7 @@ import { userInfo } from "os";
 const { join } = require('node:path');
 const app = express(); //gestion requete http
 const httpServer = createServer(app); //socket.io pour la transmission client serv
-<<<<<<< HEAD
-const io = new Server(httpServer, {
-	cors: { origin: "*" },
-	path: "/ws/serv",
-	transports: ["websocket"],
-});
-=======
 const io = new Server(httpServer, { cors: { origin: "*" }, path: "/" });
->>>>>>> a4ba2c4 (Enhancements in infra)
 
 app.use('/ws/serv/leaderboard', express.static(join(__dirname, 'leaderboard')));
 
