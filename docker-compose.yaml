@@ -49,6 +49,9 @@ services:
     restart: "on-failure:5"
     depends_on:
       - mangodb
+    environment:
+      - MONGO_USER=$MONGO_USER
+      - MONGO_PASS=$MONGO_PASS
 networks:
   internal:
     driver: bridge

@@ -30,6 +30,6 @@ reset: down
 	@bash --posix ./.scripts/.reset.sh
 
 setup:
-	@bash ./.scripts/setup.sh $(IP) $(HOST)
+	@bash ./.scripts/setup.sh $(IP)
 
 .PHONY: re up down reset setup
