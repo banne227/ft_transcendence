@@ -1,6 +1,6 @@
-// Initialized ExpressJS framework
+// Initialized ExpressJS framework & mongoose lib (communicate with the db)
 const express = require("express");
-// const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const db = {};
 const api = express();
@@ -22,10 +22,6 @@ api.get("/health", (req, res) => {
 });
 
 // Start to listening for connection
-try {
-	api.listen(PORT, () => {
-		console.log(`Listening on http://api:${PORT}`);
-	});
-} catch (err) {
-	console.log(`Failed to listen on http://api:${PORT}`);
-}
+api.listen(PORT, () => {
+	console.log(`Listening on http://api:${PORT}`);
+});

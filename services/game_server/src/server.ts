@@ -14,7 +14,11 @@ import { userInfo } from "os";
 const { join } = require('node:path');
 const app = express(); //gestion requete http
 const httpServer = createServer(app); //socket.io pour la transmission client serv
-const io = new Server(httpServer, { cors: { origin: "*" }, path: "/" });
+const io = new Server(httpServer, {
+	cors: { origin: "*" },
+	path: "/ws/serv",
+	transports: ["websocket"],
+});
 
 app.use('/ws/serv/leaderboard', express.static(join(__dirname, 'leaderboard')));
 
@@ -45,21 +49,21 @@ io.on("connection", (socket) => {
 	socket.on("join", (name: string) => {
 		addPlayer(socket.id, name);
 		socket.emit("joined", { id: socket.id });
-		console.log(`${socket.id} join serv`)
+		console.log(`${socket.id} join serv`);
 	});
 
 	socket.on("direction", (dir: "UP" | "DOWN" | "LEFT" | "RIGHT") => {
 		setDirection(socket.id, dir);
-		console.log(`${state.players[socket.id]} set direction ${dir}`)
+		console.log(`${state.players[socket.id]} set direction ${dir}`);
 	});
 
 	socket.on("disconnect", () => {
-    console.log(`${socket.id} left serv`) // log l'id AVANT de supprimer
-    removePlayer(socket.id);
+		console.log(`${socket.id} left serv`); // log l'id AVANT de supprimer
+		removePlayer(socket.id);
 	});
 
 	socket.on("boost", (id: string) => {
-		console.log(`${socket.id} speed up`)
+		console.log(`${socket.id} speed up`);
 		setBoost(id);
 	});
 
