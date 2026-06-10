@@ -1,73 +1,73 @@
 services:
-    nginx:
-        build:
-            context: ./services/nginx
-        ports:
-            - 0.0.0.0:80:80
-            - 0.0.0.0:443:443
-        secrets:
-            - nginx.crt
-            - nginx.key
-        networks:
-            - internal
-        restart: 'on-failure:5'
-        depends_on:
-            - mangodb
-            - game
-            - api
-    mangodb:
-        build:
-            context: ./services/mango
-        command: --config /etc/mongod.conf
-        secrets:
-            - mongo.key
-        volumes:
-            - mongodb:/data/db
-        networks:
-            - internal
-        restart: 'on-failure:5'
-        environment:
-            - MONGO_USER=$MONGO_USER
-            - MONGO_PASS=$MONGO_PASS
-            - MONGO_ADMIN_USER=$MONGO_ADMIN_USER
-            - MONGO_ADMIN_PASS=$MONGO_ADMIN_PASS
-    game:
-        build:
-            context: ./services/game_server
-        networks:
-            - internal
-        restart: 'on-failure:5'
-        depends_on:
-            - mangodb
-        ports:
-            - 0.0.0.0:3000:3000
-    api:
-        build:
-            context: ./services/api
-        networks:
-            - internal
-        restart: 'on-failure:5'
-        depends_on:
-            - mangodb
+  nginx:
+    build:
+      context: ./services/nginx
+    ports:
+      - 0.0.0.0:80:80
+      - 0.0.0.0:443:443
+    secrets:
+      - nginx.crt
+      - nginx.key
+    networks:
+      - internal
+    restart: "on-failure:5"
+    depends_on:
+      - mangodb
+      - game
+      - api
+  mangodb:
+    build:
+      context: ./services/mango
+    command: --config /etc/mongod.conf
+    secrets:
+      - mongo.key
+    volumes:
+      - mongodb:/data/db
+    networks:
+      - internal
+    restart: "on-failure:5"
+    environment:
+      - MONGO_USER=$MONGO_USER
+      - MONGO_PASS=$MONGO_PASS
+      - MONGO_ADMIN_USER=$MONGO_ADMIN_USER
+      - MONGO_ADMIN_PASS=$MONGO_ADMIN_PASS
+  game:
+    build:
+      context: ./services/game_server
+    networks:
+      - internal
+    restart: "on-failure:5"
+    depends_on:
+      - mangodb
+    ports:
+      - 0.0.0.0:3000:3000
+  api:
+    build:
+      context: ./services/api
+    networks:
+      - internal
+    restart: "on-failure:5"
+    depends_on:
+      - mangodb
 networks:
-    internal:
-        driver: bridge
+  internal:
+    driver: bridge
 
 secrets:
-    nginx.key:
-        file: ./cert/nginx.key
-    nginx.crt:
-        file: ./cert/nginx.crt
-    mongo.key:
-        file: ./cert/mongo.key
-    mongo.crt:
-        file: ./cert/mongo.crt
+  nginx.key:
+    file: ./cert/nginx.key
+  nginx.crt:
+    file: ./cert/nginx.crt
+  mongo.key:
+    file: ./cert/mongo.key
+  mongo.crt:
+    file: ./cert/mongo.crt
 
 volumes:
-    mongodb:
-        driver: local
-        driver_opts:
-            type: none
-            o: bind
-            device: $PWD/data/mongodb
-        name: ft_transcendence_mongodb
+  mongodb:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: $PWD/data/mongodb
+    name: ft_transcendence_mongodb

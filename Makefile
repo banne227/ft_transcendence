@@ -6,30 +6,30 @@ DC	:=	docker compose
 all: up
 
 down:
-	@printf "\x1b[0;32m[+] Shutdown every running container ...\n\x1b[0m"
+	@printf "\e[0;32m[+] Shutdown every running container ...\n\e[0m"
 	@$(DC) down
-	@printf "\x1b[0;32m[+] Shutdown every running docker network connection ...\n\x1b[0m"
+	@printf "\e[0;32m[+] Shutdown every running docker network connection ...\n\e[0m"
 	@yes | docker network prune > /dev/null 2>&1
 
 up:
-	@sh ./.scripts/genCert.sh > /dev/null 2>&1
+	@bash --posix ./.scripts/genCert.sh > /dev/null 2>&1
 	@mkdir -p ./data/mongodb
-	@printf "\x1b[0;32m[+] Starting every running container ...\n\x1b[0m"
-	@sh ./.scripts/checkEnv.sh
+	@printf "\e[0;32m[+] Starting every running container ...\n\e[0m"
+	@bash --posix ./.scripts/checkEnv.sh
 	@$(DC) up -d
 
 re: down
-	@printf "\x1b[0;32m[+] Removing old certificate ...\n\x1b[0m"
+	@printf "\e[0;32m[+] Removing old certificate ...\n\e[0m"
 	@rm -rf ./cert
-	@sh ./.scripts/checkEnv.sh
-	@printf "\x1b[0;32m[+] Rebuilding container ...\n\x1b[0m"
-	@$(DC) build 
+	@bash --posix ./.scripts/checkEnv.sh
+	@printf "\e[0;32m[+] Rebuilding container ...\n\e[0m"
+	@$(DC) build
 	@make up -s
 
 reset: down
-	@sh ./.scripts/.reset.sh
+	@bash --posix ./.scripts/.reset.sh
 
 setup:
 	@bash ./.scripts/setup.sh $(IP) $(HOST)
 
-.PHONY: re up down reset
+.PHONY: re up down reset setup

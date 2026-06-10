@@ -4,18 +4,18 @@
 ## Description:
 
 ## Usage:
-1. Create a .env file that contain variable that will be use in the infrastructure
+1. Create a .env or copy template.env file who will contain every environment variable that will be use in the infrastructure
 ```plaintext
 # --- MONGODB ---
 // Username of the administator user of every databases
-(required) MONGO_ADMIN_USER={USERNAME} 
+(required) MONGO_ADMIN_USER=ADMIN_USERNAME 
 // Password of the administator user of every databases
-(required) MONGO_ADMIN_PASS={PASSWORD}
+(required) MONGO_ADMIN_PASS=ADMIN_PASSWORD
 
 // Username of the user who manage the "database" database that contain username, email, password and the user match history
-(required) MONGO_USER={USERNAME}
+(required) MONGO_USER=USERNAME
 // password of the user who manage the "database" database that contain username, email, password and the user match history
-(required) MONGO_PASS={PASSWORD}
+(required) MONGO_PASS=PASSWORD
 ```
 2. Launch the infrastructure with:
 ```sh
@@ -41,7 +41,7 @@ sudo make reset
 # Get the enp0s3/eth0 IP
 ip addr
 # SUDO IS REQUIRED TO ADD YOUR USER TO THE DOCKER GROUP AND APPEND YOUR IP TO /etc/hosts
-sudo make setup IP=IP_GET_FROM_THE_SERVER_IPADDR
+sudo make setup IP=127.0.0.1
 
 # --- ON THE CLIENT ---
 # SUDO IS REQUIRED TO ADD YOUR USER TO THE DOCKER GROUP AND APPEND YOUR IP TO /etc/hosts
