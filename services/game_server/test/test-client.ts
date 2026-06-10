@@ -4,16 +4,10 @@ import { state } from "../src/game";
 
 const { io } = require("socket.io-client");
 const url = "https://127.0.0.1/ws/serv";
-<<<<<<< HEAD
 // const url = "http://127.0.0.1:3000";
 
 //la ou est-ce-que j'ecoute
 const socket = io(url, { path: "/" });
-=======
-
-//la ou est-ce-que j'ecoute
-const socket = io(url, {path: "/", transports: ["websocket"],});
->>>>>>> a4ba2c4 (Enhancements in infra)
 
 console.log(`Start trying to connect to ${url}`);
 
