@@ -1,10 +1,10 @@
 #!/bin/bash
 
 if [ $EUID -ne 0 ]; then
-	printf "\x1b[31m[!] SUDO privileges is required\x1b[0m\n"
+	printf "\e[31m[!] SUDO privileges is required\e[0m\n"
 	exit 1
 elif [ "$1" == "" ]; then
-	printf "\x1b[31m[!] Usage script w make: make setup IP={IP_OF_THE_SERVER}\x1b[0m\n"
+	printf "\e[31m[!] Usage script w make: make setup IP={IP_OF_THE_SERVER}\e[0m\n"
 	exit 1
 fi
 

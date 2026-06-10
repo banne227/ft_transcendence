@@ -1,14 +1,15 @@
+#!/bin/bash
 
 if [ $EUID -ne 0 ]; then
-	printf "\x1b[31m[!] SUDO privileges is required\x1b[0m\n"
+	printf "\e[31m[!] SUDO privileges is required\e[0m\n"
 	exit 1
 fi
 
-printf "\x1b[0;32m[+] Shutting down infrastructure ...\n\x1b[0m"
+printf "\e[0;32m[+] Shutting down infrastructure ...\n\e[0m"
 make down
-printf "\x1b[0;32m[+] Removing volumes ...\n\x1b[0m"
+printf "\e[0;32m[+] Removing volumes ...\n\e[0m"
 docker volume rm $(docker volume ls | grep "ft_transcendence" | awk '{print $2}') || true
-printf "\x1b[0;32m[+] Removing content of the volumes ...\n\x1b[0m"
+printf "\e[0;32m[+] Removing content of the volumes ...\n\e[0m"
 rm -rf ./data
-printf "\x1b[0;32m[+] Removing old certificate ...\n\x1b[0m"
+printf "\e[0;32m[+] Removing old certificate ...\n\e[0m"
 rm -rf ./cert
