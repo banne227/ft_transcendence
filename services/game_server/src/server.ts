@@ -13,7 +13,11 @@ import { userInfo } from "os";
 
 const app = express(); //gestion requete http
 const httpServer = createServer(app); //socket.io pour la transmission client serv
-const io = new Server(httpServer, { cors: { origin: "*" }, path: "/" });
+const io = new Server(httpServer, {
+	cors: { origin: "*" },
+	path: "/ws/serv",
+	transports: ["websocket"],
+});
 
 // Better docker stop handling by treated SIGTERM signals
 // ref : https://docs.docker.com/reference/cli/docker/container/stop/
@@ -32,21 +36,21 @@ io.on("connection", (socket) => {
 	socket.on("join", (name: string) => {
 		addPlayer(socket.id, name);
 		socket.emit("joined", { id: socket.id });
-		console.log(`${socket.id} join serv`)
+		console.log(`${socket.id} join serv`);
 	});
 
 	socket.on("direction", (dir: "UP" | "DOWN" | "LEFT" | "RIGHT") => {
 		setDirection(socket.id, dir);
-		console.log(`${state.players[socket.id]} set direction ${dir}`)
+		console.log(`${state.players[socket.id]} set direction ${dir}`);
 	});
 
 	socket.on("disconnect", () => {
-    console.log(`${socket.id} left serv`) // log l'id AVANT de supprimer
-    removePlayer(socket.id);
+		console.log(`${socket.id} left serv`); // log l'id AVANT de supprimer
+		removePlayer(socket.id);
 	});
 
 	socket.on("boost", (id: string) => {
-		console.log(`${socket.id} speed up`)
+		console.log(`${socket.id} speed up`);
 		setBoost(id);
 	});
 

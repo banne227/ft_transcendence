@@ -1,10 +1,13 @@
-import {state} from '../src/game'
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+import { state } from "../src/game";
 
 const { io } = require("socket.io-client");
 const url = "https://127.0.0.1/ws/serv";
+// const url = "http://127.0.0.1:3000";
 
 //la ou est-ce-que j'ecoute
-const socket = io(url, {path: "/", transports: ["websocket"],});
+const socket = io(url, { path: "/" });
 
 console.log(`Start trying to connect to ${url}`);
 
@@ -16,6 +19,18 @@ socket.on("connect", () => {
 	//setInterval(() => {
 	//    socket.emit("direction", "UP");
 	//}, 1000);
+});
+
+socket.on("connect_error", (err: any) => {
+	// the reason of the error, for example "xhr poll error"
+	console.log(`Failed to connect to ${url}`);
+	console.log(err.message);
+
+	// some additional description, for example the status code of the initial HTTP response
+	console.log(err.description);
+
+	// some additional context, for example the XMLHttpRequest object
+	console.log(err.context);
 });
 
 socket.on("joined", (data: any) => {
