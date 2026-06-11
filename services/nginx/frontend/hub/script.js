@@ -1,3 +1,7 @@
+
+//la ou est-ce-que j'ecoute
+const socket = io("http://127.0.0.1:3000/");
+
 function makeDraggable(fenetre, barre) {
   let isDragging = false;
   let offsetX = 0;
@@ -25,11 +29,12 @@ const son = new Audio('../son/windows-xp-startup.mp3');
 const song = new Audio('../son/sound.mp3');
 
 document.querySelector('.play_button a').addEventListener('click', function(e) {
-  e.preventDefault(); // bloque la redirection
-  son.play();
-  setTimeout(function() {
-    window.location.href = 'https://127.0.0.1/game'; // redirige après le son
-  }, 3000); // attend 500ms
+    e.preventDefault();
+    socket.emit("join", "aori");
+    son.play();
+    setTimeout(function() {
+        window.location.href = 'https://127.0.0.1/game';
+    }, 3000);
 });
 
 makeDraggable(document.querySelector('#window-log'),  document.querySelector('#window-log .titlebar'));
@@ -82,8 +87,6 @@ document.querySelector('#chat-input-row input').addEventListener('keydown', func
     document.querySelector('#chat-input-row button').click();
   }
 });
-
-
 
 document.querySelector('.btn-login').addEventListener('click', function(e) {
   e.stopPropagation();
