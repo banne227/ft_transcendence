@@ -1,8 +1,7 @@
-import userScheme from './models/userSchema'
-
 // Initialized ExpressJS framework & mongoose lib (communicate with the db)
 const express = require('express')
 const mongoose = require('mongoose')
+const userScheme = require('./models/userSchema')
 
 const api = express()
 const PORT = 4444
@@ -41,16 +40,18 @@ api.post('/register', (req, ret) => {
 	const exits = userScheme.findOne({
 		$or: [{ email: data.email }, { username: data.username }],
 	})
+	if (data.password.lenght <= 12)
+		ret.send("invalid password")
 	if (exits) {
 		ret.send('Give a good username/email')
 	} else {
 		const user = new userScheme({
 			name: data.user,
 			email: data.email,
-			password: data.password,
+			password: data.password,  // WILL HASHED LATER
 			history: [],
 		})
-		userScheme.
+		user.save();
 	}
 })
 

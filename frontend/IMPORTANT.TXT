@@ -1,2 +1,0 @@
-Ce dossier va etre supprimer par la suite car le container docker d'nginx ne peux pas acceder a des fichier a la racine du projet.
-Le nouvelle emplacement est dans services/nginx/frontend
