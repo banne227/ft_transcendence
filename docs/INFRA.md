@@ -9,8 +9,8 @@
 - Nginx is a free and opensource software that can do a lot of thing different like web server, reverse proxy, load balancer, mail proxy or HTTP cache.
 - In our infrastructure NGINX are acting like a web server that serve the html pages statically and secured with encryption between the client and the NGINX server using TLS 1.2 or TLS 1.3
 - Every client-side content should be put on the "frontend" directory in services/nginx
-### MangoDB
-- MangoDB is a free source-available NoSQL (Not Only SQL) documents-oriented databased who use BJSON (Binary JavaScript Object Notation) instead of SQL to add, remove or find data.
+### mongoDB
+- mongoDB is a free source-available NoSQL (Not Only SQL) documents-oriented databased who use BJSON (Binary JavaScript Object Notation) instead of SQL to add, remove or find data.
 - When the container start, a shell script that create a admin user (defined with MONGO_ADMIN_USER and MONGO_ADMIN_PASS environments variables) who manage every databases and a second user (defined with MONGO_USER and MONGO_PASS environments variables) who manage a databases called "databases" which store users information like the username, email, hashed/salted password and a subtable which contain an history of every passed match of the user
 ### game_server
 - Host the game server
@@ -46,7 +46,7 @@ docker ps
 
 # EXPECTED OUTPUT :
 CONTAINER ID   IMAGE                      COMMAND                  CREATED              STATUS              PORTS                                      NAMES
-<rand_id>   ft_transcendence-mangodb   "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:27017->27017/tcp                   ft_transcendence-mangodb-1
+<rand_id>   ft_transcendence-mongodb   "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:27017->27017/tcp                   ft_transcendence-mongodb-1
 <rand_id>   ft_transcendence-nginx     "/docker-entrypoint.…"   About a minute ago   Up About a minute   0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   ft_transcendence-nginx-1
 <rand_id>   ft_transcendence-game      "npm run dev"            About a minute ago   Up About a minute   3000/tcp                                   ft_transcendence-game-1
 ```
