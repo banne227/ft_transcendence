@@ -111,7 +111,7 @@ export function movePlayer(id: string): boolean {
 	if (!head) return false
 	const newhead: Segment = { x: head.x, y: head.y }
 
-	let speed = player.boost ? SPEED + 2 : SPEED
+	let speed = player.boost ? SPEED * 2 : SPEED
 	// Déplacer selon la direction
 	if (player.direction === 'UP')    newhead.y -= speed
 	if (player.direction === 'DOWN')  newhead.y += speed

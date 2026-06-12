@@ -1,7 +1,5 @@
-
 const socket = io("http://127.0.0.1:3000/");
 const output = document.getElementById("output");
-
 
 
 // const socket = io("http://127.0.0.1:3000/");
@@ -47,14 +45,18 @@ function showChar(e) {
 document.addEventListener("keydown", showChar);
 
 addEventListener('keydown', function(e) {
+  let identif
   if (e.key === 'ArrowUp')    socket.emit('direction', 'UP');
-  if (e.key === 'ArrowDown')  
-    {
-      socket.emit('direction', 'DOWN');
-      socket.emit("join", "aori");
-    }
+  if (e.key === 'ArrowDown')  socket.emit('direction', 'DOWN');
   if (e.key === 'ArrowLeft')  socket.emit('direction', 'LEFT');
   if (e.key === 'ArrowRight') socket.emit('direction', 'RIGHT');
+  if (e.key === 'Enter') 
+	{
+		socket.emit("join", "aori");
+		socket.on("joined", (id) =>
+      identif = id);
+	}
+  if (e.key === 'b') socket.emit("boost", identif)
 });
 
 // socket.on("joined", (data) => {

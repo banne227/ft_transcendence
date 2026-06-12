@@ -46,6 +46,7 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("boost", (id: string) => {
+		console.log(`${socket.id} speed up`)
 		setBoost(id);
 	});
 
