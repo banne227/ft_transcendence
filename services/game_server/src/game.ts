@@ -4,7 +4,7 @@ import { spawnFood } from './food'
 import { update_leaderboard } from './leaderboard'
 
 export const MAP_SIZE = { width: 2000, height: 2000 }
-const TICK_RATE = 500 // on met à jour le jeu toutes les 50ms = 20 fois/seconde
+const TICK_RATE = 50 // on met à jour le jeu toutes les 50ms = 20 fois/seconde
 
 //partie du serpent juste des positions
 export interface Segment {

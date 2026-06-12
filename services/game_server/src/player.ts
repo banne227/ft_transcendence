@@ -1,7 +1,7 @@
 import { state, Segment, Player, Food , MAP_SIZE} from './game'
 import { spawnFood } from './food'
 
-const SPEED = 4
+const SPEED = 10
 
 //creation d'un joueur ! il faudra check si le pseudo existe deja sinon je l'ecrase
 // export = fonction public qui peut etre reutiliser en dehors du fichier
