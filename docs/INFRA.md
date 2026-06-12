@@ -58,3 +58,6 @@ CONTAINER ID   IMAGE                      COMMAND                  CREATED      
 4. In "DNS over HTTPS" you have a "Manage Exceptions..." button
 5. On the textbox "Enter website domain name" put "127.0.0.1" or the hostname you assiates in /etc/hosts
 ```
+
+To implement:
+- https://github.com/tiagozip/cap
