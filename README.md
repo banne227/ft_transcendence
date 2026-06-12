@@ -6,6 +6,12 @@
 ## Usage:
 1. Create a .env or copy template.env file who will contain every environment variable that will be use in the infrastructure
 ```plaintext
+# --- API ---
+// The secrete to generate user JWT (Json Web Token)
+(required) JWT_SECRET=SECRET
+// ???
+(required) JWT_HEADER_KEY=KEY
+
 # --- MONGODB ---
 // Username of the administator user of every databases
 (required) MONGO_ADMIN_USER=ADMIN_USERNAME 
