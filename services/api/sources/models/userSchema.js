@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 const { Schema, model } = mongoose
 // Database user schemas
 
@@ -13,7 +13,7 @@ const user_model = new Schema({
 	},
 	email: {
 		require: true,
-		minLenght: 6,
+		minlenght: 6,
 		type: String,
 	},
 	history: [
@@ -24,4 +24,5 @@ const user_model = new Schema({
 	],
 })
 
-const userScheme = model('user', user_model)
+const user = model('user', user_model)
+module.exports = user

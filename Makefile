@@ -8,8 +8,10 @@ all: up
 down:
 	@printf "\e[0;32m[+] Shutdown every running container ...\n\e[0m"
 	@$(DC) down
+	@printf "\e[0;32m[+] Shutdown every unused docker volumes ...\n\e[0m"
+	@yes | docker volumes prune > /dev/null 2>&1 || true
 	@printf "\e[0;32m[+] Shutdown every running docker network connection ...\n\e[0m"
-	@yes | docker network prune > /dev/null 2>&1
+	@yes | docker network prune > /dev/null 2>&1 || true
 
 up:
 	@bash --posix ./.scripts/genCert.sh > /dev/null 2>&1
