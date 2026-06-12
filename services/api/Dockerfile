@@ -2,7 +2,7 @@
 FROM alpine:3.22
 # Download every dependancy
 RUN apk add --no-cache npm nodejs curl bash
-# Download Bun for package manager
+# Download Bun the javascript package manager (s/o eyjvw for the advice)
 RUN curl -fsSL https://bun.sh/install | bash
 ENV PATH="$PATH:~/.bun/bin"
 

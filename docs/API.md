@@ -3,3 +3,5 @@
 </div>
 
 # "ft_transcendence" API :
+## Available endpoint:
+### "/register"
