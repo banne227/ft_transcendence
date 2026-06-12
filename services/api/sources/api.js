@@ -47,17 +47,25 @@ process.on("SIGTERM", (code_signal_error) => {
  * Endpoint to check from the client if the api is up
  * METHODE: GET
  */
-api.get("/health", (req, ret) => {
-	ret.send("API status : OK");
+api.get("/health", (req, res) => {
+	res.send("API status : OK");
 });
 
 /*
  * Endpoint to retrieve the number of users currently register in the database
  * METHODE: GET
  */
-api.get("/countUser", async (req, ret) => {
+api.get("/countUser", async (req, res) => {
 	let numberOfUser = await newUser.collection.count();
-	ret.json({ users: numberOfUser });
+	res.json({ users: numberOfUser });
+});
+
+/*
+ * Endpoint to log out the user connected to this session
+ * METHODE: GET
+ */
+api.get("/logout", (req, res) => {
+	res.redirect("/");
 });
 
 /* ----- POST REQUEST METHODE ----- */
@@ -74,7 +82,7 @@ api.get("/countUser", async (req, ret) => {
  *  - 200 : Everything is fine
  *  - 451 : The password provided isnt valid
  */
-api.post("/register", async (req, ret) => {
+api.post("/register", async (req, res) => {
 	// Get the content of the body of the request
 	const data = req.body;
 
@@ -84,7 +92,7 @@ api.post("/register", async (req, ret) => {
 		data.password === undefined ||
 		data.email === undefined
 	)
-		return ret.sendStatus(451);
+		return res.sendStatus(451);
 
 	// Search in the database who have the same username and email than the user (partially work the 12/06)
 	const exist = await newUser.findOne({
@@ -94,7 +102,7 @@ api.post("/register", async (req, ret) => {
 	console.log(exist);
 	// If a user or a email is already associate with da account
 	if (exist !== null)
-		return ret.send(
+		return res.send(
 			`Failed to create user ${String(data.username).substring(0, 20)}:${String(data.email).substring(0, 20)}`,
 		);
 	// Check if the password of the user is superior that 12 character
@@ -104,7 +112,7 @@ api.post("/register", async (req, ret) => {
 		isalnum(data.password) == false
 	) {
 		console.log(`${data.password} is invalid!`);
-		return ret.sendStatus(451).send("invalid password");
+		return res.sendStatus(451).send("invalid password");
 	}
 
 	const hashed_password = await generateHash(data.password);
@@ -117,7 +125,7 @@ api.post("/register", async (req, ret) => {
 		history: [],
 	});
 	// Tell to our client that our user have been created by sending a status code 200
-	return ret.json({ jwt: generateJwt(data) });
+	return res.json({ jwt: generateJwt(data) });
 });
 
 /*
@@ -127,31 +135,51 @@ api.post("/register", async (req, ret) => {
  * BODY CONTENT:
  *   "password": "password of the user"
  *   "email": "email of the user"
+ *   "keeplog": boolean
  * RETURN STATUS CODES:
  *  - 200 : Everything is fine
  *  - 404 : The email provided or the password isnt valid
  */
-api.post("/login", async (res, ret) => {
+api.post("/login", async (req, res) => {
 	// Get the body of the request
-	const data = res.body;
-	const expiration = data.keepLog ? "1w" : "1h";
+	const data = req.body;
 
 	// Check if the email and the password is here
-	if (data.email === null || data.password === null) return ret.sendStatus(400);
+	if (data.email === null || data.password === null) return res.sendStatus(400);
 
 	// Check if the user with the provided email exist
 	const exist = await newUser.findOne({ email: { $eq: data.email } });
 	if (exist === null) {
 		// Send a 404
-		return ret.sendStatus(404);
+		return res.sendStatus(404);
 	}
 
 	// Check if the hashed password in db and the provided password match
 	const valid = await bcrypt.compare(data.password, exist.password);
 	if (valid == true) {
-		return ret.sendStatus(200);
+		return res.sendStatus(200);
 	} else {
-		return ret.sendStatus(404);
+		return res.sendStatus(404);
+	}
+});
+
+/*
+ * Endpoint to check if the user jwt is valid
+ * METHODE: POST
+ * BODY SYTHAX: JSON
+ * BODY CONTENT:
+ *   "jwt": "jwt of the user"
+ * RETURN STATUS CODES:s
+ *  - 200 : The jwt of the user is fine
+ *  - 401 : The jwt of the user isnt valid
+ */
+api.post("/jwt/validate", (req, res) => {
+	const token = req.body.jwt;
+	const valid = validateJwt(token);
+	if (valid) {
+		res.sendStatus(200);
+	} else {
+		res.sendStatus(401);
 	}
 });
 

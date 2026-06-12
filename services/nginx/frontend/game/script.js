@@ -52,7 +52,7 @@ addEventListener("keydown", function (e) {
 		socket.emit("join", "aori");
 		socket.on("joined", (id) => (identif = id));
 	}
-	if (e.key === "b") socket.emit("boost", identif);
+	if (e.key === " ") socket.emit("boost", identif);
 });
 
 // socket.on("joined", (data) => {
@@ -129,7 +129,7 @@ function render_p() {
 
 			ctx.beginPath();
 			ctx.arc(x, y, 5, 0, Math.PI * 2);
-			ctx.fillStyle = `hsl(120, 80%, 50%)`;
+			ctx.fillStyle = `hsl(286,100%,73%)`;
 			ctx.fill();
 		}
 	}
