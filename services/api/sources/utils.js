@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 
 /* Check if the string "str" is composed only by alpha and numeric character */
@@ -34,6 +35,7 @@ function generateJwt(userdata) {
 	const payload = {
 		date: Date(),
 		email: userdata.email,
+		// random: crypto.getRandomValues(8),
 	};
 	/* Create the token */
 	token = jwt.sign(payload, key);

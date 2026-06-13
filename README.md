@@ -9,7 +9,7 @@
 # --- API ---
 // The secrete to generate user JWT (Json Web Token)
 (required) JWT_SECRET=SECRET
-// ???
+// Will be usefull later by idk
 (required) JWT_HEADER_KEY=KEY
 
 # --- MONGODB ---
