@@ -130,6 +130,8 @@ api.get("/jwt/validate", (req, res) => {
  * ADDITIONAL NOTES:
  *   JWT need to be store in the localstorage section of the browser
  *   and be passed in the authorization headers of the request
+ * REF:
+ *   - https://www.youtube.com/watch?v=UBUNrFtufWo
  */
 api.post("/register", async (req, res) => {
 	// Get the content of the body of the request
@@ -167,16 +169,19 @@ api.post("/register", async (req, res) => {
 			error: `The username ${String(data.username).substring(0, 20)} or the email ${String(data.email).substring(0, 20)} is already taken`,
 		});
 
-	const hashed_password = await generateHash(data.password);
 	// Create the user on the db
 	await newUser.create({
 		username: data.username,
 		email: data.email,
-		password: hashed_password,
+		password: await generateHash(data.password),
 		history: [],
 	});
+	// Creating our JWT
+	const jwt = generateJwt(data);
+	// Putting the JWT in the cookie response for the client
+	res.cookie("jwt", jwt);
 	// Tell to our client that our user have been created by sending a status code 200
-	return res.status(200).json({ jwt: generateJwt(data) });
+	return res.status(200).json({ jwt: jwt });
 });
 
 /*
@@ -208,6 +213,7 @@ api.post("/login", async (req, res) => {
 	// Check if the hashed password in db and the provided password match
 	const valid = await bcrypt.compare(data.password, exist.password);
 	if (valid == true) {
+		res.cookie("jwt", generateJwt(data));
 		return res.status(200).send(`Connection success!`);
 	} else {
 		return res.status(401).send(`Invalid password`);

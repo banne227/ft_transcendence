@@ -4,7 +4,7 @@ import { state } from "../src/game";
 
 const { io } = require("socket.io-client");
 // const url = "http://127.0.0.1:3000";
-const url = "https://127.0.0.1/ws/serv/";
+const url = "https://transcendence.42.fr/ws/serv/";
 
 //la ou est-ce-que j'ecoute
 const socket = io(url);
