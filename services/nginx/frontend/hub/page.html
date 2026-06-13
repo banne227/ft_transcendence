@@ -1,181 +1,183 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
+	<head>
+		<meta charset="UTF-8" />
+		<title>WEEEEEEEEEEEEEEEEEEEEEE</title>
+		<link rel="stylesheet" href="style/base.css" />
+		<link rel="stylesheet" href="style/window.css" />
+		<link rel="stylesheet" href="style/chat.css" />
+		<link rel="stylesheet" href="style/taskbar.css" />
+		<link rel="stylesheet" href="style/desktop.css" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
 
-<head>
-  <meta charset="UTF-8">
-  <title>WEEEEEEEEEEEEEEEEEEEEEE</title>
-  <link rel="stylesheet" href="style/base.css">
-  <link rel="stylesheet" href="style/window.css">
-  <link rel="stylesheet" href="style/chat.css">
-  <link rel="stylesheet" href="style/taskbar.css">
-  <link rel="stylesheet" href="style/desktop.css">
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-</head>
+	<body>
+		<!--ONGLET (window)-->
+		<img id="screamer" src="../images/img_lol.webp" />
+		<div class="window" id="window-title">
+			<div class="titlebar">
+				<span class="titlebar-title">PAINT</span>
+				<div class="titlebar-buttons">
+					<div class="btn-close">x</div>
+				</div>
+			</div>
+			<div class="window-body">
+				<img src="../images/painter.png" alt="logo" />
+			</div>
+		</div>
 
-<body>
+		<div class="window" id="window-log">
+			<div class="titlebar">
+				<span class="titlebar-title">👤 Compte</span>
+				<div class="titlebar-buttons">
+					<div class="btn-close">x</div>
+				</div>
+			</div>
+			<div class="window-body" id="log-body">
+				<p class="status-offline">● Non connecté</p>
+				<button class="btn-login">Se connecter</button>
+			</div>
+		</div>
+		<!--WINDOW LOGIN-->
+		<div class="window" id="window-login">
+			<div class="titlebar">
+				<span class="titlebar-title">login</span>
+				<div class="titlebar-buttons">
+					<div class="btn-close">x</div>
+				</div>
+			</div>
 
-  <!--ONGLET (window)-->
-  <img id="screamer" src="../images/img_lol.webp" />
-  <div class="window" id="window-title">
+			<div class="window-body">
+				<h1>Connexion</h1>
 
-    <div class="titlebar">
-      <span class="titlebar-title">PAINT</span>
-      <div class="titlebar-buttons">
-        <div class="btn-close">x</div>
-      </div>
-    </div>
-    <div class="window-body">
-      <img src="../images/painter.png" alt="logo" />
-    </div>
-  </div>
+				<form>
+					<label>Pseudo</label>
+					<input type="text" placeholder="Ton pseudo" />
 
-  <div class="window" id="window-log">
-    <div class="titlebar">
-      <span class="titlebar-title">👤 Compte</span>
-      <div class="titlebar-buttons">
-        <div class="btn-close">x</div>
-      </div>
-    </div>
-    <div class="window-body" id="log-body">
-      <p class="status-offline">● Non connecté</p>
-      <button class="btn-login">Se connecter</button>
-    </div>
-  </div>
-  <!--WINDOW LOGIN-->
-  <div class="window" id="window-login">
-    <div class="titlebar">
-      <span class="titlebar-title">login</span>
-      <div class="titlebar-buttons">
-        <div class="btn-close">x</div>
-      </div>
-    </div>
+					<label>Mot de passe</label>
+					<input type="password" placeholder="Ton mot de passe" />
+					<div class="submit">
+						<button type="submit">Se connecter</button>
+					</div>
+				</form>
 
-    <div class="window-body">
-      <h1>Connexion</h1>
+				<p>
+					Pas de compte ? <a href="#" id="btn-inscrire">S'inscrire</a>
+				</p>
+			</div>
+		</div>
 
-      <form>
-        <label>Pseudo</label>
-        <input type="text" placeholder="Ton pseudo" />
+		<!--WINDOW REGISTER-->
+		<div class="window" id="window-register">
+			<div class="titlebar">
+				<span class="titlebar-title">Inscription</span>
+				<div class="titlebar-buttons">
+					<div class="btn-close">x</div>
+				</div>
+			</div>
 
-        <label>Mot de passe</label>
-        <input type="password" placeholder="Ton mot de passe" />
-        <div class="submit">
-          <button type="submit">Se connecter</button>
-        </div>
-      </form>
+			<div class="window-body">
+				<h1>Inscription</h1>
+				<form>
+					<label>Pseudo</label>
+					<input type="text" placeholder="Choisis un pseudo" />
 
-      <p>Pas de compte ? <a href="#" id="btn-inscrire">S'inscrire</a></p>
-    </div>
-  </div>
+					<label>Mot de passe</label>
+					<input
+						type="password"
+						placeholder="Choisis un mot de passe"
+					/>
 
-  <!--WINDOW REGISTER-->
-  <div class="window" id="window-register">
+					<label>Confirmer le mot de passe</label>
+					<input
+						type="password"
+						placeholder="Repete ton mot de passe"
+					/>
 
-    <div class="titlebar">
-      <span class="titlebar-title">Inscription</span>
-      <div class="titlebar-buttons">
-        <div class="btn-close">x</div>
-      </div>
-    </div>
+					<button type="submit">Creer mon compte</button>
+				</form>
+			</div>
+		</div>
 
-    <div class="window-body">
-      <h1>Inscription</h1>
-      <form>
-        <label>Pseudo</label>
-        <input type="text" placeholder="Choisis un pseudo" />
+		<!--ONGLET CHAT (style Win98)-->
+		<div class="window" id="window-chat">
+			<div class="titlebar">
+				<span class="titlebar-title">Chat</span>
+				<div class="titlebar-buttons">
+					<div class="btn-close">x</div>
+				</div>
+			</div>
+			<div class="window-body chat-body">
+				<div class="chat-tabs">
+					<div class="chat-tab active">general</div>
+					<div class="chat-tab">prive</div>
+				</div>
+				<div class="chat-players">
+					<span class="chat-player">snakelord</span>
+					<span class="chat-player">viper42</span>
+					<span class="chat-player">cobrakid</span>
+					<span class="chat-player">py42</span>
+				</div>
 
-        <label>Mot de passe</label>
-        <input type="password" placeholder="Choisis un mot de passe" />
+				<div id="chat-messages">
+					<div class="chat-line">
+						<span class="chat-time">[14:21]</span>
+						<span class="chat-name">snakelord</span> : gg
+					</div>
+					<div class="chat-line">
+						<span class="chat-time">[14:21]</span>
+						<span class="chat-name">viper42</span> : rematch ?
+					</div>
+					<div class="chat-line">
+						<span class="chat-time">[14:22]</span>
+						<span class="chat-name">jojo</span> : cest lexemple en
+						gros du coup na
+					</div>
+				</div>
 
-        <label>Confirmer le mot de passe</label>
-        <input type="password" placeholder="Repete ton mot de passe" />
+				<div class="chat-separator"></div>
+				<div id="chat-input-row">
+					<input type="text" placeholder="" />
+					<button id="send">Envoyer</button>
+				</div>
+				<div class="chat-statusbar">
+					<div class="chat-status-cell">4 connectes</div>
+				</div>
+			</div>
+		</div>
 
-        <button type="submit">Creer mon compte</button>
-      </form>
-    </div>
-  </div>
+		<!--TASKBARR-->
+		<div class="taskbar">
+			<button class="task-btn stop" id="compteur">42</button>
+			<div class="taskbar-right">
+				<button class="task-btn">:)</button>
+				<button class="task-btn">67</button>
+				<button class="task-btn">:(</button>
+			</div>
+		</div>
 
+		<!--ICON-->
 
+		<div class="play_button">
+			<a href="https://transcendence.42.fr/game" title="Play">
+				<img src="../images/trrr.png" alt="Play" />
+			</a>
+		</div>
 
-  <!--ONGLET CHAT (style Win98)-->
-  <div class="window" id="window-chat">
-    <div class="titlebar">
-      <span class="titlebar-title">Chat</span>
-      <div class="titlebar-buttons">
-        <div class="btn-close">x</div>
-      </div>
-    </div>
-    <div class="window-body chat-body">
+		<div class="formulaire">
+			<b>username.exe</b>
+		</div>
 
-      <div class="chat-tabs">
-        <div class="chat-tab active">general</div>
-        <div class="chat-tab">prive</div>
-      </div>
-      <div class="chat-players">
-        <span class="chat-player">snakelord</span>
-        <span class="chat-player">viper42</span>
-        <span class="chat-player">cobrakid</span>
-        <span class="chat-player">py42</span>
-      </div>
-
-
-      <div id="chat-messages">
-        <div class="chat-line"><span class="chat-time">[14:21]</span> <span class="chat-name">snakelord</span> : gg
-        </div>
-        <div class="chat-line"><span class="chat-time">[14:21]</span> <span class="chat-name">viper42</span> : rematch ?
-        </div>
-        <div class="chat-line"><span class="chat-time">[14:22]</span> <span class="chat-name">jojo</span> : cest
-          lexemple en gros du coup na</div>
-      </div>
-
-      <div class="chat-separator"></div>
-      <div id="chat-input-row">
-        <input type="text" placeholder="" />
-        <button id="send">Envoyer</button>
-      </div>
-      <div class="chat-statusbar">
-        <div class="chat-status-cell">4 connectes</div>
-      </div>
-
-
-    </div>
-  </div>
-
-
-
-
-
-  <!--TASKBARR-->
-  <div class="taskbar">
-    <button class="task-btn stop" id="compteur">42</button>
-    <div class="taskbar-right">
-      <button class="task-btn">:)</button>
-      <button class="task-btn">67</button>
-      <button class="task-btn">:(</button>
-    </div>
-  </div>
-
-
-  <!--ICON-->
-
-  <div class="play_button">
-    <a href="https://127.0.0.1/game" title="Play">
-      <img src="../images/trrr.png" alt="Play" />
-    </a>
-  </div>
-
-  <div class="formulaire">
-    <b>username.exe</b>
-  </div>
-
-  <!--<div class="fenetre">
+		<!--<div class="fenetre">
     <div class="fenetre_barre">Mon menu</div>
     <div class="fenetre_contenu">
       <p>Contenu de la fenÃªtre</p>
     </div>
   </div>-->
-  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-  <script src="script.js"></script>
-</body>
-
+		<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+		<script src="script.js"></script>
+	</body>
 </html>

@@ -66,6 +66,6 @@ startGameLoop((state) => {
 //message envoyer quand le server est pret
 httpServer.listen(3000, () => {
 	console.log(
-		`Serveur sur https://127.0.0.1/ws/serv or http://game:3000 (in the container network)`,
+		`Serveur sur https://transcendence.42.fr/ws/serv or http://game:3000 (in the container network)`,
 	);
 });

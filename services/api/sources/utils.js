@@ -35,10 +35,9 @@ function generateJwt(userdata) {
 	const payload = {
 		date: Date(),
 		email: userdata.email,
-		exp: 604_800, // 1 week in second
 	};
 	/* Create the token */
-	token = jwt.sign(payload, key);
+	token = jwt.sign(payload, key, { expiresIn: "1d" });
 	return token;
 }
 
