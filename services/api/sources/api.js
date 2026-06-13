@@ -1,7 +1,3 @@
-/*
- * STILL IN BUILD LOOK UGLY ASF
- */
-
 // Import every dependency
 const express = require("express");
 const mongoose = require("mongoose");
@@ -48,7 +44,7 @@ process.on("SIGTERM", (code_signal_error) => {
  * METHODE: GET
  */
 api.get("/health", (req, res) => {
-	res.send("API status : OK");
+	res.status(200).json({ status: "API status : OK" });
 });
 
 /*
@@ -57,7 +53,7 @@ api.get("/health", (req, res) => {
  */
 api.get("/countUser", async (req, res) => {
 	let numberOfUser = await newUser.collection.count();
-	res.json({ users: numberOfUser });
+	res.status(200).json({ users: numberOfUser });
 });
 
 /*
@@ -66,6 +62,32 @@ api.get("/countUser", async (req, res) => {
  */
 api.get("/logout", (req, res) => {
 	res.redirect("/");
+});
+
+/*
+ * Endpoint to check if the user jwt is valid
+ * METHODE: POST
+ * BODY SYTHAX: JSON
+ * BODY CONTENT:
+ *   "jwt": "jwt of the user"
+ * RETURN STATUS CODES:s
+ *  - 200 : The jwt of the user is fine
+ *  - 401 : The jwt of the user isnt valid
+ *  - 400 : The user doesnt have jwt
+ */
+api.get("/jwt/validate", (req, res) => {
+	const token = req.headers.authorization;
+	console.log(token);
+
+	if (!token) {
+		res.status(400).json({ error: "No token provided" });
+	}
+	const valid = validateJwt(token);
+	if (valid) {
+		res.status(200).json({ succes: "The JWT is valid" });
+	} else {
+		res.status(401).json({ error: "Invalid JWT" });
+	}
 });
 
 /* ----- POST REQUEST METHODE ----- */
@@ -81,6 +103,9 @@ api.get("/logout", (req, res) => {
  * RETURN STATUS CODES:
  *  - 200 : Everything is fine
  *  - 451 : The password provided isnt valid
+ * ADDITIONAL NOTES:
+ *   JWT need to be store in the localstorage section of the browser
+ *   and be passed in the authorization headers of the request
  */
 api.post("/register", async (req, res) => {
 	// Get the content of the body of the request
@@ -92,31 +117,28 @@ api.post("/register", async (req, res) => {
 		data.password === undefined ||
 		data.email === undefined
 	)
-		return res.sendStatus(451);
+		return res.status(400).json({ error: "Invalid body" });
 
 	// Search in the database who have the same username and email than the user (partially work the 12/06)
 	const exist = await newUser.findOne({
 		$or: [{ email: { $eq: data.email } }, { username: { $eq: data.username } }],
 	});
 
-	console.log(exist);
 	// If a user or a email is already associate with da account
 	if (exist !== null)
-		return res.send(
-			`Failed to create user ${String(data.username).substring(0, 20)}:${String(data.email).substring(0, 20)}`,
-		);
+		return res.status(401).json({
+			error: `The username ${String(data.username).substring(0, 20)} or the email ${String(data.email).substring(0, 20)} is already taken`,
+		});
 	// Check if the password of the user is superior that 12 character
 	if (
 		(String(data.password).length <= 12 &&
 			String(data.password).length > 128) ||
 		isalnum(data.password) == false
 	) {
-		console.log(`${data.password} is invalid!`);
-		return res.sendStatus(451).send("invalid password");
+		return res.status(401).json({ error: "invalid password" });
 	}
 
 	const hashed_password = await generateHash(data.password);
-	console.log(`hash = ${hashed_password}`);
 	// Create the user on the db
 	await newUser.create({
 		username: data.username,
@@ -125,7 +147,7 @@ api.post("/register", async (req, res) => {
 		history: [],
 	});
 	// Tell to our client that our user have been created by sending a status code 200
-	return res.json({ jwt: generateJwt(data) });
+	return res.status(200).json({ jwt: generateJwt(data) });
 });
 
 /*
@@ -151,36 +173,58 @@ api.post("/login", async (req, res) => {
 	const exist = await newUser.findOne({ email: { $eq: data.email } });
 	if (exist === null) {
 		// Send a 404
-		return res.sendStatus(404);
+		return res.status(404).json({ error: `User ${data.email} not found` });
 	}
 
 	// Check if the hashed password in db and the provided password match
 	const valid = await bcrypt.compare(data.password, exist.password);
 	if (valid == true) {
-		return res.sendStatus(200);
+		return res.status(200).send(`Connection success!`);
 	} else {
-		return res.sendStatus(404);
+		return res.status(401).send(`Invalid password`);
 	}
 });
 
 /*
- * Endpoint to check if the user jwt is valid
+ * Endpoint to modify the password of the user (no authentification for now)
  * METHODE: POST
  * BODY SYTHAX: JSON
  * BODY CONTENT:
- *   "jwt": "jwt of the user"
- * RETURN STATUS CODES:s
- *  - 200 : The jwt of the user is fine
- *  - 401 : The jwt of the user isnt valid
+ *   "newPassword": "the new password of the user"
+ *   "email": "email of the user"
+ * RETURN STATUS CODES:
+ *  - 200 : Everything is fine
+ *  - 400 : Missing email or/and password
+ *  - 400 : The password is invalid or the email is not associate to an account
  */
-api.post("/jwt/validate", (req, res) => {
-	const token = req.body.jwt;
-	const valid = validateJwt(token);
-	if (valid) {
-		res.sendStatus(200);
-	} else {
-		res.sendStatus(401);
+api.post("/forget", async (req, res) => {
+	const data = req.body;
+
+	// Check if the a email and a password is on the body
+	if (data.email === undefined || data.password === undefined)
+		return res.sendStatus(400);
+
+	// Check if the password of the user is superior that 12 character
+	if (
+		(String(data.password).length <= 12 &&
+			String(data.password).length > 128) ||
+		isalnum(data.password) == false
+	) {
+		return res.status(401).json({ error: "invalid password" });
 	}
+
+	// Search on the database if the user exist
+	let user = await newUser.findOne({ email: { $eq: data.email } });
+	// If not exist
+	if (!user) return res.status(401).json({ error: "cannot edit the password" });
+	// Update the password associate to the email on the database
+	user = await newUser.updateOne(
+		{ email: data.email },
+		{ password: generateHash(data.password) },
+	);
+	res
+		.status(200)
+		.json({ succes: "The password have been succesfully changed" });
 });
 
 // Start our API
