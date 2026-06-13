@@ -2,17 +2,23 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const { newUser } = require("./models/userSchema");
-const { isalnum, generateHash, generateJwt, validateJwt } = require("./utils");
+const {
+	isalnum,
+	generateHash,
+	generateJwt,
+	validateJwt,
+	checkData,
+} = require("./utils");
 const { jwt } = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 // Port used by our API
 const PORT = 4444;
 // URL of our mongodb database
 const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@mongodb/databases`;
 
-// Initialized the webserver served by expressjs
+// Create the webserver with ExpressJS
 const api = express();
-const bcrypt = require("bcryptjs");
 
 // Initialized connection to the database
 mongoose
@@ -64,9 +70,27 @@ api.get("/logout", (req, res) => {
 	res.redirect("/");
 });
 
+api.get("/delete", async (req, res) => {
+	const token = req.headers.authorization;
+	const email = req.body.email;
+
+	if (email === undefined) {
+		res.status(301).json({ error: "Email not provided" });
+	}
+	try {
+		await newUser
+			.find({ email: { $eq: email } })
+			.deleteOne()
+			.exec();
+	} catch (err) {
+		res.status(301).json({ error: `Cant delete account ${err}` });
+	}
+	res.status(200).json({ succes: "Deleted" });
+});
+
 /*
  * Endpoint to check if the user jwt is valid
- * METHODE: POST
+ * METHODE: GET
  * BODY SYTHAX: JSON
  * BODY CONTENT:
  *   "jwt": "jwt of the user"
@@ -119,6 +143,19 @@ api.post("/register", async (req, res) => {
 	)
 		return res.status(400).json({ error: "Invalid body" });
 
+	// Check if the data send is less
+	for (datas in data) {
+		if (
+			String(data.password).length <= 3 ||
+			String(data.password).length > 128 ||
+			checkData(data.datas) === false
+		) {
+			return res.status(400).json({ error: `invalid format in ${datas}` });
+		} else {
+			console.log(`data`);
+		}
+	}
+
 	// Search in the database who have the same username and email than the user (partially work the 12/06)
 	const exist = await newUser.findOne({
 		$or: [{ email: { $eq: data.email } }, { username: { $eq: data.username } }],
@@ -129,14 +166,6 @@ api.post("/register", async (req, res) => {
 		return res.status(401).json({
 			error: `The username ${String(data.username).substring(0, 20)} or the email ${String(data.email).substring(0, 20)} is already taken`,
 		});
-	// Check if the password of the user is superior that 12 character
-	if (
-		(String(data.password).length <= 12 &&
-			String(data.password).length > 128) ||
-		isalnum(data.password) == false
-	) {
-		return res.status(401).json({ error: "invalid password" });
-	}
 
 	const hashed_password = await generateHash(data.password);
 	// Create the user on the db
