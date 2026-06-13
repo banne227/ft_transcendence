@@ -10,12 +10,22 @@
 - In our infrastructure NGINX are acting like a web server that serve the html pages statically and secured with encryption between the client and the NGINX server using TLS 1.2 or TLS 1.3
 - Every client-side content should be put on the "frontend" directory in services/nginx
 ### mongoDB
-- mongoDB is a free source-available NoSQL (Not Only SQL) documents-oriented databased who use BJSON (Binary JavaScript Object Notation) instead of SQL to add, remove or find data.
+- mongoDB is a free source-available NoSQL (Not Only SQL) documents-oriented databased who use BJSON (Binary JavaScript Object Notation) instead of SQL to perform operation of any type like adding, deleting or finding data.
 - When the container start, a shell script that create a admin user (defined with MONGO_ADMIN_USER and MONGO_ADMIN_PASS environments variables) who manage every databases and a second user (defined with MONGO_USER and MONGO_PASS environments variables) who manage a databases called "databases" which store users information like the username, email, hashed/salted password and a subtable which contain an history of every passed match of the user
+- You can go into the started mongodb container with :
+```sh
+# Enter in the container
+docker exec -it $(docker ps | grep mongodb | awk '{print $1}') bash
+
+# Enter in the mongodb database using the normal user
+mongosh "mongodb://$MONGO_USER:$MONGO_PASS@127.0.0.1/databases"
+# Or the admin user (not working for now)
+mongosh "mongodb://$MONGO_ADMIN_USER:$MONGO_ADMIN_PASS@127.0.0.1/databases"
+```
 ### game_server
 - Host the game server
 ### API
-- API container
+- The API provide endpoint to communicate with other services
 
 ## TROUBLESHOOT
 ```
@@ -44,7 +54,7 @@ Potential solution :
 # Check that every container is launched
 docker ps
 
-# EXPECTED OUTPUT :
+# WHAT SHOULD THE OUTPUT LOOK LIKE :
 CONTAINER ID   IMAGE                      COMMAND                  CREATED              STATUS              PORTS                                      NAMES
 <rand_id>   ft_transcendence-mongodb   "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:27017->27017/tcp                   ft_transcendence-mongodb-1
 <rand_id>   ft_transcendence-nginx     "/docker-entrypoint.…"   About a minute ago   Up About a minute   0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   ft_transcendence-nginx-1

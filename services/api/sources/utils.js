@@ -35,22 +35,42 @@ function generateJwt(userdata) {
 	const payload = {
 		date: Date(),
 		email: userdata.email,
-		// random: crypto.getRandomValues(8),
+		exp: 604_800, // 1 week in second
 	};
 	/* Create the token */
 	token = jwt.sign(payload, key);
 	return token;
 }
 
+/* Check if the JWT provided is valid */
 function validateJwt(userJwt) {
 	const key = process.env.JWT_HEADER_KEY;
 	const secrete = process.env.JWT_SECRET;
 	const valid = jwt.verify(userJwt, secrete);
-
 	if (valid) {
 		return true;
 	}
 	return false;
 }
 
-module.exports = { isalnum, generateHash, generateJwt, validateJwt };
+/* Check if the data send by the user is valid */
+function checkData(str) {
+	console.log(str);
+	for (char in str) {
+		if (
+			!(str[char] >= "a" && str[char] <= "z") &&
+			!(str[char] >= "A" && str[char] >= "Z") &&
+			!(str[char] >= "0" && str[char] <= "9") &&
+			str[char] != "_" &&
+			str[char] != "-" &&
+			str[char] != "!" &&
+			str[char] != "@" &&
+			str[char] != "#"
+		) {
+			return false;
+		}
+	}
+}
+
+/* Give access to other file to import those function */
+module.exports = { isalnum, generateHash, generateJwt, validateJwt, checkData };
