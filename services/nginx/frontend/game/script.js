@@ -116,21 +116,39 @@ function render() {
 window.addEventListener("resize", resize);
 resize();
 
+const brushImg = new Image();
+brushImg.src = '../images/brush.png';
+
 function render_p() {
 	const scaleX = canvas.width / 2000;
 	const scaleY = canvas.height / 2000;
+	var i = 0;
 
 	for (const player of Object.values(gameState.players)) {
 		if (!player.alive) continue;
-
+		i = 0;
 		for (const segment of player.body) {
 			const x = segment.x * scaleX;
 			const y = segment.y * scaleY;
 
-			ctx.beginPath();
-			ctx.arc(x, y, 5, 0, Math.PI * 2);
-			ctx.fillStyle = `hsl(286,100%,73%)`;
-			ctx.fill();
+			if (i == 0)
+			{
+				ctx.drawImage(brushImg, x - 10, y - 10, 20, 20);
+				// ctx.beginPath();
+				// ctx.arc(x, y, 5, 0, Math.PI * 2);
+				// ctx.fillStyle =`hsl(244, 95%, 22%)`;
+				// ctx.fill();
+			}
+			else
+			{
+				ctx.fillStyle = `hsl(286,100%,73%)`;
+				ctx.fillRect(x - 5, y - 5, 10, 10);
+				//ctx.beginPath();
+				//ctx.arc(x, y, 5, 0, Math.PI * 2);
+				//ctx.fillStyle = `hsl(286,100%,73%)`;
+				//ctx.fill();
+			}
+			i++;
 		}
 	}
 }
