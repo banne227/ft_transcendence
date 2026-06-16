@@ -23,7 +23,7 @@ re: down
 	@rm -rf ./cert
 	@sh ./.scripts/checkEnv.sh
 	@printf "\x1b[0;32m[+] Rebuilding container ...\n\x1b[0m"
-	@$(DC) build
+	@$(DC) build 
 	@make up -s
 
 reset: down
