@@ -1,4 +1,4 @@
-const mockPlayer = {
+var Player = {
     username: "player121",
     bestScore: 145,
     scores: [
@@ -10,12 +10,10 @@ const mockPlayer = {
     ]
 }
 
-const ctx = document.getElementById('monGraph')
+const scores = Player.scores.map(element => element.value)
+const time = Player.scores.map(element => new Date(element.playedAt).toLocaleDateString("fr-FR", { day: "2-digit", month: "short" }))
 
-const scores = mockPlayer.scores.map(element => element.value)
-const time = mockPlayer.scores.map(element => new Date(element.playedAt).toLocaleDateString("fr-FR", { day: "2-digit", month: "short" }))
-
-new Chart(ctx, {
+new Chart(monGraph, {
     type: 'line',        // type de graphe
     data: {
         labels: time,      // axe X
