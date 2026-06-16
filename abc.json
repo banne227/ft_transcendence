@@ -1,0 +1,6 @@
+{
+	1: {
+		username :string,
+		score: BigInt
+}
+}
