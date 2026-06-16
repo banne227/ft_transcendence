@@ -285,11 +285,27 @@ api.post('/forget', async (req, res) => {
  *   "score": "The score of the user"
  * RETURN STATUS CODES:
  */
-api.post('/addScore', (req, res) => {
+api.post('/addScore', async (req, res) => {
+	// Check if the body contain a username and a score
 	if (!req.body.username || !req.body.score)
 		res.status(400).json({ error: 'Missing body content' })
+
+	// Check if the score contain only numeric character
 	if (req.body.score.match(/^[0-9]+$/) == null)
-		res.status(400).json({ error: 'Bad type' })
+		res.status(400).json({ error: 'Bad score type' })
+
+	// Creating our history object
+	const newData = { date: 'PLACEHOLDER', score: BigInt(req.body.score) }
+
+	// Pushing our new score into the history array
+	await newUser.updateOne(
+		{ username: req.body.username },
+		{
+			$push: {
+				history: [{ newData }],
+			},
+		},
+	)
 	res.status(200).json({
 		succes: `Added ${req.body.username}:${req.body.score}`,
 	})
