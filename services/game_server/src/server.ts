@@ -20,7 +20,7 @@ const io = new Server(httpServer, {
 	cors: { origin: "*" },
 });
 
-app.use('/ws/serv/leaderboard', express.static(join(__dirname, 'leaderboard')));
+app.use('/leaderboard', express.static(join(__dirname, 'leaderboard')));
 
 // Better docker stop handling by treated SIGTERM signals
 // ref : https://docs.docker.com/reference/cli/docker/container/stop/
@@ -29,16 +29,16 @@ process.on("SIGTERM", function (code_signal_error) {
 });
 
 //permet de verifier que le server est en place http://localhost:3000/health
-app.get("/ws/serv/health", (_req, res) => {
+app.get("/health", (_req, res) => {
 	res.json({ status: "ok" });
 });
 
-app.get('/ws/serv/lead', (req, res) => {
+app.get('/lead', (req, res) => {
 	console.log(join(__dirname, 'leaderboard', 'lead.html'));
 	res.sendFile(join(__dirname, 'leaderboard', 'lead.html'));
 });
 
-app.get('/ws/serv/leadrrr', (req, res) => {
+app.get('/leadrrr', (req, res) => {
 	console.log(join(__dirname, 'leaderboard', 'lead.html'));
 	res.sendFile(join(__dirname, 'leaderboard', 'lead.js'));
 });
@@ -79,6 +79,6 @@ startGameLoop((state) => {
 //message envoyer quand le server est pret
 httpServer.listen(3000, () => {
 	console.log(
-		`Serveur sur https://transcendence.42.fr/ws/serv or http://game:3000 (in the container network)`,
+		`Serveur sur https://transcendence.42.fr or http://game:3000 (in the container network)`,
 	);
 });
