@@ -34,4 +34,7 @@ reset: down
 setup:
 	@bash ./.scripts/setup.sh $(IP)
 
-.PHONY: re up down reset setup
+dg:
+	@bash ./.scripts/infraDebug.sh $(A)
+
+.PHONY: re up down reset setup dg

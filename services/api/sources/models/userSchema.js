@@ -2,6 +2,15 @@ const mongoose = require('mongoose')
 const { Schema, model } = mongoose
 // Database user schemas
 
+const history_model = new Schema({
+	history: [
+		{
+			date: String,
+			score: BigInt,
+		},
+	],
+})
+
 const user_model = new Schema({
 	username: {
 		require: true,
@@ -19,12 +28,7 @@ const user_model = new Schema({
 		type: String,
 		index: true,
 	},
-	history: [
-		{
-			date: String,
-			score: BigInt,
-		},
-	],
+	history: [history_model],
 })
 const newUser = model('users', user_model)
 module.exports = {
