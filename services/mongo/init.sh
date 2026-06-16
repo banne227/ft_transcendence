@@ -2,6 +2,7 @@
 # /docker-entrypoint-initdb.d/01-init.sh
 
 mongosh << EOF
+db = db.getSiblingDB("admin");
 db.createUser({
   user: "${MONGO_ADMIN_USER}",
   pwd: "${MONGO_ADMIN_PASS}",

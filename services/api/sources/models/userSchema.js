@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const { Schema, model } = mongoose;
+const mongoose = require('mongoose')
+const { Schema, model } = mongoose
 // Database user schemas
 
 const user_model = new Schema({
@@ -22,11 +22,11 @@ const user_model = new Schema({
 	history: [
 		{
 			date: String,
-			score: Number,
+			score: BigInt,
 		},
 	],
-});
-const newUser = model("users", user_model);
+})
+const newUser = model('users', user_model)
 module.exports = {
 	newUser,
-};
+}
