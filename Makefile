@@ -7,7 +7,7 @@ all: up
 
 down:
 	@printf "\e[0;32m[+] Shutdown every running container ...\n\e[0m"
-	@$(DC) down
+	@$(DC) down --remove-orphans
 	@printf "\e[0;32m[+] Shutdown every unused docker volumes ...\n\e[0m"
 	@yes | docker volumes prune > /dev/null 2>&1 || true
 	@printf "\e[0;32m[+] Shutdown every running docker network connection ...\n\e[0m"
@@ -34,7 +34,7 @@ reset: down
 setup:
 	@bash ./.scripts/setup.sh $(IP)
 
-dg:
+debug:
 	@bash ./.scripts/infraDebug.sh $(A)
 
-.PHONY: re up down reset setup dg
+.PHONY: re up down reset setup debug
