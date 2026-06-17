@@ -3,12 +3,9 @@ const { Schema, model } = mongoose
 // Database user schemas
 
 const history_model = new Schema({
-	history: [
-		{
-			date: String,
-			score: BigInt,
-		},
-	],
+	date: String,
+	score: Number,
+	win: Boolean,
 })
 
 const user_model = new Schema({

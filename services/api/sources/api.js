@@ -80,20 +80,26 @@ api.get('/', (req, res) => {
 })
 
 api.get('/delete', async (req, res) => {
+	// Take the JWT from the authorization section in the header
 	const token = req.headers.authorization
+	// Take the email from the body
 	const email = req.body.email
 
+	// If the email wasnt set
 	if (email === undefined) {
 		res.status(301).json({ error: 'Email not provided' })
 	}
 	try {
+		// Try to delete the account
 		await newUser
 			.find({ email: { $eq: email } })
 			.deleteOne()
 			.exec()
 	} catch (err) {
+		// In case of error
 		res.status(301).json({ error: `Cant delete account ${err}` })
 	}
+	// In case of succes
 	res.status(200).json({ succes: 'Deleted' })
 })
 
@@ -109,18 +115,37 @@ api.get('/delete', async (req, res) => {
  *  - 400 : The user doesnt have jwt
  */
 api.get('/jwt/validate', (req, res) => {
+	// Take the JWT from the authorization section in the header
 	const token = req.headers.authorization
-	console.log(token)
 
+	// Check if a token is on the authorization header
 	if (!token) {
 		res.status(400).json({ error: 'No token provided' })
 	}
+	// Use the function to check if the token was not altered
 	const valid = validateJwt(token)
 	if (valid) {
 		res.status(200).json({ succes: 'The JWT is valid' })
 	} else {
 		res.status(401).json({ error: 'Invalid JWT' })
 	}
+})
+
+// Get the complete match history of a user by going to /api/history/USERNAME
+api.get('/history/:userName', async (req, res) => {
+	// Get the username specified in uri parameter
+	const username = req.params.userName
+	// Searching for the user on the db
+	const aaa = await newUser
+		.findOne({ username: { $eq: username } }, '-history._id')
+		.lean()
+	// if the user doesnt exist
+	if (aaa === null) res.status(404).json({ error: `cannot find ${username}` })
+	// if the user exist but it doesnt played a single match
+	if (aaa.history === null)
+		res.status(404).json({ error: `${username} didnt have played yet` })
+	// Send the history in a json format
+	res.status(200).json(aaa.history)
 })
 
 /* ----- POST REQUEST METHODE ----- */
@@ -295,14 +320,21 @@ api.post('/addScore', async (req, res) => {
 		res.status(400).json({ error: 'Bad score type' })
 
 	// Creating our history object
-	const newData = { date: 'PLACEHOLDER', score: BigInt(req.body.score) }
+	const newData = { date: `${new Date()}`, score: BigInt(req.body.score) }
+	// Get the current date
+	const timestamp = new Date()
 
 	// Pushing our new score into the history array
 	await newUser.updateOne(
 		{ username: req.body.username },
 		{
 			$push: {
-				history: [{ newData }],
+				history: [
+					{
+						date: `${timestamp.toISOString()}`,
+						score: Number(req.body.score),
+					},
+				],
 			},
 		},
 	)
