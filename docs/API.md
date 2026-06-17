@@ -1,11 +1,43 @@
 # "ft_transcendence" API :
-- Every body request and response need to be and will be in JSON
-## Available endpoint:
-## /register : POST
-- /register use the **POST methode** for this endpoint 
+
+<div align="center">
+	<h1>Summary: </h1>
+</div>
+
+## POST Endpoint
+- [/register](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#register--post)
+- [/login](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#login--post)
+- [/forget](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#forget--post)
+- [/addscore](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#addscore--post)
+
+## GET Endpoint
+- [/health](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#health--get)
+- [/countuser](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#countuser--get)
+- [/logout](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#logout--get)
+- [/delete](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#delete--get)
+- [/jwt/validate](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#jwtvalidate--get)
+- [/history/user](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#historyuser--get)
+
+<div align="center">
+	<h1>Foreword:</h1>
+</div>
+
+- The body of every request should be in JSON format. So the header need to contain `Content-Type: application/json`
+- You can use software like **Insomnia** or **Postman** to simulate request
+
+<div align="center">
+	<h1>Endpoints:</h1>
+</div>
+
+<div align=left>
+	<h2>/register : POST</h2>
+</div>
+
+### Description
 - This endpoint allow a user to create a account on the website (not perfect for now)
 - Actually no protection against raid/spam is provided, i will put humain verification when someone will register a new account
 - The password of the user should be superior that 12 character, less that 128 character and use only alpha numerical character
+### Body
 - The user need to provide those information in the body of the request: 
 1. username = The username of the user to register
 2. email = The email of the user to register
@@ -21,10 +53,19 @@
 /* or from a more compact way */
 {"username": "user","password": "password","email": "user@domain.ext"}
 ```
-## /login : POST
-- /login use the **POST methode** for this endpoint 
-- This endpoint allow to log to an account on the website (not perfect for now)
+### HTTP status code
+- 200: No error
+- 400 : The body of request is not valid.
+- 401: The username or the email of the user is already taken
+
+<div align=left>
+	<h2>/login : POST</h2>
+</div>
+
+### Description
+- This endpoint allow a user to log into an account on the website (not perfect for now)
 - Actually no protection against raid/spam is provided, i will put humain verification when someone will register a new account
+### Body
 - The user need to provide those information in the body of the request: 
 1. email = The email of the user to register
 2. password = The password of the user to register
@@ -36,14 +77,25 @@
 }
 
 /* or from a more compact way */
-{"password": "password","email": "user@domain.ext"}
+{"email": "user@domain.ext","password": "password"}
 ```
-## /forget : POST
-- /forget use the **POST methode**
-- This endpoint allow a user to edit the password of his account. For now this endpoint dont have any protection
+### HTTP status code
+- 200 : No error
+- 400 : The body of request is not valid.
+- 401 : The password provided is not valid
+- 404 : The user doesnt exist
+
+<div align=left>
+	<h2>/forget : POST</h2>
+</div>
+
+### Description
+- This endpoint allow a non authentificated user to change the password of his account on the website (not perfect for now)
+- Actually no protection against raid/spam is provided, i will put humain verification when someone will register a new account
+### Body
 - The user need to provide those information in the body of the request: 
 1. email = The email of the user to register
-2. password = The password of the user to register
+2. password = The new password of the user
 ```cjson
 /* What the body should look like */
 {
@@ -52,23 +104,113 @@
 }
 
 /* or from a more compact way */
-{"password": "password","email": "user@domain.ext"}
+{"email": "user@domain.ext","password": "password"}
 ```
+### HTTP status code
+- 200 : No error
+- 400 : The body of request is not valid.
+- 401 : The password provided is not valid
 
-## /health : GET
-- /login use the **GET methode** for this endpoint 
-- This endpoint allow from the client if the API is down
+<div align=left>
+	<h2>/addscore : POST</h2>
+</div>
 
-## /countuser : GET
-- /login use the **GET methode** for this endpoint 
-- User will not be allow to interact with this endpoint
-- It allow to know how many different user have an account on the site
+### Description
+- This endpoint will be only used by the game to append last game played to the played game history. Actually no authentification is required but it will have authentification later
+### Body
+- The user need to provide those information in the body of the request: 
+1. username = The username of the user
+2. score = The new score of the user, it can be string or Number what ever the score will be store in BigInt on the database
+3. win = Is a boolean who are at true if the user have win his game
+```cjson
+/* What the body should look like */
+{
+	"username": "user",
+	"score": "444",
+	"win": 0 | 1
+}
 
-## /logout : GET
-- /logout use the **GET methode** for this endpoint 
-- This endpoint the user to get logout from his account (not finish for now)
+/* or from a more compact way */
+{"username": "user","score": "444","win": 0 | 1}
+```
+### HTTP status code
+- 200 : No error
+- 400 : The body of request is not valid or the score is not a number.
 
-## /jwt/validate : GET
-- /jwt/validate use the **GET methode**
-- This endpoint is to check if a provided jwt is valid or not
-- The jwt should be passed in the authorization header
+<div align=left>
+	<h2>/health : GET</h2>
+</div>
+
+### Description
+- This endpoint is used to check if our api is down from the client
+- If the API is up, it will respond a 200 and a success json. If not a single response was send, the API is down
+
+<div align=left>
+	<h2>/countuser : GET</h2>
+</div>
+
+### Description
+- This endpoint give the number of user register on the database
+- If the API is up, it will respond a 200 and a success json with the number of user register on the database. If not a single response was send, the API is down
+
+<div align=left>
+	<h2>/logout : GET</h2>
+</div>
+
+### Description
+- This endpoint disconnect the current logged user on the site
+- (NOT FINISH FOR NOW)
+
+<div align=left>
+	<h2>/delete : DELETE</h2>
+</div>
+
+### Description
+- This endpoint will be to delete account in the database
+### Header
+- The user need to provide those information in the header of the request: 
+1. authorization = The token of the user
+### Body
+- (The body will be empty when we will have a correct authentification system)
+- The user need to provide those information in the body of the request: 
+1. email = The email of the user 
+```cjson
+/* What the body should look like */
+{
+	"email": "user@dom.ext"
+}
+
+/* or from a more compact way */
+{"username": "user","score": "444","win": 0 | 1}
+```
+### HTTP status code
+- 200 : No error
+- 301 : The account cannot be deleted
+- 400 : The email is missing
+
+<div align=left>
+	<h2>/jwt/validate : GET</h2>
+</div>
+
+### Description
+- This endpoint will be probably only use by the API himself check if the JWT token provided on the **Authorization header** is valid
+### Header
+- The user need to provide those information in the header of the request: 
+1. authorization = The token of the user
+### HTTP status code
+- 200 : No error
+- 400 : The token is missing
+- 401 : The provided token is not valid
+
+<div align=left>
+	<h2>/history/USER : GET</h2>
+</div>
+
+### Description
+- This endpoint give a json with every match stored in the history of a user specified in parameter
+- Should be used like this `https://transcendence.42.fr/api/history/gun8hoot`
+### Parameter
+- The name of the user
+### HTTP status code
+- 200 : No error
+- 404 : The user doesnt exist on the database or the user havent played yet

@@ -79,7 +79,7 @@ api.get('/', (req, res) => {
 	)
 })
 
-api.get('/delete', async (req, res) => {
+api.delete('/delete', async (req, res) => {
 	// Take the JWT from the authorization section in the header
 	const token = req.headers.authorization
 	// Take the email from the body
@@ -87,7 +87,7 @@ api.get('/delete', async (req, res) => {
 
 	// If the email wasnt set
 	if (email === undefined) {
-		res.status(301).json({ error: 'Email not provided' })
+		res.status(400).json({ error: 'Email not provided' })
 	}
 	try {
 		// Try to delete the account
@@ -100,7 +100,7 @@ api.get('/delete', async (req, res) => {
 		res.status(301).json({ error: `Cant delete account ${err}` })
 	}
 	// In case of succes
-	res.status(200).json({ succes: 'Deleted' })
+	res.status(200).json({ succes: `Deleted ${email} account` })
 })
 
 /*
@@ -178,19 +178,6 @@ api.post('/register', async (req, res) => {
 		data.email === undefined
 	)
 		return res.status(400).json({ error: 'Invalid body' })
-
-	// Check if the data send is less
-	for (datas in data) {
-		if (
-			String(data.password).length <= 3 ||
-			String(data.password).length > 128 ||
-			checkData(data.datas) === false
-		) {
-			return res.status(400).json({ error: `invalid format in ${datas}` })
-		} else {
-			console.log(`data`)
-		}
-	}
 
 	// Search in the database who have the same username and email than the user (partially work the 12/06)
 	const exist = await newUser.findOne({
@@ -296,6 +283,7 @@ api.post('/forget', async (req, res) => {
 		{ email: data.email },
 		{ password: generateHash(data.password) },
 	)
+	res.cookie('jwt', generateJwt(data))
 	res.status(200).json({
 		succes: 'The password have been succesfully changed',
 	})
@@ -316,7 +304,7 @@ api.post('/addScore', async (req, res) => {
 		res.status(400).json({ error: 'Missing body content' })
 
 	// Check if the score contain only numeric character
-	if (req.body.score.match(/^[0-9]+$/) == null)
+	if (req.body.score === NaN)
 		res.status(400).json({ error: 'Bad score type' })
 
 	// Creating our history object
