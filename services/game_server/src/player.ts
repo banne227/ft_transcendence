@@ -1,5 +1,6 @@
 import { state, Segment, Player, Food , MAP_SIZE} from './game'
 import { spawnFood, spawnDead_rest } from './food'
+import { addScore } from './api'
 
 const SPEED = 5
 
@@ -38,6 +39,7 @@ function setDead(id: string): boolean {
 
 	player.alive = false
 	console.log(`Player ${state.players[id]?.name} died`)
+	addScore(id, player.score)
 	spawnDead_rest(id)
 	return false
 }

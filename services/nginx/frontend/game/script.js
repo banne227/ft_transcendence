@@ -48,7 +48,7 @@ addEventListener("keydown", function (e) {
 	if (e.key === "ArrowLeft") socket.emit("direction", "LEFT");
 	if (e.key === "ArrowRight") socket.emit("direction", "RIGHT");
 	if (e.key === "Enter") {
-		socket.emit("join", "aori");
+		socket.emit("join", "banne");
 		socket.on("joined");
 	}
 	if (e.key === "b") socket.emit("boost");
