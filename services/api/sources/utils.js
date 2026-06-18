@@ -28,16 +28,17 @@ async function generateHash(password) {
 }
 
 /* Generate token to not have to reconnect every time */
-function generateJwt(userdata) {
+function generateJwt(email, uuid) {
 	/* Get the secrete from the enviroment  */
-	const key = process.env.JWT_SECRET
 	/* Initialized the payload for the jwt */
 	const payload = {
+		iss: 'https://transcendence.42.fr',
 		date: Date(),
-		email: userdata.email,
+		email: email,
+		uuid: uuid,
 	}
 	/* Create the token */
-	token = jwt.sign(payload, key, { expiresIn: '1d' })
+	token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' })
 	return token
 }
 

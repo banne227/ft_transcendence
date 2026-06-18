@@ -47,257 +47,215 @@ process.on('SIGTERM', (code_signal_error) => {
 })
 
 /* ----- GET REQUEST METHODE ----- */
-
-/*
- * Endpoint to check from the client if the api is up
- * METHODE: GET
- */
 api.get('/health', (req, res) => {
 	res.status(200).json({ status: 'API status : OK' })
 })
 
-/*
- * Endpoint to retrieve the number of users currently register in the database
- * METHODE: GET
- */
 api.get('/countUser', async (req, res) => {
 	let numberOfUser = await newUser.collection.count()
 	res.status(200).json({ users: numberOfUser })
 })
 
-/*
- * Endpoint to log out the user connected to this session
- * METHODE: GET
- */
 api.get('/logout', (req, res) => {
+	// Redirect the user to the hub page
 	res.redirect('/')
 })
 
 api.get('/', (req, res) => {
-	res.redirect(
+	// Redirect the user to the API documentation
+	res.status(301).redirect(
 		'https://github.com/banne227/ft_transcendence/blob/main/docs/API.md',
 	)
 })
 
-api.delete('/delete', async (req, res) => {
-	// Take the JWT from the authorization section in the header
-	const token = req.headers.authorization
-	// Take the email from the body
-	const email = req.body.email
-
-	// If the email wasnt set
-	if (email === undefined) {
-		res.status(400).json({ error: 'Email not provided' })
-	}
-	try {
-		// Try to delete the account
-		await newUser
-			.find({ email: { $eq: email } })
-			.deleteOne()
-			.exec()
-	} catch (err) {
-		// In case of error
-		res.status(301).json({ error: `Cant delete account ${err}` })
-	}
-	// In case of succes
-	res.status(200).json({ succes: `Deleted ${email} account` })
-})
-
-/*
- * Endpoint to check if the user jwt is valid
- * METHODE: GET
- * BODY SYTHAX: JSON
- * BODY CONTENT:
- *   "jwt": "jwt of the user"
- * RETURN STATUS CODES:s
- *  - 200 : The jwt of the user is fine
- *  - 401 : The jwt of the user isnt valid
- *  - 400 : The user doesnt have jwt
- */
 api.get('/jwt/validate', (req, res) => {
 	// Take the JWT from the authorization section in the header
 	const token = req.headers.authorization
 
 	// Check if a token is on the authorization header
 	if (!token) {
-		res.status(400).json({ error: 'No token provided' })
+		return res.status(400).json({ error: 'No token provided' })
 	}
+
 	// Use the function to check if the token was not altered
 	const valid = validateJwt(token)
 	if (valid) {
-		res.status(200).json({ succes: 'The JWT is valid' })
+		return res.status(200).json({ succes: 'The JWT is valid' })
 	} else {
-		res.status(401).json({ error: 'Invalid JWT' })
+		return res.status(401).json({ error: 'Invalid JWT' })
 	}
 })
 
-// Get the complete match history of a user by going to /api/history/USERNAME
+api.get('/jwt/regenerate', async (req, res) => {
+	// Take the token from the header
+	const currentToken = req.authorization
+
+	console.log(currentToken)
+	if (currentToken === undefined) {
+		return res
+			.status(200)
+			.json({ succes: 'The user is currently not loggd ' })
+	}
+
+	try {
+		// Verify the token using the jwt verify methode
+		const { uuid, email } = jwt.verify(currentToken, process.env.JWT_SECRET)
+		// If the uuid or the email of the JWT is empty
+		if (!uuid || !email) {
+			return res.status(401).json({ error: 'Invalid token' })
+		}
+		// Search on the database if a user who have this uuid and this email exist
+		const userData = await newUser.findOne({
+			$and: [{ email: email }, { uuid: uuid }],
+		})
+		// If not exist
+		if (userData === null) {
+			return res.status(401).json({ error: 'Invalid token' })
+		}
+		// Generating our new jwt and put him on the cookie of the response
+		res.cookie('jwt', generateJwt(email, uuid))
+		// Say that we have succesfully create the token
+		return res
+			.status(200)
+			.json({ succes: 'Token successfully regenerated' })
+	} catch (err) {
+		// Check if the error catch is because the token expired
+		if (err.name === 'TokenExpiredError')
+			return res.status(401).json({ error: 'Token has expired' })
+		// Dfault error
+		return res.status(401).json({ error: 'Invalid token' })
+	}
+})
+
 api.get('/history/:userName', async (req, res) => {
 	// Get the username specified in uri parameter
 	const username = req.params.userName
 	// Searching for the user on the db
-	const aaa = await newUser
+	const data = await newUser
 		.findOne({ username: { $eq: username } }, '-history._id')
 		.lean()
 	// if the user doesnt exist
-	if (aaa === null) res.status(404).json({ error: `cannot find ${username}` })
+	if (data === null)
+		return res.status(404).json({ error: `cannot find ${username}` })
 	// if the user exist but it doesnt played a single match
-	if (aaa.history === null)
-		res.status(404).json({ error: `${username} didnt have played yet` })
+	if (data.history === null)
+		return res
+			.status(404)
+			.json({ error: `${username} didnt have played yet` })
 	// Send the history in a json format
-	res.status(200).json(aaa.history)
+	return res.status(200).json(data.history)
 })
 
 /* ----- POST REQUEST METHODE ----- */
-
-/*
- * Endpoint to register a user
- * METHODE: POST
- * BODY SYTHAX: JSON
- * BODY CONTENT:
- *   "username": "username of the user"
- *   "password": "password of the user"
- *   "email": "email of the user"
- * RETURN STATUS CODES:
- *  - 200 : Everything is fine
- *  - 451 : The password provided isnt valid
- * ADDITIONAL NOTES:
- *   JWT need to be store in the localstorage section of the browser
- *   and be passed in the authorization headers of the request
- * REF:
- *   - https://www.youtube.com/watch?v=UBUNrFtufWo
- */
 api.post('/register', async (req, res) => {
 	// Get the content of the body of the request
-	const data = req.body
+	const { username, password, email } = req.body
 
 	// Check if the user have put an username, password, and email
-	if (
-		data.username === undefined ||
-		data.password === undefined ||
-		data.email === undefined
-	)
+	if (username === undefined || password === undefined || email === undefined)
 		return res.status(400).json({ error: 'Invalid body' })
 
+	// Check if the user already have a JWT
+	if (req.headers.authorization !== undefined)
+		return res.status(409).json({ error: 'Already logged' })
+
 	// Search in the database who have the same username and email than the user (partially work the 12/06)
-	const exist = await newUser.findOne({
-		$or: [
-			{ email: { $eq: data.email } },
-			{ username: { $eq: data.username } },
-		],
+	const alreadyExist = await newUser.findOne({
+		$or: [{ email: { $eq: email } }, { username: { $eq: username } }],
 	})
 
 	// If a user or a email is already associate with da account
-	if (exist !== null)
+	if (alreadyExist !== null)
 		return res.status(401).json({
-			error: `The username ${String(data.username).substring(0, 20)} or the email ${String(data.email).substring(0, 20)} is already taken`,
+			error: `The username ${String(username).substring(0, 20)} or the email ${String(email).substring(0, 20)} is already taken`,
 		})
 
+	// Generate a unique identifier
+	let uuid
+	while (1) {
+		uuid = crypto.randomUUID()
+		if ((await newUser.findOne({ uuid: uuid })) === null) break
+	}
 	// Create the user on the db
 	await newUser.create({
-		username: data.username,
-		email: data.email,
-		password: await generateHash(data.password),
+		username: String(username),
+		email: String(email),
+		password: String(await generateHash(password)),
+		uuid: String(uuid),
 		history: [],
 	})
+
 	// Creating our JWT
-	const jwt = generateJwt(data)
+	const jwt = generateJwt(email, uuid)
 	// Putting the JWT in the cookie response for the client
 	res.cookie('jwt', jwt)
 	// Tell to our client that our user have been created by sending a status code 200
 	return res.status(200).json({ jwt: jwt })
 })
 
-/*
- * Endpoint to log in a user
- * METHODE: POST
- * BODY SYTHAX: JSON
- * BODY CONTENT:
- *   "password": "password of the user"
- *   "email": "email of the user"
- *   "keeplog": boolean
- * RETURN STATUS CODES:
- *  - 200 : Everything is fine
- *  - 404 : The email provided or the password isnt valid
- */
 api.post('/login', async (req, res) => {
 	// Get the body of the request
-	const data = req.body
+	const { email, password } = req.body
 
 	// Check if the email and the password is here
-	if (data.email === null || data.password === null)
-		return res.sendStatus(400)
+	if (email === null || password === null)
+		return res.status(400).json({ error: 'Invalid body data' })
+
+	// Check if the user already have a JWT
+	if (req.headers.authorization !== undefined)
+		return res.status(409).json({ error: 'Already logged' })
 
 	// Check if the user with the provided email exist
-	const exist = await newUser.findOne({ email: { $eq: data.email } })
+	const exist = await newUser.findOne({ email: { $eq: email } })
 	if (exist === null) {
-		// Send a 404
-		return res.status(404).json({ error: `User ${data.email} not found` })
+		return res.status(404).json({ error: `User ${email} not found` })
 	}
 
 	// Check if the hashed password in db and the provided password match
-	const valid = await bcrypt.compare(data.password, exist.password)
-	if (valid == true) {
-		res.cookie('jwt', generateJwt(data))
+	const passwordIsValid = await bcrypt.compare(password, exist.password)
+
+	if (passwordIsValid == true) {
+		// Generate a new JWT for this session and put him on the cookies
+		res.cookie('jwt', generateJwt(email, exist.uuid))
 		return res.status(200).send(`Connection success!`)
 	} else {
+		// Sleep for 1000ms (1s) to prevent bruteforce attack to work
+		await new Promise((r) => setTimeout(r, 1000))
 		return res.status(401).send(`Invalid password`)
 	}
 })
 
-/*
- * Endpoint to modify the password of the user (no authentification for now)
- * METHODE: POST
- * BODY SYTHAX: JSON
- * BODY CONTENT:
- *   "newPassword": "the new password of the user"
- *   "email": "email of the user"
- * RETURN STATUS CODES:
- *  - 200 : Everything is fine
- *  - 400 : Missing email or/and password
- *  - 400 : The password is invalid or the email is not associate to an account
- */
 api.post('/forget', async (req, res) => {
-	const data = req.body
+	const { email, password } = req.body
 
 	// Check if the a email and a password is on the body
-	if (data.email === undefined || data.password === undefined)
+	if (email === undefined || password === undefined)
 		return res.sendStatus(400)
 
 	// Check if the password of the user is superior that 12 character
 	if (
-		(String(data.password).length <= 12 &&
-			String(data.password).length > 128) ||
-		isalnum(data.password) == false
+		(String(password).length <= 12 && String(password).length > 128) ||
+		isalnum(password) == false
 	) {
 		return res.status(401).json({ error: 'invalid password' })
 	}
 
 	// Search on the database if the user exist
-	let user = await newUser.findOne({ email: { $eq: data.email } })
+	let user = await newUser.findOne({ email: { $eq: email } })
 	// If not exist
 	if (!user)
 		return res.status(401).json({ error: 'cannot edit the password' })
 	// Update the password associate to the email on the database
 	user = await newUser.updateOne(
-		{ email: data.email },
-		{ password: generateHash(data.password) },
+		{ email: email },
+		{ password: generateHash(password) },
 	)
-	res.cookie('jwt', generateJwt(data))
-	res.status(200).json({
+	res.cookie('jwt', generateJwt(user.username, email))
+	return res.status(200).json({
 		succes: 'The password have been succesfully changed',
 	})
 })
 
-/*
- * Endpoint append data to the leaderboard. This endpoint should be only used by the game server
- * METHODE: POST
- * BODY SYTHAX: JSON
- * BODY CONTENT:
- *   "username": "The username of the user"
- *   "score": "The score of the user"
- * RETURN STATUS CODES:
- */
 api.post('/addScore', async (req, res) => {
 	// Check if the body contain a username and a score
 	if (!req.body.username || !req.body.score)
@@ -329,6 +287,36 @@ api.post('/addScore', async (req, res) => {
 	res.status(200).json({
 		succes: `Added ${req.body.username}:${req.body.score}`,
 	})
+})
+
+api.get('/logged', async (req, res) => {
+	// Take the jwt from the request
+	const token = req.authorization
+})
+
+/* ----- DELETE REQUEST METHODE ----- */
+api.delete('/delete', async (req, res) => {
+	// Take the JWT from the authorization section in the header
+	const token = req.headers.authorization
+	// Take the email from the body
+	const email = req.body.email
+
+	// If the email wasnt set
+	if (email === undefined) {
+		res.status(400).json({ error: 'Email not provided' })
+	}
+	try {
+		// Try to delete the account
+		await newUser
+			.find({ email: { $eq: email } })
+			.deleteOne()
+			.exec()
+	} catch (err) {
+		// In case of error
+		res.status(301).json({ error: `Cant delete account ${err}` })
+	}
+	// In case of succes
+	res.status(200).json({ succes: `Deleted ${email} account` })
 })
 
 // Start our API
