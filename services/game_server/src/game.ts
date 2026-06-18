@@ -20,6 +20,7 @@ export interface Player {
 	score: number
 	direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT'
 	boost: boolean
+	boost_time: number
 	width: number
 	popTail: number
 }
@@ -48,7 +49,7 @@ let state: Game = {
 }
 
 //creation de 100 nourritures au lancement
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 150; i++) {
 	state.foods.push(spawnFood(false, null))
 }
 
@@ -60,7 +61,12 @@ export function startGameLoop(makeAction: (state: Game) => void): void {
 				if (player.boost) 
 				{
 					dropPoop(player.id)
-					player.boost = false
+					player.boost_time += 1
+					if (player.boost_time >= 5)
+					{
+						player.boost = false
+						player.boost_time = 0
+ 					}
 				}
 				movePlayer(player.id)
 				update_width(player.id)

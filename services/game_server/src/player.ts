@@ -20,6 +20,7 @@ export function addPlayer(id: string, name: string): void{
 		score: 5,
 		direction: 'RIGHT',
 		boost: false,
+		boost_time: 0,
 		width: 1,
 		popTail: 0
 	}
@@ -82,11 +83,12 @@ function findFoodCollision(head: Segment, foods: Food[]): number {
 export function setBoost(id: string): void{
 	if (state.players[id])
 	{
-		if (state.players[id].score <= 0 || state.players[id].body.length <= 1)
+		if (state.players[id].score <= 0 || state.players[id].body.length <= 4)
 		{
 			console.log(`player ${id} can't speed up`)
 			return
-		}	
+		}
+		state.players[id].boost_time = 0
 		state.players[id].boost = true
 	}
 }
@@ -101,7 +103,7 @@ export function dropPoop(id: string): void {
 	{
 		let player = state.players[id]
 		player.popTail += 1
-		if (player.popTail % 3 === 0)
+		if (player.popTail % 5 === 0)
 		{
 			state.foods.push(spawnFood(true, id))
 			player.body.pop()
@@ -121,7 +123,7 @@ export function movePlayer(id: string): boolean {
 	if (!head) return false
 	const newhead: Segment = { x: head.x, y: head.y }
 
-	let speed = player.boost ? SPEED * 10 : SPEED
+	let speed = player.boost ? SPEED * 2 : SPEED
 	// Déplacer selon la direction
 	if (player.direction === 'UP')    newhead.y -= speed
 	if (player.direction === 'DOWN')  newhead.y += speed
