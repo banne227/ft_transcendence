@@ -1,5 +1,5 @@
 import { state, Segment, Player, Food , MAP_SIZE} from './game'
-import { spawnFood } from './food'
+import { spawnFood, spawnDead_rest } from './food'
 
 const SPEED = 5
 
@@ -38,6 +38,7 @@ function setDead(id: string): boolean {
 
 	player.alive = false
 	console.log(`Player ${state.players[id]?.name} died`)
+	spawnDead_rest(id)
 	return false
 }
 
