@@ -23,6 +23,7 @@ export interface Player {
 	boost_time: number
 	width: number
 	popTail: number
+	skin
 }
 
 export interface Food {
@@ -62,7 +63,7 @@ export function startGameLoop(makeAction: (state: Game) => void): void {
 				{
 					dropPoop(player.id)
 					player.boost_time += 1
-					if (player.boost_time >= 5)
+					if (player.boost_time >= 5) //le boost reste actif pendant 5 tick
 					{
 						player.boost = false
 						player.boost_time = 0

@@ -4,8 +4,6 @@ import { addScore } from './api'
 
 const SPEED = 5
 
-//creation d'un joueur ! il faudra check si le pseudo existe deja sinon je l'ecrase
-// export = fonction public qui peut etre reutiliser en dehors du fichier
 export function addPlayer(id: string, name: string): void{
 	console.log(`Player ${name} join`)
 	state.players[id] = {
