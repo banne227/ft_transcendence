@@ -100,12 +100,14 @@ export function dropPoop(id: string): void {
 	if (state.players[id] && state.players[id].alive)
 	{
 		let player = state.players[id]
-		state.foods.push(spawnFood(true, id))
-		player.score -= 1
 		player.popTail += 1
-		if (player.popTail % 3 !== 0)
+		if (player.popTail % 3 === 0)
+		{
+			state.foods.push(spawnFood(true, id))
 			player.body.pop()
-        update_width(id)
+			player.score -= 1
+			update_width(id)
+		}
 	}
 }
 
@@ -119,7 +121,7 @@ export function movePlayer(id: string): boolean {
 	if (!head) return false
 	const newhead: Segment = { x: head.x, y: head.y }
 
-	let speed = player.boost ? SPEED * 2 : SPEED
+	let speed = player.boost ? SPEED * 10 : SPEED
 	// Déplacer selon la direction
 	if (player.direction === 'UP')    newhead.y -= speed
 	if (player.direction === 'DOWN')  newhead.y += speed
