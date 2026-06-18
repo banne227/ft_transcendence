@@ -54,7 +54,7 @@ io.on("connection", (socket) => {
 
 	socket.on("direction", (dir: "UP" | "DOWN" | "LEFT" | "RIGHT") => {
 		setDirection(socket.id, dir);
-		console.log(`${state.players[socket.id]} set direction ${dir}`);
+		// console.log(`${state.players[socket.id]} set direction ${dir}`);
 	});
 
 	socket.on("disconnect", () => {
@@ -62,9 +62,9 @@ io.on("connection", (socket) => {
 		removePlayer(socket.id);
 	});
 
-	socket.on("boost", (id: string) => {
+	socket.on("boost", () => {
 		console.log(`${socket.id} speed up`);
-		setBoost(id);
+		setBoost(socket.id);
 	});
 
 	socket.on("stop_boost", (id: string) => {

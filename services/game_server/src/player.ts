@@ -1,7 +1,7 @@
 import { state, Segment, Player, Food , MAP_SIZE} from './game'
 import { spawnFood } from './food'
 
-const SPEED = 10
+const SPEED = 5
 
 //creation d'un joueur ! il faudra check si le pseudo existe deja sinon je l'ecrase
 // export = fonction public qui peut etre reutiliser en dehors du fichier
@@ -17,10 +17,11 @@ export function addPlayer(id: string, name: string): void{
 			}
 		],
 		alive: true,
-		score: 10,
+		score: 5,
 		direction: 'RIGHT',
 		boost: false,
-		width: 1
+		width: 1,
+		popTail: 0
 	}
 }
 
@@ -71,7 +72,7 @@ function findCollision(head: Segment, segments: Segment[]): number {
 
 // collision entre une tête et la nourriture
 function findFoodCollision(head: Segment, foods: Food[]): number {
-	let distance = 15
+	let distance = 25
 	return foods.findIndex(food =>
 		Math.abs(food.x - head.x) < distance &&
 		Math.abs(food.y - head.y) < distance
@@ -81,8 +82,11 @@ function findFoodCollision(head: Segment, foods: Food[]): number {
 export function setBoost(id: string): void{
 	if (state.players[id])
 	{
-		if (state.players[id].score <= 0)
+		if (state.players[id].score <= 0 || state.players[id].body.length <= 1)
+		{
+			console.log(`player ${id} can't speed up`)
 			return
+		}	
 		state.players[id].boost = true
 	}
 }
@@ -95,8 +99,12 @@ export function unsetBoost(id: string): void{
 export function dropPoop(id: string): void {
 	if (state.players[id] && state.players[id].alive)
 	{
-		state.foods.push(spawnFood(true))
-		state.players[id].score -= 1
+		let player = state.players[id]
+		state.foods.push(spawnFood(true, id))
+		player.score -= 1
+		player.popTail += 1
+		if (player.popTail % 3 !== 0)
+			player.body.pop()
         update_width(id)
 	}
 }
@@ -141,9 +149,10 @@ export function movePlayer(id: string): boolean {
 		if (food)
 		{
 			player.score += food.feed //ajt au score
-			console.log(`Player ${id} ate food ${food.id} (+${food.feed})`)
+			// console.log(`Player ${id} ate food ${food.id} (+${food.feed})`)
+			if (!state.foods[foodIndex]?.poop)
+				state.foods.push(spawnFood(false, null)) //spawn une nouvelle
 			state.foods.splice(foodIndex, 1) //suprimer ce qui a ete manger
-			state.foods.push(spawnFood(false)) //spawn une nouvelle
 		}
 	}
 	player.body.unshift(newhead) //ajouter la tete au debut de la liste

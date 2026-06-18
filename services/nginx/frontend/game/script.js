@@ -50,9 +50,9 @@ addEventListener("keydown", function (e) {
 	if (e.key === "ArrowRight") socket.emit("direction", "RIGHT");
 	if (e.key === "Enter") {
 		socket.emit("join", "aori");
-		socket.on("joined", (id) => (identif = id));
+		socket.on("joined");
 	}
-	if (e.key === " ") socket.emit("boost", identif);
+	if (e.key === "b") socket.emit("boost");
 });
 
 // socket.on("joined", (data) => {
