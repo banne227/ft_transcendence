@@ -43,7 +43,6 @@ function showChar(e) {
 document.addEventListener("keydown", showChar);
 
 addEventListener("keydown", function (e) {
-	let identif;
 	if (e.key === "ArrowUp") socket.emit("direction", "UP");
 	if (e.key === "ArrowDown") socket.emit("direction", "DOWN");
 	if (e.key === "ArrowLeft") socket.emit("direction", "LEFT");
