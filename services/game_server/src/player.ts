@@ -1,10 +1,9 @@
 import { state, Segment, Player, Food , MAP_SIZE} from './game'
-import { spawnFood } from './food'
+import { spawnFood, spawnDead_rest } from './food'
+import { addScore } from './api'
 
 const SPEED = 5
 
-//creation d'un joueur ! il faudra check si le pseudo existe deja sinon je l'ecrase
-// export = fonction public qui peut etre reutiliser en dehors du fichier
 export function addPlayer(id: string, name: string): void{
 	console.log(`Player ${name} join`)
 	state.players[id] = {
@@ -38,6 +37,8 @@ function setDead(id: string): boolean {
 
 	player.alive = false
 	console.log(`Player ${state.players[id]?.name} died`)
+	addScore(id, player.score)
+	spawnDead_rest(id)
 	return false
 }
 

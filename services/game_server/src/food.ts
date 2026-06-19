@@ -20,7 +20,6 @@ export function spawnFood(poop: boolean, playerId: string | null): Food {
 			}
 		}
 	}
-
 	return {
 		id,
 		x,
@@ -28,4 +27,33 @@ export function spawnFood(poop: boolean, playerId: string | null): Food {
 		feed: poop ? 1 : (id % 5) + 1,
 		poop,
 	}
+}
+
+//me permet de creer une instance food a la position souhaitee
+function create_rest(x: number, y:number): Food{
+	const id = FOOD_ID++
+
+	return {
+		id,
+		x,
+		y,
+		feed: (id % 3) + 1,
+		poop: true,
+	}
+}
+
+//je fais spawn les rest du joueurs
+export function spawnDead_rest(playerId: string): null {
+	let player = state.players[playerId]
+	if (!player)
+		return null
+	for (let idx = player?.body.length - 1; idx >= 0; idx-- )
+	{
+		if (idx % 2 !== 0) // je fais spawn 1/2
+			continue
+		let seg = player.body[idx]
+		if (seg)
+			state.foods.push(create_rest(seg?.x, seg?.y))
+	}
+	return null
 }
