@@ -61,7 +61,7 @@ addEventListener("keydown", function (e) {
 socket.on("gameState", (state) => {
 	const me = state.players[socket.id];
 	if (!me) return;
-	console.log(me.body, "\n");
+	// console.log(me.body, "\n");
 });
 
 // socket.on("disconnect", () => {
@@ -72,6 +72,21 @@ socket.on("gameState", (state) => {
 
 const canvas = document.getElementById("game-canvas");
 const ctx = canvas.getContext("2d");
+
+canvas.addEventListener("mousemove", (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mouseScreenX = e.clientX - rect.left;
+    const mouseScreenY = e.clientY - rect.top;
+
+    // conversion écran -> monde (inverse du scale utilisé pour le rendu)
+    const scaleX = canvas.width / 2000;
+    const scaleY = canvas.height / 2000;
+
+    const mouseWorldX = mouseScreenX / scaleX;
+    const mouseWorldY = mouseScreenY / scaleY;
+
+    socket.emit("mouseMove", { x: mouseWorldX, y: mouseWorldY });
+});
 
 let gameState = null;
 

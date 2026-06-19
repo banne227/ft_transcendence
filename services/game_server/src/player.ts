@@ -2,8 +2,6 @@ import { state, Segment, Player, Food , MAP_SIZE} from './game'
 import { spawnFood, spawnDead_rest } from './food'
 import { addScore } from './api'
 
-const SPEED = 5
-
 export function addPlayer(id: string, name: string): void{
 	console.log(`Player ${name} join`)
 	state.players[id] = {
@@ -17,7 +15,7 @@ export function addPlayer(id: string, name: string): void{
 		],
 		alive: true,
 		score: 5,
-		direction: 'RIGHT',
+		direction: {x: 0, y:-1},
 		boost: false,
 		boost_time: 0,
 		width: 1,
@@ -30,7 +28,7 @@ export function update_width(id: string): void{
 		state.players[id].width = state.players[id].score / 10
 }
 
-function setDead(id: string): boolean {
+export function setDead(id: string): boolean {
 	const player = state.players[id]
 	if (!player)
 		return false
@@ -42,20 +40,19 @@ function setDead(id: string): boolean {
 	return false
 }
 
-export function setDirection(id: string, dir:Player['direction']): void {
-	if (state.players[id])
-	{
-		if ((state.players[id].direction === 'DOWN' || state.players[id].direction === 'UP')
-			&& (dir === 'DOWN' || dir === 'UP'))
-			return
-		else if ((state.players[id].direction === 'RIGHT' || state.players[id].direction === 'LEFT')
-			&& (dir === 'RIGHT' || dir === 'LEFT'))
-			return
-		else
-			state.players[id].direction = dir
-	}
-
-}
+// export function setDirection(id: string, dir:Player['direction']): void {
+// 	if (state.players[id])
+// 	{
+// 		if ((state.players[id].direction === 'DOWN' || state.players[id].direction === 'UP')
+// 			&& (dir === 'DOWN' || dir === 'UP'))
+// 			return
+// 		else if ((state.players[id].direction === 'RIGHT' || state.players[id].direction === 'LEFT')
+// 			&& (dir === 'RIGHT' || dir === 'LEFT'))
+// 			return
+// 		else
+// 			state.players[id].direction = dir
+// 	}
+// }
 
 export function removePlayer(id: string): void {
 	console.log(`Bye ${state.players[id]?.name}`)
@@ -64,7 +61,7 @@ export function removePlayer(id: string): void {
 }
 
 //permet de regarder si la tete du joueur entre en collision avec un joueur
-function findCollision(head: Segment, segments: Segment[]): number {
+export function findCollision(head: Segment, segments: Segment[]): number {
 	let distance = 15
 	return segments.findIndex(segment =>
 		Math.abs(segment.x - head.x) < distance &&
@@ -73,7 +70,7 @@ function findCollision(head: Segment, segments: Segment[]): number {
 }
 
 // collision entre une tête et la nourriture
-function findFoodCollision(head: Segment, foods: Food[]): number {
+export function findFoodCollision(head: Segment, foods: Food[]): number {
 	let distance = 25
 	return foods.findIndex(food =>
 		Math.abs(food.x - head.x) < distance &&
@@ -112,54 +109,4 @@ export function dropPoop(id: string): void {
 			update_width(id)
 		}
 	}
-}
-
-export function movePlayer(id: string): boolean {
-	const player = state.players[id]
-	if (!player)
-		return false
-
-	//copie de la tete actuel
-	const head = player.body[0]
-	if (!head) return false
-	const newhead: Segment = { x: head.x, y: head.y }
-
-	let speed = player.boost ? SPEED * 2 : SPEED
-	// Déplacer selon la direction
-	if (player.direction === 'UP')    newhead.y -= speed
-	if (player.direction === 'DOWN')  newhead.y += speed
-	if (player.direction === 'LEFT')  newhead.x -= speed
-	if (player.direction === 'RIGHT') newhead.x += speed
-
-	//si la tete touche un mur
-	if (newhead.x <= 0 || newhead.x >= MAP_SIZE.width || newhead.y <= 0 || newhead.y >= MAP_SIZE.height)
-		return setDead(id)
-
-	//je verifie s'il y a une collision avec un joueur
-	for (const otherPlayer of Object.values(state.players)) {
-		if (otherPlayer.id === id)
-			continue
-
-		if (findCollision(newhead, otherPlayer.body) !== -1)
-			return setDead(id)
-	}
-
-	//si la tete touche de la nourriture je ne supprime pas le dernier segment du corp impression de +1
-	const foodIndex = findFoodCollision(newhead, state.foods)
-	if (foodIndex === -1)  // pas de nourriture
-		player.body.pop()
-	else
-	{
-		const food = state.foods[foodIndex]
-		if (food)
-		{
-			player.score += food.feed //ajt au score
-			// console.log(`Player ${id} ate food ${food.id} (+${food.feed})`)
-			if (!state.foods[foodIndex]?.poop)
-				state.foods.push(spawnFood(false, null)) //spawn une nouvelle
-			state.foods.splice(foodIndex, 1) //suprimer ce qui a ete manger
-		}
-	}
-	player.body.unshift(newhead) //ajouter la tete au debut de la liste
-	return true
 }

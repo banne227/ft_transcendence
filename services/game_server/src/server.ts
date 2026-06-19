@@ -3,15 +3,15 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { startGameLoop, state } from "./game";
+import { startGameLoop, Vector } from "./game";
 import {
 	addPlayer,
 	removePlayer,
-	setDirection,
 	setBoost,
 	unsetBoost,
 } from "./player";
-import { userInfo } from "os";
+
+import {updateDirMouse, updateDirArrow} from "./movement"
 
 const { join } = require('node:path');
 const app = express(); //gestion requete http
@@ -49,12 +49,21 @@ io.on("connection", (socket) => {
 	socket.on("join", (name: string) => {
 		addPlayer(socket.id, name);
 		socket.emit("joined", { id: socket.id });
-		console.log(`${socket.id} join serv`);
 	});
 
 	socket.on("direction", (dir: "UP" | "DOWN" | "LEFT" | "RIGHT") => {
-		setDirection(socket.id, dir);
-		// console.log(`${state.players[socket.id]} set direction ${dir}`);
+		const directionMap = {
+			UP: { x: 0, y: -1 },
+			DOWN: { x: 0, y: 1 },
+			LEFT: { x: -1, y: 0 },
+			RIGHT: { x: 1, y: 0 },
+		} as const;
+		console.log(`turn ${dir} so ${directionMap[dir]}`)
+		updateDirArrow(socket.id, directionMap[dir]);
+	});
+
+	socket.on("mouseMove", (vect: Vector) => {
+		updateDirMouse(socket.id, vect)
 	});
 
 	socket.on("disconnect", () => {
