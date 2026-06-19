@@ -23,7 +23,6 @@ export interface Player {
 	boost_time: number
 	width: number
 	popTail: number
-	skin
 }
 
 export interface Food {
