@@ -18,6 +18,7 @@
 - [/jwt/validate](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#jwtvalidate--get)
 - [/jwt/regenerate](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#jwtregenerate--get)
 - [/history/user](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#historyuser--get)
+- [/debug/db](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#debugdb--get)
 
 <div align="center">
 	<h1>Foreword:</h1>
@@ -25,6 +26,7 @@
 
 - The body of every request should be in JSON format. So the header need to contain `Content-Type: application/json`
 - You can use software like **Insomnia** or **Postman** to simulate request
+- Any user input who interact with the database will be sanitized to avoid NoSQLi or technic that could lead to an attacker to retrieve unauthorized data from the database. If the user put a character how is not on this list, the character is removed from his string. List of character accepted: `A-Z, a-z, 0-9, $,!,#,.,?,/,\,@,&,_,\,-,*`
 
 <div align="center">
 	<h1>Endpoints:</h1>
@@ -263,3 +265,13 @@
 
 ### Usage
 - Send the proper constructed request to `https://transcendence.42.fr/api/history/user`
+
+<div align=left>
+	<h2>/debug/db : GET</h2>
+</div>
+
+### Description
+- This endpoint is for debug only and will be remove, it retrieve any information in the users collection of the database
+
+### Usage
+- Send the proper constructed request to `https://transcendence.42.fr/api/debug/db`
