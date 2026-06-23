@@ -16,6 +16,7 @@ export function addPlayer(id: string, name: string): void{
 		alive: true,
 		score: 5,
 		direction: {x: 0, y:-1},
+		desiredDirection: {x: 0, y:-1},
 		boost: false,
 		boost_time: 0,
 		width: 1,
