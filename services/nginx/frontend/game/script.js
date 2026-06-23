@@ -7,12 +7,26 @@ function showChar(e) {
 }
 document.addEventListener("keydown", showChar);
 
+function joinGame() {
+	const username = document.getElementById("username").value;
+	socket.emit("join", username);
+
+	socket.on("join_success", (data) => {
+		console.log("Connecté en tant que", data.username);
+	});
+
+	socket.on("join_error", (message) => {
+		console.log("Erreur:", message);
+	});
+}
+
 addEventListener("keydown", function (e) {
 	if (e.key === "ArrowUp") socket.emit("direction", "UP");
 	if (e.key === "ArrowDown") socket.emit("direction", "DOWN");
 	if (e.key === "ArrowLeft") socket.emit("direction", "LEFT");
 	if (e.key === "ArrowRight") socket.emit("direction", "RIGHT");
 	if (e.key === "Enter") {
+		// joinGame()
 		socket.emit("join", socket.id);
 		socket.on("joined");
 	}

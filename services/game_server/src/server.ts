@@ -4,14 +4,14 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { startGameLoop, Vector } from "./game";
+import User from "./models/user";
+import {updateDirMouse, updateDirArrow} from "./movement"
 import {
 	addPlayer,
 	removePlayer,
 	setBoost,
 	unsetBoost,
 } from "./player";
-
-import {updateDirMouse, updateDirArrow} from "./movement"
 
 const { join } = require('node:path');
 const app = express(); //gestion requete http
@@ -46,9 +46,17 @@ app.get('/leadrrr', (req, res) => {
 io.on("connection", (socket) => {
 	console.log("Connecté :", socket.id);
 
-	socket.on("join", (name: string) => {
+	socket.on("join", async (name: string) => {
+		const user = await User.findOne({name})
+		if (!user) {
+			socket.emit("join_error", "Utilisateur introuvable");
+			addPlayer(socket.id, socket.id);
+			return;
+		}
+
+		socket.data.username = name;
 		addPlayer(socket.id, name);
-		socket.emit("joined", { id: socket.id });
+		socket.emit("joined", { name });
 	});
 
 	socket.on("direction", (dir: "UP" | "DOWN" | "LEFT" | "RIGHT") => {
