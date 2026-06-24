@@ -80,6 +80,11 @@ export function startGameLoop(makeAction: (state: Game) => void): void {
 		update_leaderboard(state)
 		makeAction(state)
 	}, TICK_RATE)
-} 
+}
+
+// for (const food of state.foods) {
+	
+//   console.log(food.x, food.y, food.feed)
+// }
 
 export { state }

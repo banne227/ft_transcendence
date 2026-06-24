@@ -1,4 +1,4 @@
-<!doctype html>
+<!-- <!doctype html>
 <html lang="fr">
 	<head>
 		<meta charset="UTF-8" />
@@ -11,7 +11,6 @@
 		<canvas id="game-canvas"></canvas>
 
 		<div id="paint-overlay">
-			<!-- Barre de titre -->
 			<div class="titlebar">
 				<div class="titlebar-left">Painter.io</div>
 				<div class="win-btns">
@@ -21,7 +20,6 @@
 				</div>
 			</div>
 
-			<!-- Barre de menu -->
 			<div class="menubar">
 				<span class="menu-item">Fichier</span>
 				<span class="menu-item">Edition</span>
@@ -32,10 +30,9 @@
 				<a href="https://transcendence.42.fr" title="LEAVE">LEAVE</a>
 			</div>
 
-			<!-- Corps : sidebar TOUT à gauche + zone transparente -->
+			 Corps : sidebar TOUT à gauche + zone transparente
 			<div class="paint-body">
 				<div class="sidebar">
-					<!-- Outils -->
 					<div class="tools-grid">
 						<div class="tool-btn">✂️</div>
 						<div class="tool-btn">⬚</div>
@@ -55,7 +52,7 @@
 
 					<div class="sidebar-sep"></div>
 
-					<!-- Palette couleurs (dans la sidebar) -->
+					 Palette couleurs (dans la sidebar)
 					<div class="palette-inline">
 						<div class="palette-preview-small">
 							<div class="bg"></div>
@@ -135,7 +132,6 @@
 
 					<div class="sidebar-sep"></div>
 
-					<!-- Leaderboard -->
 					<div class="side-panel">
 						<div class="side-panel-title">🏆 Score</div>
 						<ul class="leaderboard">
@@ -169,7 +165,6 @@
 
 					<div class="sidebar-sep"></div>
 
-					<!-- Chat -->
 					<div class="side-panel">
 						<div class="side-panel-title">💬 Chat</div>
 						<div class="chat-messages">
@@ -191,7 +186,7 @@
 					</div>
 				</div>
 
-				<!-- Zone transparente = le canvas derrière -->
+
 				<div class="canvas-zone"></div>
 				<h1>
 					<div id="output"></div>
@@ -199,7 +194,6 @@
 				</h1>
 			</div>
 
-			<!-- Barre de statut -->
 			<div class="statusbar">
 				<div class="status-cell">Painter.io</div>
 				<div class="status-cell" id="coords">x: 0, y: 0</div>
@@ -209,4 +203,111 @@
 		<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 		<script type="module" src="script.js"></script>
 	</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painter.io — Partie</title>
+  <link rel="stylesheet" href="style/style.css" />
+</head>
+<body>
+
+<div class="dos">
+
+  <div class="titlebar">
+    <div class="titlebar-left">
+      <div class="titlebar-icon"></div>
+      Painter.io
+    </div>
+    <div class="win-btns">
+      <div class="wbtn">_</div>
+      <div class="wbtn">□</div>
+      <div class="wbtn close" onclick="socket.disconnect(); window.location.href='https://transcendence.42.fr/hub'">X</div>
+    </div>
+  </div>
+
+  <div class="topbar">
+    <span style="color:#000">PAINTER<span class="hi">IO</span>.EXE&nbsp;&nbsp;v1.0</span>
+    <span style="color:#000">JOUEURS: <span style="color:#000080;font-weight:bold" id="player-count">--</span></span>
+    <span style="color:#333" id="timer">00:00:00</span>
+  </div>
+
+  <div class="main">
+
+    <div class="left-col">
+      <div class="panel-hdr">CLASSEMENT</div>
+      <div class="panel-body">
+        <ul class="leaderboard" id="leaderboard">
+          <li class="lb-item"><span class="lb-rank">#1</span><span>---</span><span class="lb-score">0</span></li>
+          <li class="lb-item"><span class="lb-rank">#2</span><span>---</span><span class="lb-score">0</span></li>
+          <li class="lb-item"><span class="lb-rank">#3</span><span>---</span><span class="lb-score">0</span></li>
+          <li class="lb-item"><span class="lb-rank">#4</span><span>---</span><span class="lb-score">0</span></li>
+          <li class="lb-item me"><span class="lb-rank" style="color:#550000">#5</span><span>YOU&gt;&gt;</span><span style="color:#550000;font-weight:bold">0</span></li>
+        </ul>
+      </div>
+      <div class="panel-hdr" style="margin-top:auto">MINI-MAP</div>
+      <div class="mini-map">
+        <svg viewBox="0 0 118 90" xmlns="http://www.w3.org/2000/svg">
+          <rect width="118" height="90" fill="#8888cc" stroke="#555" stroke-width="1"/>
+          <circle cx="59" cy="45" r="3" fill="#000000" stroke="#333" stroke-width="1" id="minimap-me"/>
+          <text x="2"  y="87" fill="#333" font-size="8" font-family="Courier New">0,0</text>
+          <text x="78" y="87" fill="#333" font-size="8" font-family="Courier New">2000</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="canvas-area">
+      <canvas id="game-canvas"></canvas>
+
+      <div class="hud-top">
+        <span><span class="hud-label">LEN: </span><span class="hud-val" id="hud-len">000</span></span>
+        <span><span class="hud-label">SCORE: </span><span class="hud-val" id="hud-score">00000</span></span>
+        <span><span class="hud-label">BOOST: </span><span class="hud-val" id="hud-boost">off</span></span>
+      </div>
+
+      <div class="center-msg" id="start-msg">
+        <div class="blink">&gt; APPUIE SUR [ENTREE] POUR JOUER _</div>
+        <div class="sub">FLECHES: DIRECTION&nbsp;&nbsp;|&nbsp;&nbsp;[B]: BOOST</div>
+      </div>
+
+      <div class="hud-bot">
+        <span><span class="hud-label">POS: </span><span class="hud-val" id="hud-pos">X:1000 Y:1000</span></span>
+        <span><span class="hud-label">PING: </span><span class="hud-val" id="hud-ping">--ms</span></span>
+        <span><span class="hud-label">FPS: </span><span class="hud-val" id="hud-fps">--</span></span>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <div class="panel-hdr">CHAT</div>
+      <div class="chat-msgs" id="chat-msgs"></div>
+      <div class="chat-in">
+        <span>&gt;</span>
+        <input type="text" id="chat-input" placeholder="msg_" />
+      </div>
+      <div class="panel-hdr" style="margin-top:auto">LEGENDE</div>
+      <div class="legend">
+        <div style="font-size:11px;color:#000"><span style="color:#ffffff">&#9632;</span> toi</div>
+        <div style="font-size:11px;color:#000"><span style="color:#ff5555">&#9632;</span> ennemi</div>
+        <div style="font-size:11px;color:#000"><span style="color:#aaffaa">&#9679;</span> nourriture</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="botbar">
+    <span><span class="key">ENTREE</span> <span class="key-lbl">jouer</span></span>
+    <span><span class="key">FLECHES</span> <span class="key-lbl">diriger</span></span>
+    <span><span class="key">B</span> <span class="key-lbl">boost</span></span>
+    <span><span class="key">ESC</span> <span class="key-lbl">menu</span></span>
+    <span style="margin-left:auto;color:#333" id="output"></span>
+  </div>
+
+</div>
+
+		<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+		<script type="module" src="script.js"></script>
+</body>
 </html>

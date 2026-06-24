@@ -16,7 +16,9 @@
 - [/logout](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#logout--get)
 - [/delete](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#delete--get)
 - [/jwt/validate](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#jwtvalidate--get)
+- [/jwt/regenerate](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#jwtregenerate--get)
 - [/history/user](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#historyuser--get)
+- [/debug/db](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#debugdb--get)
 
 <div align="center">
 	<h1>Foreword:</h1>
@@ -24,6 +26,7 @@
 
 - The body of every request should be in JSON format. So the header need to contain `Content-Type: application/json`
 - You can use software like **Insomnia** or **Postman** to simulate request
+- Any user input who interact with the database will be sanitized to avoid NoSQLi or technic that could lead to an attacker to retrieve unauthorized data from the database. If the user put a character how is not on this list, the character is removed from his string. List of character accepted: `A-Z, a-z, 0-9, $,!,#,.,?,/,\,@,&,_,\,-,*`
 
 <div align="center">
 	<h1>Endpoints:</h1>
@@ -58,6 +61,10 @@
 - 400 : The body of request is not valid.
 - 401: The username or the email of the user is already taken
 
+### Usage
+- Send the proper constructed request to `https://transcendence.42.fr/api/register`
+
+
 <div align=left>
 	<h2>/login : POST</h2>
 </div>
@@ -85,6 +92,9 @@
 - 401 : The password provided is not valid
 - 404 : The user doesnt exist
 
+### Usage
+- Send the proper constructed request to `https://transcendence.42.fr/api/login`
+
 <div align=left>
 	<h2>/forget : POST</h2>
 </div>
@@ -110,6 +120,9 @@
 - 200 : No error
 - 400 : The body of request is not valid.
 - 401 : The password provided is not valid
+
+### Usage
+- Send the proper constructed request to `https://transcendence.42.fr/api/forget`
 
 <div align=left>
 	<h2>/addscore : POST</h2>
@@ -137,6 +150,10 @@
 - 200 : No error
 - 400 : The body of request is not valid or the score is not a number.
 
+
+### Usage
+- Send the proper constructed request to `https://transcendence.42.fr/api/addscore`
+
 <div align=left>
 	<h2>/health : GET</h2>
 </div>
@@ -149,9 +166,15 @@
 	<h2>/countuser : GET</h2>
 </div>
 
+### Usage
+- Send the proper constructed request to `https://transcendence.42.fr/api/health`
+
 ### Description
 - This endpoint give the number of user register on the database
 - If the API is up, it will respond a 200 and a success json with the number of user register on the database. If not a single response was send, the API is down
+
+### Usage
+- Send the proper constructed request to `https://transcendence.42.fr/api/countuser`
 
 <div align=left>
 	<h2>/logout : GET</h2>
@@ -160,6 +183,9 @@
 ### Description
 - This endpoint disconnect the current logged user on the site
 - (NOT FINISH FOR NOW)
+
+### Usage
+- Send the proper constructed request to `https://transcendence.42.fr/api/logout`
 
 <div align=left>
 	<h2>/delete : DELETE</h2>
@@ -188,6 +214,9 @@
 - 301 : The account cannot be deleted
 - 400 : The email is missing
 
+### Usage
+- Send the proper constructed request to `https://transcendence.42.fr/api/delete`
+
 <div align=left>
 	<h2>/jwt/validate : GET</h2>
 </div>
@@ -202,6 +231,25 @@
 - 400 : The token is missing
 - 401 : The provided token is not valid
 
+### Usage
+- Send the proper constructed request to `https://transcendence.42.fr/api/jwt/validate`
+
+<div align=left>
+	<h2>/jwt/regenerate : GET</h2>
+</div>
+
+### Description
+- This endpoint allow to regenerate a JWT token keep the user logged more longer. The client should fetch this endpoint to 
+- The current JWT configuration do expire the token after 1d.
+### Header
+- The user need to provide those information in the header of the request: 
+1. authorization = The token of the user
+### HTTP status code
+- 200 : No error
+- 401 : The provided token is not valid
+### Usage
+- Send the proper constructed request to `https://transcendence.42.fr/api/jwt/regenerate`
+
 <div align=left>
 	<h2>/history/USER : GET</h2>
 </div>
@@ -214,3 +262,16 @@
 ### HTTP status code
 - 200 : No error
 - 404 : The user doesnt exist on the database or the user havent played yet
+
+### Usage
+- Send the proper constructed request to `https://transcendence.42.fr/api/history/user`
+
+<div align=left>
+	<h2>/debug/db : GET</h2>
+</div>
+
+### Description
+- This endpoint is for debug only and will be remove, it retrieve any information in the users collection of the database
+
+### Usage
+- Send the proper constructed request to `https://transcendence.42.fr/api/debug/db`

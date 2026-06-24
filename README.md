@@ -53,6 +53,17 @@ sudo make setup IP=127.0.0.1
 # SUDO IS REQUIRED TO ADD YOUR USER TO THE DOCKER GROUP AND APPEND YOUR IP TO /etc/hosts
 sudo make setup IP=IP_GET_FROM_THE_SERVER_IPADDR
 ```
+- To go into a docker container easly ()
+```sh
+make debug A=container_name
+
+# EXAMPLE
+make debug A=mongodb
+# OR
+make debug A=mongo		# Will put on the mongodb container
+# OR
+make debug A=ngi			# Will put on the nginx container
+```
 
 ## Docs :
 - [Game Server](https://github.com/banne227/ft_transcendence/blob/main/docs/GAME_SERVER.md)

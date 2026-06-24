@@ -25,6 +25,11 @@ const user_model = new Schema({
 		type: String,
 		index: true,
 	},
+	uuid: {
+		require: true,
+		type: String,
+		index: true,
+	},
 	history: [history_model],
 })
 const newUser = model('users', user_model)
