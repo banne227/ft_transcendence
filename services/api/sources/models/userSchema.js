@@ -30,6 +30,11 @@ const user_model = new Schema({
 		type: String,
 		index: true,
 	},
+	skin: {
+		type: Number,
+		index: true,
+		default: 0,
+	},
 	history: [history_model],
 })
 const newUser = model('users', user_model)

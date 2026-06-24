@@ -20,6 +20,10 @@
 - [/history/user](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#historyuser--get)
 - [/debug/db](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#debugdb--get)
 
+## PUT Endpoint
+- [/changeSkin](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#changeskin--get)
+
+
 <div align="center">
 	<h1>Foreword:</h1>
 </div>
@@ -275,3 +279,30 @@
 
 ### Usage
 - Send the proper constructed request to `https://transcendence.42.fr/api/debug/db`
+
+<div align=left>
+	<h2>/changeSkin : PUT</h2>
+</div>
+
+### Description
+- This endpoint is to change his ingame skin
+
+### Header
+- The user need to provide those information in the header of the request: 
+1. authorization = The token of the user
+
+### Body
+```json
+{
+	"skin": 0,
+}
+```
+
+### HTTP status code
+- 200 : No error
+- 400 : The jwt token or the skin color is invalid
+- 404 : The user and the uuid are not both associates on the database
+
+
+### Usage
+- Send the proper constructed request to `https://transcendence.42.fr/api/changeskin`
