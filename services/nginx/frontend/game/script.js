@@ -1,5 +1,5 @@
 const socket = io('https://transcendence.42.fr/', {
-	path: '/ws/serv/',
+	path: '/ws/serv/socket.io/',
 })
 const output = document.getElementById('output')
 
@@ -55,7 +55,7 @@ addEventListener('keydown', function (e) {
 		document.getElementById('start-msg').style.display = 'none'
 	}
 	if (e.key === 'Escape') {
-		// socket.disconnect();
+		// socket.emit("disconnect")
 		window.location.href = 'https://transcendence.42.fr/hub'
 	}
 	if (e.key === 'b') {
