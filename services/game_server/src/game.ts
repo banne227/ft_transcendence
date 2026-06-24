@@ -1,5 +1,5 @@
-import { dropPoop, update_width } from './player'
-import { movePlayer} from './movement'
+import { movePlayer, dropPoop, update_width } from './player'
+import { displayState} from './utils'
 import { spawnFood } from './food'
 import { update_leaderboard } from './leaderboard'
 
@@ -12,18 +12,13 @@ export interface Segment {
 	y: number
 }
 
-export interface Vector {
-    x: number
-    y: number
-}
 export interface Player {
 	id: string
 	name: string
 	body: Segment[] //body[0] == tete du serpent
 	alive: boolean
 	score: number
-	direction: Vector
-	desiredDirection: Vector
+	direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT'
 	boost: boolean
 	boost_time: number
 	width: number

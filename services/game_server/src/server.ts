@@ -3,15 +3,24 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
+<<<<<<< HEAD
 import { startGameLoop, Vector } from "./game";
 // import User from "./models/user";
 import {updateDirMouse, updateDirArrow} from "./movement"
+=======
+import { startGameLoop, state } from "./game";
+>>>>>>> parent of 27172a8 (Merge pull request #8 from banne227/banne)
 import {
 	addPlayer,
 	removePlayer,
+	setDirection,
 	setBoost,
 	unsetBoost,
 } from "./player";
+<<<<<<< HEAD
+=======
+import { userInfo } from "os";
+>>>>>>> parent of 27172a8 (Merge pull request #8 from banne227/banne)
 
 const { join } = require('node:path');
 const app = express(); //gestion requete http
@@ -56,6 +65,7 @@ io.on("connection", (socket) => {
 
 		socket.data.username = name;
 		addPlayer(socket.id, name);
+<<<<<<< HEAD
 		socket.emit("joined", { name });
 	});
 
@@ -66,6 +76,15 @@ io.on("connection", (socket) => {
 
 	socket.on("mouseMove", (vect: Vector) => {
 		updateDirMouse(socket.id, vect)
+=======
+		socket.emit("joined", { id: socket.id });
+		console.log(`${socket.id} join serv`);
+	});
+
+	socket.on("direction", (dir: "UP" | "DOWN" | "LEFT" | "RIGHT") => {
+		setDirection(socket.id, dir);
+		// console.log(`${state.players[socket.id]} set direction ${dir}`);
+>>>>>>> parent of 27172a8 (Merge pull request #8 from banne227/banne)
 	});
 
 	socket.on("disconnect", () => {
