@@ -97,18 +97,30 @@ const canvas = document.getElementById('game-canvas')
 const ctx = canvas.getContext('2d')
 
 canvas.addEventListener('mousemove', (e) => {
+	const me = gameState?.players[socket.id]
+	if (!me || !me.body.length) return
+
+	const camX = me.body[0].x
+	const camY = me.body[0].y
+
 	const rect = canvas.getBoundingClientRect()
+
 	const mouseScreenX = e.clientX - rect.left
 	const mouseScreenY = e.clientY - rect.top
 
-	// conversion écran -> monde (inverse du scale utilisé pour le rendu)
 	const scaleX = canvas.width / 2000
 	const scaleY = canvas.height / 2000
 
-	const mouseWorldX = mouseScreenX / scaleX
-	const mouseWorldY = mouseScreenY / scaleY
+	const mouseWorldX =
+		(mouseScreenX - canvas.width / 2) / scaleX + camX
 
-	socket.emit('mouseMove', { x: mouseWorldX, y: mouseWorldY })
+	const mouseWorldY =
+		(mouseScreenY - canvas.height / 2) / scaleY + camY
+
+	socket.emit('mouseMove', {
+		x: mouseWorldX,
+		y: mouseWorldY,
+	})
 })
 
 let gameState = null
