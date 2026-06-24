@@ -26,7 +26,7 @@ export function addPlayer(id: string, name: string): void {
 
 export function update_width(id: string): void {
     if (state.players[id] && state.players[id].alive)
-        state.players[id].width = state.players[id].score / 10
+        state.players[id].width = 10 + state.players[id].body.length / 5
 }
 
 export function setDead(id: string): boolean {
