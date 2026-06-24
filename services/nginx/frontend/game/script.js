@@ -1,24 +1,46 @@
 const socket = io("http://127.0.0.1:3000/");
-// const socket = io();
 const output = document.getElementById("output");
+
+// const socket = io("http://127.0.0.1:3000/");
+
+// const output = document.getElementById("output");
+// const feur = document.getElementById("feur");
+// function showChar(e) {
+//   output.textContent = `Key KeyDown: "${e.key}"
+// CTRL key KeyDown: ${e.ctrlKey}
+// `;
+// }
+
+// document.addEventListener("keydown", showChar);
+
+// addEventListener('keydown', function(e) {
+//   if (e.key === 'ArrowUp') {
+//     socket.emit('direction', 'UP')
+//   }
+//   if (e.key === 'ArrowDown') {
+//     socket.emit('direction', 'DOWN')
+//     socket.emit("join", "aori");
+//   }
+//   if (e.key === 'ArrowLeft') {
+//     socket.emit('direction', 'LEFT')
+//   }
+//   if (e.key === 'ArrowRight') {
+//     socket.emit('direction', 'RIGHT')
+//   }
+// });
+
+// // socket.on("joined", (data) => {
+// // 	console.log("Réponse joined :", data);
+// // });
+
+// socket.on("disconnect", () => {
+// 	console.log("Déconnecté");
+// });
 
 function showChar(e) {
 	output.textContent = `Key KeyDown: "${e.key}" CTRL key KeyDown: ${e.ctrlKey}`;
 }
 document.addEventListener("keydown", showChar);
-
-function joinGame() {
-	const username = document.getElementById("username").value;
-	socket.emit("join", username);
-
-	socket.on("join_success", (data) => {
-		console.log("Connecté en tant que", data.username);
-	});
-
-	socket.on("join_error", (message) => {
-		console.log("Erreur:", message);
-	});
-}
 
 addEventListener("keydown", function (e) {
 	if (e.key === "ArrowUp") socket.emit("direction", "UP");
@@ -26,8 +48,7 @@ addEventListener("keydown", function (e) {
 	if (e.key === "ArrowLeft") socket.emit("direction", "LEFT");
 	if (e.key === "ArrowRight") socket.emit("direction", "RIGHT");
 	if (e.key === "Enter") {
-		// joinGame()
-		socket.emit("join", socket.id);
+		socket.emit("join", "anonymous");
 		socket.on("joined");
 		document.getElementById("start-msg").style.display = "none";
 	}
@@ -48,7 +69,6 @@ addEventListener("keydown", function (e) {
 socket.on("gameState", (state) => {
 	const me = state.players[socket.id];
 	if (!me) return;
-<<<<<<< HEAD
 
 	document.getElementById("hud-len").textContent = me.body.length;
 	document.getElementById("hud-pos").textContent = `X:${Math.round(me.body[0].x - 2000)} Y:${Math.round(me.body[0].y - 2000)}`;
@@ -64,9 +84,6 @@ socket.on("gameState", (state) => {
 		minimapDot.setAttribute("cy", my);
 	}
 
-=======
-	console.log(me.body, "\n");
->>>>>>> parent of 27172a8 (Merge pull request #8 from banne227/banne)
 });
 
 // socket.on("disconnect", () => {
@@ -78,7 +95,6 @@ socket.on("gameState", (state) => {
 const canvas = document.getElementById("game-canvas");
 const ctx = canvas.getContext("2d");
 
-<<<<<<< HEAD
 canvas.addEventListener("mousemove", (e) => {
 	const rect = canvas.getBoundingClientRect();
 	const mouseScreenX = e.clientX - rect.left;
@@ -94,8 +110,6 @@ canvas.addEventListener("mousemove", (e) => {
 	socket.emit("mouseMove", { x: mouseWorldX, y: mouseWorldY });
 });
 
-=======
->>>>>>> parent of 27172a8 (Merge pull request #8 from banne227/banne)
 let gameState = null;
 
 // socket.on("connect", () => {
