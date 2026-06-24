@@ -49,7 +49,7 @@ export function spawnDead_rest(playerId: string): null {
 		return null
 	for (let idx = player?.body.length - 1; idx >= 0; idx-- )
 	{
-		if (idx % 2 !== 0) // je fais spawn 1/2
+		if (idx % 4 !== 0) // je fais spawn 1/2
 			continue
 		let seg = player.body[idx]
 		if (seg)

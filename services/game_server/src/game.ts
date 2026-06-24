@@ -54,7 +54,7 @@ let state: Game = {
 }
 
 //creation de 100 nourritures au lancement
-for (let i = 0; i < 150; i++) {
+for (let i = 0; i < 200; i++) {
 	state.foods.push(spawnFood(false, null))
 }
 

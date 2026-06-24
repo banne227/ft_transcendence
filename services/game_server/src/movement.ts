@@ -3,7 +3,7 @@ import {setDead, findCollision, findFoodCollision} from './player'
 import { spawnFood } from './food'
 import { rotate, MAX_TURN_RATE, addAngleToVect } from './rotation'
 
-const SPEED = 5
+const SPEED = 4.5
 
 //Pour avoir un vecteur avec des nombre toujours entre 0 et 1
 function normalize(vect: Vector): Vector {
