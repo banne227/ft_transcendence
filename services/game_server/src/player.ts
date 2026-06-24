@@ -2,6 +2,26 @@ import { state, Segment, Player, Food, MAP_SIZE } from './game'
 import { spawnFood, spawnDead_rest } from './food'
 import { addScore } from './api'
 
+export function addPlayer(id: string, name: string): void{
+	console.log(`Player ${name} join`)
+	state.players[id] = {
+		id: id,
+		name: name,
+		body : [
+			{
+				x: Math.floor(Math.random() * (MAP_SIZE.width - 500)) + 100,
+				y: Math.floor(Math.random() * (MAP_SIZE.height - 500)) + 100
+			}
+		],
+		alive: true,
+		score: 5,
+		direction: {x: 0, y:-1},
+		desiredDirection: {x: 0, y:-1},
+		boost: false,
+		boost_time: 0,
+		width: 1,
+		popTail: 0
+	}
 export function addPlayer(id: string, name: string): void {
     console.log(`Player ${name} join`)
     state.players[id] = {

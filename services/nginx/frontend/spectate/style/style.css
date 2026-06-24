@@ -1,0 +1,254 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   style.css                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jcrochet <jcrochet@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/02 01:33:41 by jcrochet          #+#    #+#             */
+/*   Updated: 2026/06/02 02:10:59 by jcrochet         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* =============================================
+   style.css — STRUCTURE & LAYOUT
+   Positions, tailles, flexbox, grilles.
+   Ne pas mettre de couleurs ici.
+============================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+/* ── Canvas plein écran ── */
+#game-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+}
+
+/* ── Overlay par-dessus le canvas ── */
+#paint-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  pointer-events: none;
+  font-family: Tahoma, "MS Sans Serif", sans-serif;
+  font-size: 11px;
+}
+
+.titlebar, .menubar, .sidebar, .statusbar {
+  pointer-events: all;
+}
+
+/* ── Barre de titre ── */
+.titlebar {
+  padding: 3px 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.titlebar-left {
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.win-btns { display: flex; gap: 2px; }
+
+.win-btn {
+  width: 22px; height: 20px;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Barre de menu ── */
+.menubar {
+  padding: 2px 4px;
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.menu-item {
+  padding: 2px 8px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+/* ── Corps principal ── */
+.paint-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Sidebar gauche ── */
+.sidebar {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px;
+  gap: 4px;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+/* ── Grille outils ── */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  padding: 2px;
+  width: 100%;
+}
+
+.tool-btn {
+  height: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+/* ── Séparateur ── */
+.sidebar-sep {
+  width: 100%;
+}
+
+/* ── Palette inline ── */
+.palette-inline {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px;
+}
+
+.palette-preview-small {
+  width: 26px;
+  height: 26px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.palette-preview-small .bg {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 16px; height: 16px;
+}
+
+.palette-preview-small .fg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 16px; height: 16px;
+  z-index: 1;
+}
+
+.palette-colors { display: flex; flex-direction: column; gap: 1px; }
+.palette-row { display: flex; gap: 1px; }
+
+.color-swatch {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ── Panels (leaderboard + chat) ── */
+.side-panel {
+  width: 100%;
+  padding: 4px;
+}
+
+.side-panel-title {
+  font-size: 11px;
+  font-weight: bold;
+  padding-bottom: 3px;
+  margin-bottom: 4px;
+}
+
+/* Leaderboard */
+.leaderboard { list-style: none; width: 100%; }
+
+.leaderboard li {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 0;
+  font-size: 11px;
+}
+
+.lb-rank { width: 16px; }
+.lb-name { flex: 1; padding: 0 4px; }
+
+/* Chat */
+.chat-messages {
+  height: 80px;
+  overflow-y: auto;
+  padding: 3px;
+  margin-bottom: 4px;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.chat-input-row { display: flex; gap: 3px; }
+
+.chat-input-row input {
+  flex: 1;
+  padding: 2px 4px;
+  font-size: 11px;
+  outline: none;
+  user-select: text;
+  width: auto;
+}
+
+.chat-input-row button {
+  padding: 2px 6px;
+  font-size: 11px;
+  font-family: Tahoma, sans-serif;
+  cursor: pointer;
+}
+
+/* ── Zone transparente (canvas visible derrière) ── */
+.canvas-zone {
+  flex: 1;
+  background: transparent;
+  pointer-events: none;
+}
+
+/* ── Barre de statut ── */
+.statusbar {
+  padding: 2px 6px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+  font-size: 11px;
+  pointer-events: all;
+}
+
+.status-cell {
+  padding: 1px 6px;
+  min-width: 80px;
+}
+
+h81 {
+  height: 300px;
+  width: 300px;
+}

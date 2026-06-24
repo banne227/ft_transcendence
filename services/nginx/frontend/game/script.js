@@ -1,46 +1,24 @@
 const socket = io("http://127.0.0.1:3000/");
+// const socket = io();
 const output = document.getElementById("output");
-
-// const socket = io("http://127.0.0.1:3000/");
-
-// const output = document.getElementById("output");
-// const feur = document.getElementById("feur");
-// function showChar(e) {
-//   output.textContent = `Key KeyDown: "${e.key}"
-// CTRL key KeyDown: ${e.ctrlKey}
-// `;
-// }
-
-// document.addEventListener("keydown", showChar);
-
-// addEventListener('keydown', function(e) {
-//   if (e.key === 'ArrowUp') {
-//     socket.emit('direction', 'UP')
-//   }
-//   if (e.key === 'ArrowDown') {
-//     socket.emit('direction', 'DOWN')
-//     socket.emit("join", "aori");
-//   }
-//   if (e.key === 'ArrowLeft') {
-//     socket.emit('direction', 'LEFT')
-//   }
-//   if (e.key === 'ArrowRight') {
-//     socket.emit('direction', 'RIGHT')
-//   }
-// });
-
-// // socket.on("joined", (data) => {
-// // 	console.log("Réponse joined :", data);
-// // });
-
-// socket.on("disconnect", () => {
-// 	console.log("Déconnecté");
-// });
 
 function showChar(e) {
 	output.textContent = `Key KeyDown: "${e.key}" CTRL key KeyDown: ${e.ctrlKey}`;
 }
 document.addEventListener("keydown", showChar);
+
+function joinGame() {
+	const username = document.getElementById("username").value;
+	socket.emit("join", username);
+
+	socket.on("join_success", (data) => {
+		console.log("Connecté en tant que", data.username);
+	});
+
+	socket.on("join_error", (message) => {
+		console.log("Erreur:", message);
+	});
+}
 
 addEventListener("keydown", function (e) {
 	if (e.key === "ArrowUp") socket.emit("direction", "UP");
@@ -48,7 +26,8 @@ addEventListener("keydown", function (e) {
 	if (e.key === "ArrowLeft") socket.emit("direction", "LEFT");
 	if (e.key === "ArrowRight") socket.emit("direction", "RIGHT");
 	if (e.key === "Enter") {
-		socket.emit("join", "anonymous");
+		// joinGame()
+		socket.emit("join", socket.id);
 		socket.on("joined");
 		document.getElementById("start-msg").style.display = "none";
 	}
