@@ -1,7 +1,7 @@
 import { state, Segment, Player, Food , MAP_SIZE, Vector} from './game'
 import {setDead, findCollision, findFoodCollision} from './player'
 import { spawnFood } from './food'
-import { rotate, MAX_TURN_RATE } from './rotation'
+import { rotate, MAX_TURN_RATE, addAngleToVect } from './rotation'
 
 const SPEED = 5
 
@@ -25,11 +25,16 @@ function getDirectionToMouse(id: string, mousePos: Vector): Vector | undefined {
     }
 }
 
-export function updateDirArrow(id: string, vect: Vector): void
+export function updateDirArrow(id: string, dir: string): void
 {
     let player = state.players[id]
-    if (vect && player)
-        player.direction = rotate(player.direction, vect, MAX_TURN_RATE)
+    if (dir && player)
+    {
+		if (dir === "LEFT")
+			player.direction = addAngleToVect(player.direction, -MAX_TURN_RATE)
+		else
+			player.direction = addAngleToVect(player.direction, MAX_TURN_RATE)
+	}
 }
 
 export function updateDirMouse(id: string, mousePos: Vector): void
