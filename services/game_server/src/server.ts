@@ -47,15 +47,9 @@ io.on('connection', (socket) => {
 		socket.emit('joined', { id: socket.id })
 	})
 
-	socket.on('direction', (dir: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
-		const directionMap = {
-			UP: { x: 0, y: -1 },
-			DOWN: { x: 0, y: 1 },
-			LEFT: { x: -1, y: 0 },
-			RIGHT: { x: 1, y: 0 },
-		} as const
-		console.log(`turn ${dir} so ${directionMap[dir]}`)
-		updateDirArrow(socket.id, directionMap[dir])
+	socket.on('direction', (dir: 'LEFT' | 'RIGHT') => {
+		console.log(`turn ${dir} so ${dir}`)
+		updateDirArrow(socket.id, dir)
 	})
 
 	socket.on('mouseMove', (vect: Vector) => {
