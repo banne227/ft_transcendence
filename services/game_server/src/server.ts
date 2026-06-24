@@ -13,6 +13,7 @@ const app = express() //gestion requete http
 const httpServer = createServer(app) //socket.io pour la transmission client serv
 const io = new Server(httpServer, {
 	cors: { origin: '*' },
+	path: '/',
 })
 
 app.use('/leaderboard', express.static(join(__dirname, 'leaderboard')))
