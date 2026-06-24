@@ -72,7 +72,7 @@ export function movePlayer(id: string): boolean {
 
 	//je verifie s'il y a une collision avec un joueur
 	for (const otherPlayer of Object.values(state.players)) {
-		if (otherPlayer.id === id)
+		if (otherPlayer.id === id || !otherPlayer.alive)
 			continue
 
 		if (findCollision(newhead, otherPlayer.body) !== -1)
