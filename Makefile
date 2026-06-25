@@ -12,6 +12,7 @@ down:
 	@yes | docker volumes prune > /dev/null 2>&1 || true
 	@printf "\e[0;32m[+] Shutdown every running docker network connection ...\n\e[0m"
 	@yes | docker network prune > /dev/null 2>&1 || true
+	@rm -rf ./services/nginx/run
 
 up:
 	@bash --posix ./.scripts/genCert.sh > /dev/null 2>&1
