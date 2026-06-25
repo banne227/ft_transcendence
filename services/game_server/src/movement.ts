@@ -75,12 +75,12 @@ export function movePlayer(id: string): boolean {
 		if (otherPlayer.id === id || !otherPlayer.alive)
 			continue
 
-		if (findCollision(newhead, otherPlayer.body) !== -1)
+		if (findCollision(newhead, otherPlayer.body, otherPlayer.width) !== -1)
 			return setDead(id)
 	}
 
 	//si la tete touche de la nourriture je ne supprime pas le dernier segment du corp impression de +1
-	const foodIndex = findFoodCollision(newhead, state.foods)
+	const foodIndex = findFoodCollision(newhead, state.foods, player.width)
 	if (foodIndex === -1)  // pas de nourriture
 		player.body.pop()
 	else

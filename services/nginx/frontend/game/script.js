@@ -45,8 +45,6 @@ function showChar(e) {
 document.addEventListener('keydown', showChar)
 
 addEventListener('keydown', function (e) {
-	if (e.key === 'ArrowUp') socket.emit('direction', 'UP')
-	if (e.key === 'ArrowDown') socket.emit('direction', 'DOWN')
 	if (e.key === 'ArrowLeft') socket.emit('direction', 'LEFT')
 	if (e.key === 'ArrowRight') socket.emit('direction', 'RIGHT')
 	if (e.key === 'Enter') {
@@ -201,11 +199,7 @@ function render_p(camX, camY, scaleX, scaleY) {
 				// ctx.fill();
 			} else {
 				ctx.fillStyle = `hsl(0, 0%, 100%)`
-				ctx.fillRect(x - 5, y - 5, 10, 10)
-				//ctx.beginPath();
-				//ctx.arc(x, y, 5, 0, Math.PI * 2);
-				//ctx.fillStyle = `hsl(286,100%,73%)`;
-				//ctx.fill();
+				ctx.fillRect(x - 5, y - 5, player.width, player.width)
 			}
 			i++
 		}
