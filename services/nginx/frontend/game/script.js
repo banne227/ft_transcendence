@@ -58,7 +58,6 @@ addEventListener('keydown', function (e) {
 	}
 	if (e.key === 'b') {
 		socket.emit('boost')
-		document.getElementById('hud-boost').textContent = 'on'
 	}
 })
 
@@ -71,6 +70,8 @@ socket.on('gameState', (state) => {
 	if (!me) return
 
 	document.getElementById('hud-len').textContent = me.body.length
+	document.getElementById('hud-score').textContent = me.score
+	document.getElementById('hud-boost').textContent = me.boost
 	document.getElementById('hud-pos').textContent =
 		`X:${Math.round(me.body[0].x - 2000)} Y:${Math.round(me.body[0].y - 2000)}`
 	// console.log(me.body, "\n");
@@ -146,7 +147,6 @@ function render() {
 
 	const scaleX = canvas.width / 2000
 	const scaleY = canvas.height / 2000
-	document.getElementById('hud-boost').textContent = 'off'
 
 	// position de la tête de MON joueur, utilisée pour centrer la caméra
 	const me = gameState.players[socket.id]
