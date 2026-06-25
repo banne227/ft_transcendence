@@ -28,12 +28,6 @@ addEventListener('keydown', function (e) {
 const playBtn = document.getElementById("play-btn");
 
 playBtn.addEventListener("click", () => {
-	// const storedColor = localStorage.getItem("color");
-	// if (storedColor) {
-	// 	const color = JSON.parse(storedColor);
-	// }
-
-	// const player = {name: 'anonymous', color: color}
 	socket.emit('join', 'anonymous')
 	socket.on('joined')
 	document.getElementById('start-msg').style.display = 'none'

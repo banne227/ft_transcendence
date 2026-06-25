@@ -43,7 +43,11 @@ io.on('connection', (socket) => {
 	console.log('Connecté :', socket.id)
 
 	socket.on('join', (name: string) => {
-		addPlayer(socket.id, name)
+		const storedColor = localStorage.getItem("color");
+		if (storedColor) {
+			const color = JSON.parse(storedColor);
+		}
+		addPlayer(socket.id, name)	
 		socket.emit('joined', { id: socket.id })
 	})
 

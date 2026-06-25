@@ -31,13 +31,16 @@ export function update_width(id: string): void {
 }
 
 function saveColor(id: string): void {
-    const color = {
-        id: id,
-        value: state.players[id]?.color
-    };
+    const colors = JSON.parse(localStorage.getItem("colors")); // si existe pas alors []
+    
+    colors.push({
+        id,
+        color: state.players[id]?.color
+    });
 
-    localStorage.setItem("color", JSON.stringify(color));
+    localStorage.setItem("colors", JSON.stringify(colors));
 }
+
 
 export function setDead(id: string): boolean {
     const player = state.players[id]
@@ -47,7 +50,7 @@ export function setDead(id: string): boolean {
     console.log(`Player ${state.players[id]?.name} died`)
     addScore(id, player.score)
     spawnDead_rest(id)
-    // saveColor(id)
+    saveColor(id)
     return false
 }
 
