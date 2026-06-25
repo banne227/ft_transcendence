@@ -16,6 +16,7 @@ down:
 up:
 	@bash --posix ./.scripts/genCert.sh > /dev/null 2>&1
 	@mkdir -p ./data/mongodb
+	@mkdir -p ./services/nginx/run
 	@printf "\e[0;32m[+] Starting every running container ...\n\e[0m"
 	@bash --posix ./.scripts/checkEnv.sh
 	@$(DC) up -d
