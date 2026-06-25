@@ -52,7 +52,7 @@ services:
         image: ghcr.io/techarohq/anubis:latest
         environment:
             BIND: ':9000'
-            TARGET: 'http://nginx:8080'
+            TARGET: 'unix:/tmp/nginx.sock'
         healthcheck:
             test: ['CMD', 'anubis', '--healthcheck']
             interval: 5s
