@@ -21,6 +21,7 @@ export function addPlayer(id: string, name: string): void {
         boost_time: 0,
         width: 1,
         popTail: 0,
+        color: `hsl(0, 0%, 100%)`
     }
 }
 
