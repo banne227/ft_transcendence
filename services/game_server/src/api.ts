@@ -65,3 +65,27 @@ export function addScore(id: string, to_add : number) {
         }
     );
 }
+
+//j'envoie une requete PUT pour changer le skin dun joueur
+export async function changeSkin(token : string, skin : number) {
+    const response = await fetch("http://api:4444/changeskin",
+        {
+        method: "PUT",
+        headers: {
+            "Authorization": token,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            skin: skin,
+        }),
+        }
+    );
+
+    const data = await response.json(); // récupère la réponse du serveur
+    if (!response.ok) {
+        console.error("Login échoué:", data.message);
+        return null;
+    }
+    localStorage.setItem("username", data.username); // stocke le nom
+    return data; // retourne les infos du joueur
+}

@@ -199,8 +199,7 @@ function render_p(camX, camY, scaleX, scaleY) {
 				// ctx.fill();
 			} else {
 				ctx.fillStyle = `hsl(0, 0%, 100%)`
-				ctx.fillRect(x - 5, y - 5, 10, 10)
-				// ctx.fillRect(x - 5, y - 5, player.width, player.width)    ---------------------------------------------------------------------------------------
+				ctx.fillRect(x - 5, y - 5, player.width, player.width)
 			}
 			i++
 		}
