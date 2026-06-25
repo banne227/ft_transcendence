@@ -47,7 +47,7 @@ export function setDead(id: string): boolean {
     console.log(`Player ${state.players[id]?.name} died`)
     addScore(id, player.score)
     spawnDead_rest(id)
-    saveColor(id)
+    // saveColor(id)
     return false
 }
 

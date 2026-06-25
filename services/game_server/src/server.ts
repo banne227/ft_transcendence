@@ -74,7 +74,7 @@ io.on('connection', (socket) => {
 	socket.on("changecolor", (color : string) => {
 		const player = state.players[socket.id]
 		if (player)
-			player.color = color
+		player.color = color
 	});
 })
 
