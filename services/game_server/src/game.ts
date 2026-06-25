@@ -67,7 +67,7 @@ export function startGameLoop(makeAction: (state: Game) => void): void {
 				{
 					dropPoop(player.id)
 					player.boost_time += 1
-					if (player.boost_time >= 5) //le boost reste actif pendant 5 tick
+					if (player.boost_time >= 8) //le boost reste actif pendant 5 tick
 					{
 						player.boost = false
 						player.boost_time = 0

@@ -203,3 +203,19 @@ html, body {
   border-color: #ff9 #800 #800 #ff9;
 }
 .wbtn:hover { filter: brightness(1.2); }
+
+.play-btn {
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px solid #fff;
+  background: transparent;
+  color: #fff;
+  border-radius: 6px;
+}
+
+.play-btn:hover {
+  background: #fff;
+  color: #000;
+}
