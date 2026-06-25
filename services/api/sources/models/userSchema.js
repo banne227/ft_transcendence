@@ -12,28 +12,18 @@ const user_model = new Schema({
 	username: {
 		require: true,
 		type: String,
-		index: true,
 	},
 	password: {
 		require: true,
 		type: String,
-		index: true,
 	},
 	email: {
 		require: true,
-		minlenght: 6,
 		type: String,
-		index: true,
 	},
 	uuid: {
 		require: true,
 		type: String,
-		index: true,
-	},
-	skin: {
-		type: Number,
-		index: true,
-		default: 0,
 	},
 	history: [history_model],
 })

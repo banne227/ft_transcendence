@@ -175,6 +175,8 @@ api.post('/register', async (req, res) => {
 			return res.status(200).json({ error: 'Already logged' })
 	}
 
+	if ()
+
 	// Search in the database who have the same username and email than the user (partially work the 12/06)
 	const alreadyExist = await newUser.findOne({
 		$or: [{ email: { $eq: email } }, { username: { $eq: username } }],
