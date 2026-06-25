@@ -1,43 +1,9 @@
+import {receiveChat} from "../../../game_server/src/chat"
+
 const socket = io('https://transcendence.42.fr/', {
 	path: '/ws/serv/socket.io/',
 })
 const output = document.getElementById('output')
-
-// const socket = io("http://127.0.0.1:3000/");
-
-// const output = document.getElementById("output");
-// const feur = document.getElementById("feur");
-// function showChar(e) {
-//   output.textContent = `Key KeyDown: "${e.key}"
-// CTRL key KeyDown: ${e.ctrlKey}
-// `;
-// }
-
-// document.addEventListener("keydown", showChar);
-
-// addEventListener('keydown', function(e) {
-//   if (e.key === 'ArrowUp') {
-//     socket.emit('direction', 'UP')
-//   }
-//   if (e.key === 'ArrowDown') {
-//     socket.emit('direction', 'DOWN')
-//     socket.emit("join", "aori");
-//   }
-//   if (e.key === 'ArrowLeft') {
-//     socket.emit('direction', 'LEFT')
-//   }
-//   if (e.key === 'ArrowRight') {
-//     socket.emit('direction', 'RIGHT')
-//   }
-// });
-
-// // socket.on("joined", (data) => {
-// // 	console.log("Réponse joined :", data);
-// // });
-
-// socket.on("disconnect", () => {
-// 	console.log("Déconnecté");
-// });
 
 function showChar(e) {
 	output.textContent = `Key KeyDown: "${e.key}" CTRL key KeyDown: ${e.ctrlKey}`
@@ -61,9 +27,10 @@ addEventListener('keydown', function (e) {
 	}
 })
 
-// socket.on("joined", (data) => {
-//   console.log("Réponse joined :", data);
-// });
+socket.on("chatMessage", (message) => {
+	receiveChat(message)
+	//afficher le message
+});
 
 socket.on('gameState', (state) => {
 	const me = state.players[socket.id]

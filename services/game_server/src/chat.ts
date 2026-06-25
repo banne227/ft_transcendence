@@ -27,6 +27,5 @@ export function receiveChat(message: Message): void{
         hour: "2-digit",
         minute: "2-digit"
     });
-
-    
+    //structurer le messages comme voulu
 }

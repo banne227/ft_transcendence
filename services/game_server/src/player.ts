@@ -40,19 +40,6 @@ export function setDead(id: string): boolean {
     return false
 }
 
-// export function setDirection(id: string, dir: Player['direction']): void {
-//     if (state.players[id]) {
-//         if ((state.players[id].direction === 'DOWN' || state.players[id].direction === 'UP')
-//             && (dir === 'DOWN' || dir === 'UP'))
-//             return
-//         else if ((state.players[id].direction === 'RIGHT' || state.players[id].direction === 'LEFT')
-//             && (dir === 'RIGHT' || dir === 'LEFT'))
-//             return
-//         else
-//             state.players[id].direction = dir
-//     }
-// }
-
 export function removePlayer(id: string): void {
     console.log(`Bye ${state.players[id]?.name}`)
     if (state.players[id])
