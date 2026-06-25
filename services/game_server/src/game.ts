@@ -28,6 +28,7 @@ export interface Player {
 	boost_time: number
 	width: number
 	popTail: number
+	color: string
 }
 
 export interface Food {

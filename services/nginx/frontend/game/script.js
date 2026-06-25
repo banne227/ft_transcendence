@@ -1,5 +1,3 @@
-// import {receiveChat} from "../../../game_server/src/chat"
-
 const socket = io('https://transcendence.42.fr/', {
 	path: '/ws/serv/socket.io/',
 })
@@ -60,11 +58,27 @@ socket.on('gameState', (state) => {
 		minimapDot.setAttribute('cx', mx)
 		minimapDot.setAttribute('cy', my)
 	}
+	const players = state.leaderbord
+
+	const leaderboard = document.getElementById("leaderboard");
+
+	leaderboard.innerHTML = "";
+
+	players.forEach((player, index) => {
+		const li = document.createElement("li");
+		li.className = "lb-item";
+
+		li.innerHTML = `
+			<span class="lb-rank">#${index + 1}</span>
+			<span>${player.name}</span>
+			<span class="lb-score">${player.score}</span>
+		`;
+
+		leaderboard.appendChild(li);
+	});
 })
 
-// socket.on("disconnect", () => {
-//   console.log("Déconnecté");
-// });
+
 
 // ── Ton code de rendu après ici ──────────────────────────────────
 
@@ -157,6 +171,12 @@ resize()
 const brushImg = new Image()
 brushImg.src = '../images/brush.png'
 
+document.querySelectorAll('.color').forEach(color => {
+    color.addEventListener('click', () => {
+        socket.emit("changecolor",color.style.background);
+    });
+});
+
 function render_p(camX, camY, scaleX, scaleY) {
 	var i = 0
 
@@ -174,7 +194,7 @@ function render_p(camX, camY, scaleX, scaleY) {
 				// ctx.fillStyle =`hsl(244, 95%, 22%)`;
 				// ctx.fill();
 			} else {
-				ctx.fillStyle = `hsl(0, 0%, 100%)`
+				ctx.fillStyle =  player.color
 				ctx.fillRect(x - 5, y - 5, player.width, player.width)
 			}
 			i++

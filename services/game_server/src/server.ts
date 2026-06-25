@@ -3,7 +3,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 import express from 'express'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
-import { Player, startGameLoop, Vector } from './game'
+import { state, startGameLoop, Vector } from './game'
 import { addPlayer, removePlayer, setBoost } from './player'
 import { sendMessage } from './chat'
 import { updateDirMouse, updateDirArrow } from './movement'
@@ -69,6 +69,12 @@ io.on('connection', (socket) => {
 	socket.on("chatMessage", (text : string) => {
 		const timestamp = new Date()
 		sendMessage(socket.id, text, io, timestamp.toISOString())
+	});
+
+	socket.on("changecolor", (color : string) => {
+		const player = state.players[socket.id]
+		if (player)
+			player.color = color
 	});
 })
 
