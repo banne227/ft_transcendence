@@ -69,6 +69,8 @@ socket.on('gameState', (state) => {
 	const me = state.players[socket.id]
 	if (!me) return
 
+	if (!me.alive)
+		document.getElementById('start-msg').style.display = 'block'
 	document.getElementById('hud-len').textContent = me.body.length
 	document.getElementById('hud-score').textContent = me.score
 	document.getElementById('hud-boost').textContent = me.boost
