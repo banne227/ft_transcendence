@@ -83,9 +83,8 @@ export async function changeSkin(token : string, skin : number) {
 
     const data = await response.json(); // récupère la réponse du serveur
     if (!response.ok) {
-        console.error("Login échoué:", data.message);
+        console.error("changeSkin échoué:", data.message);
         return null;
     }
-    localStorage.setItem("username", data.username); // stocke le nom
     return data; // retourne les infos du joueur
 }

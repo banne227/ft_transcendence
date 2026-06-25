@@ -75,7 +75,7 @@ export function movePlayer(id: string): boolean {
 		if (otherPlayer.id === id || !otherPlayer.alive)
 			continue
 
-		if (findCollision(newhead, otherPlayer.body, otherPlayer.width) !== -1)
+		if (findCollision(newhead, otherPlayer.body, player.width, otherPlayer.width) !== -1)
 			return setDead(id)
 	}
 

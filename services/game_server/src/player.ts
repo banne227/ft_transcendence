@@ -26,7 +26,7 @@ export function addPlayer(id: string, name: string): void {
 
 export function update_width(id: string): void {
     if (state.players[id] && state.players[id].alive)
-        state.players[id].width = 10 + state.players[id].body.length / 6
+        state.players[id].width = 10 + state.players[id].body.length / 10
 }
 
 export function setDead(id: string): boolean {
@@ -60,8 +60,8 @@ export function removePlayer(id: string): void {
 }
 
 // permet de regarder si la tete du joueur entre en collision avec un joueur
-export function findCollision(head: Segment, segments: Segment[], hitbox: number): number {
-    let distance = hitbox + 5
+export function findCollision(head: Segment, segments: Segment[], hitbox1: number, hitbox2: number): number {
+    let distance = hitbox1 + hitbox2
     return segments.findIndex(segment =>
         Math.abs(segment.x - head.x) < distance &&
         Math.abs(segment.y - head.y) < distance
@@ -70,7 +70,7 @@ export function findCollision(head: Segment, segments: Segment[], hitbox: number
 
 // collision entre une tête et la nourriture
 export function findFoodCollision(head: Segment, foods: Food[], hitbox: number): number {
-    let distance = hitbox + 15
+    let distance = hitbox + 5
     return foods.findIndex(food =>
         Math.abs(food.x - head.x) < distance &&
         Math.abs(food.y - head.y) < distance
