@@ -9,6 +9,7 @@ function showChar(e) {
 document.addEventListener('keydown', showChar)
 
 addEventListener('keydown', function (e) {
+
 	if (e.key === 'ArrowLeft') socket.emit('direction', 'LEFT')
 	if (e.key === 'ArrowRight') socket.emit('direction', 'RIGHT')
 	if (e.key === 'Escape') {
@@ -27,6 +28,12 @@ addEventListener('keydown', function (e) {
 const playBtn = document.getElementById("play-btn");
 
 playBtn.addEventListener("click", () => {
+	// const storedColor = localStorage.getItem("color");
+	// if (storedColor) {
+	// 	const color = JSON.parse(storedColor);
+	// }
+
+	// const player = {name: 'anonymous', color: color}
 	socket.emit('join', 'anonymous')
 	socket.on('joined')
 	document.getElementById('start-msg').style.display = 'none'
@@ -171,8 +178,9 @@ resize()
 const brushImg = new Image()
 brushImg.src = '../images/brush.png'
 
-document.querySelectorAll('.color').forEach(color => {
+document.querySelectorAll('.colors').forEach(color => {
     color.addEventListener('click', () => {
+		console.log(color.style.background);
         socket.emit("changecolor",color.style.background);
     });
 });
