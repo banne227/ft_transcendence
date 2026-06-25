@@ -84,7 +84,7 @@ export function dropPoop(id: string): void {
     if (state.players[id] && state.players[id].alive) {
         let player = state.players[id]
         player.popTail += 1
-        if (player.popTail % 5 === 0) {
+        if (player.popTail % 8 === 0) {
             state.foods.push(spawnFood(true, id))
             player.body.pop()
             player.score -= 1

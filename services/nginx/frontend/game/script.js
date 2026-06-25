@@ -1,4 +1,4 @@
-import {receiveChat} from "../../../game_server/src/chat"
+// import {receiveChat} from "../../../game_server/src/chat"
 
 const socket = io('https://transcendence.42.fr/', {
 	path: '/ws/serv/socket.io/',
@@ -13,19 +13,26 @@ document.addEventListener('keydown', showChar)
 addEventListener('keydown', function (e) {
 	if (e.key === 'ArrowLeft') socket.emit('direction', 'LEFT')
 	if (e.key === 'ArrowRight') socket.emit('direction', 'RIGHT')
-	if (e.key === 'Enter') {
-		socket.emit('join', 'anonymous')
-		socket.on('joined')
-		document.getElementById('start-msg').style.display = 'none'
-	}
 	if (e.key === 'Escape') {
 		// socket.emit("disconnect")
 		window.location.href = 'https://transcendence.42.fr/hub'
 	}
-	if (e.key === 'b') {
+	if (e.key === 'b' || e.key === 'click') {
 		socket.emit('boost')
 	}
+	if (e.key === 'Enter') {
+		const message = document.getElementById("chat-input").value;
+		socket.emit("chatMessage", message)
+	}
 })
+
+const playBtn = document.getElementById("play-btn");
+
+playBtn.addEventListener("click", () => {
+	socket.emit('join', 'anonymous')
+	socket.on('joined')
+	document.getElementById('start-msg').style.display = 'none'
+});
 
 socket.on("chatMessage", (message) => {
 	receiveChat(message)

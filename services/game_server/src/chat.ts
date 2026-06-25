@@ -13,10 +13,16 @@ export function sendMessage(id: string, text: string, io: Server, date: string):
     const message = {
         id: player?.id,
         name: player?.name,
-        text: null,
+        text: text,
         hour: date 
     }
 
+    const time = new Date(message.hour).toLocaleString("fr-FR", {
+        weekday: "short",
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+    console.log(`${message.name}: ${message.text} ${time}`)
     // Envoi à tous les joueurs
     io.emit("chatMessage", message);
 }
