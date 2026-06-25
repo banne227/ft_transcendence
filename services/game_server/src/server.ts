@@ -3,9 +3,9 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 import express from 'express'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
-import { startGameLoop, Vector } from './game'
-import { addPlayer, removePlayer, setBoost, unsetBoost } from './player'
-
+import { Player, startGameLoop, Vector } from './game'
+import { addPlayer, removePlayer, setBoost } from './player'
+import { sendMessage } from './chat'
 import { updateDirMouse, updateDirArrow } from './movement'
 
 const { join } = require('node:path')
@@ -66,9 +66,10 @@ io.on('connection', (socket) => {
 		setBoost(socket.id)
 	})
 
-	socket.on('stop_boost', (id: string) => {
-		unsetBoost(id)
-	})
+	socket.on("chatMessage", (text : string) => {
+		const timestamp = new Date()
+		sendMessage(socket.id, text, io, timestamp.toISOString())
+	});
 })
 
 startGameLoop((state) => {

@@ -20,7 +20,7 @@ export function addPlayer(id: string, name: string): void {
         boost: false,
         boost_time: 0,
         width: 1,
-        popTail: 0
+        popTail: 0,
     }
 }
 
