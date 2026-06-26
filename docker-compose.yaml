@@ -14,7 +14,6 @@ services:
             - './services/nginx/run:/tmp'
         restart: 'on-failure:5'
         depends_on:
-            - api
             - game
     anubis:
         image: ghcr.io/techarohq/anubis:latest
@@ -56,8 +55,6 @@ services:
         networks:
             - internal
         restart: 'on-failure:5'
-        depends_on:
-            - api
 
     gateway:
         build:
@@ -68,7 +65,6 @@ services:
         environment:
             - GATEWAY_PORT=$GATEWAY_PORT
         depends_on:
-            - api
             - auth
     auth:
         build:
@@ -84,16 +80,6 @@ services:
             - JWT_SECRET=$JWT_SECRET
             - JWT_HEADER_KEY=$JWT_HEADER_KEY
             - AUTH_PORT=$AUTH_PORT
-    api:
-        build:
-            context: ./services/api
-        networks:
-            - internal
-        restart: 'on-failure:5'
-        depends_on:
-            - mongodb
-        environment:
-            - API_PORT=$API_PORT
 
 networks:
     internal:
