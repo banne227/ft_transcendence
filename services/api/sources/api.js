@@ -15,7 +15,6 @@ const bcrypt = require('bcryptjs')
 
 // Import mongoose models
 const { newUser } = require('./models/userSchema')
-const { stack } = require('./models/leaderboardStack')
 
 // Port used by our API
 const PORT = 4444
@@ -165,13 +164,6 @@ api.post('/register', async (req, res) => {
 	// Get the content of the body of the request
 	let { username, password, email } = req.body
 
-	username = sanitizeUserInput(username)
-	password = sanitizeUserInput(password)
-	email = sanitizeUserInput(String(email).toLowerCase())
-	// Check if the user have put an username, password, and email
-	if (username === '' || password === '' || email === '')
-		return res.status(400).json({ error: 'Invalid body' })
-
 	// Check if the user already have a JWT
 	if (req.headers.authorization !== undefined) {
 		// Do a request to /jwt/validate to check if the JWT is valid
@@ -184,6 +176,24 @@ api.post('/register', async (req, res) => {
 		if (response.status === 200)
 			return res.status(200).json({ error: 'Already logged' })
 	}
+
+	// Check if the user have put an username, password, and email
+	try {
+		if (username === '') throw 'Missing username'
+		if (password === '') throw 'Missing password'
+		if (email === '') throw 'Missing email'
+	} catch (err) {
+		return res.status(400).json({ error: `${err}` })
+	}
+
+	// Sanitized user input
+	username = sanitizeUserInput(username)
+	password = sanitizeUserInput(password)
+	email = sanitizeUserInput(String(email).toLowerCase())
+
+	// use a regex to check if the email is on a right format
+	if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/))
+		return res.status(401).json({ error: 'invalid email' })
 
 	// Search in the database who have the same username and email than the user (partially work the 12/06)
 	const alreadyExist = await newUser.findOne({
@@ -204,31 +214,31 @@ api.post('/register', async (req, res) => {
 	}
 	// Create the user on the db
 	await newUser.create({
-		username: String(username),
-		email: String(email),
-		password: String(await generateHash(password)),
-		uuid: String(uuid),
+		username: `${String(username)}`,
+		email: `${String(email)}`,
+		password: `${String(await generateHash(password))}`,
+		uuid: `${String(uuid)}`,
 		history: [],
 	})
 
-	// Creating our JWT
-	const jwt = generateJwt(email, uuid)
-	// Putting the JWT in the cookie response for the client
-	res.cookie('jwt', jwt)
+	// Putting a JWT in the cookie response for the client
+	res.cookie('jwt', generateJwt(email, uuid))
 	// Tell to our client that our user have been created by sending a status code 200
-	return res.status(200).json({ jwt: jwt })
+	return res
+		.status(200)
+		.json({ Succes: `The user ${username} have been created` })
 })
 
 api.post('/login', async (req, res) => {
 	// Get the body of the request
 	let { email, password } = req.body
 
-	email = sanitizeUserInput(String(email).toLowerCase())
-	password = sanitizeUserInput(password)
-
 	// Check if the email and the password is here
 	if (email === null || password === null)
 		return res.status(400).json({ error: 'Invalid body data' })
+
+	email = sanitizeUserInput(String(email).toLowerCase())
+	password = sanitizeUserInput(password)
 
 	// Check if the user already have a JWT
 	if (req.headers.authorization !== undefined)
@@ -263,8 +273,7 @@ api.post('/forget', async (req, res) => {
 	email = sanitizeUserInput(String(email).toLowerCase())
 	password = sanitizeUserInput(password)
 	// Check if the a email and a password is on the body
-	if (email === undefined || password === undefined)
-		return res.sendStatus(400)
+	if (email === '' || password === '') return res.sendStatus(400)
 
 	if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/))
 		return res.status(401).json({ error: 'invalid email' })
@@ -296,11 +305,12 @@ api.post('/forget', async (req, res) => {
 api.post('/addScore', async (req, res) => {
 	let { score, username } = req.body
 
-	score = sanitizeUserInput(score)
-	username = sanitizeUserInput(username)
 	// Check if the body contain a username and a score
 	if (username === undefined || score === undefined)
 		return res.status(400).json({ error: 'Missing body content' })
+
+	score = sanitizeUserInput(score)
+	username = sanitizeUserInput(username)
 
 	// Check if the score is valid
 	if (isNaN(Number(score))) {
@@ -313,19 +323,23 @@ api.post('/addScore', async (req, res) => {
 	const timestamp = new Date()
 
 	// Pushing our new score into the history array
-	await newUser.updateOne(
-		{ username: username },
-		{
-			$push: {
-				history: [
-					{
-						date: `${timestamp.toISOString()}`,
-						score: Number(score),
-					},
-				],
+	await newUser
+		.updateOne(
+			{ username: username },
+			{
+				$push: {
+					history: [
+						{
+							date: `${timestamp.toISOString()}`,
+							scores: Number(score),
+						},
+					],
+				},
 			},
-		},
-	)
+		)
+		.catch((err) => {
+			console.log('catch')
+		})
 	return res.status(200).json({
 		succes: `Added ${username}:${score}`,
 	})
@@ -362,12 +376,22 @@ api.put('/changecolor', async (req, res) => {
 				error: `Provided account information invalid`,
 			})
 		// Update the database with the new skin
-		user = await newUser.updateOne(
-			{
-				$and: [{ email: jwtPayload.email }, { uuid: jwtPayload.uuid }],
-			},
-			{ color: skinColor },
-		)
+		try {
+			user = await newUser.updateOne(
+				{
+					$and: [
+						{ email: jwtPayload.email },
+						{ uuid: jwtPayload.uuid },
+					],
+				},
+				{ colors: skinColor },
+			)
+		} catch (err) {
+			console.log(err)
+			return res
+				.status(404)
+				.json({ succes: `Changed the skin to color: ${skinColor}` })
+		}
 		return res
 			.status(200)
 			.json({ succes: `Changed the skin to color: ${skinColor}` })
