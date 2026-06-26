@@ -31,7 +31,8 @@ export function update_width(id: string): void {
 }
 
 function saveColor(id: string): void {
-    const colors = JSON.parse(localStorage.getItem("colors")); // si existe pas alors []
+    const saved = localStorage.getItem("colors");
+    const colors = saved ? JSON.parse(saved) : [];
     
     colors.push({
         id,

@@ -45,9 +45,14 @@ io.on('connection', (socket) => {
 	socket.on('join', (name: string) => {
 		const storedColor = localStorage.getItem("color");
 		if (storedColor) {
-			const color = JSON.parse(storedColor);
+			const colors: { id: string; color: string }[] = JSON.parse(storedColor);
+			const colorPlayer = colors.find((p: { id: string; color: string }) => p.id === socket.id);
+			addPlayer(socket.id, name)
+			const player = state.players[socket.id]
+			if (player && colorPlayer)
+				player.color = colorPlayer.color
 		}
-		addPlayer(socket.id, name)	
+		else addPlayer(socket.id, name)
 		socket.emit('joined', { id: socket.id })
 	})
 
