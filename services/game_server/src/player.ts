@@ -1,6 +1,6 @@
-import { state, Segment, Player, Food, MAP_SIZE } from './game'
+import { state, Segment, Food, MAP_SIZE } from './game'
 import { spawnFood, spawnDead_rest } from './food'
-import { addScore } from './api'
+import { addScore, changeSkin } from './api'
 
 export function addPlayer(id: string, name: string): void {
     console.log(`Player ${name} join`)
@@ -30,19 +30,6 @@ export function update_width(id: string): void {
         state.players[id].width = 10 + state.players[id].body.length / 10
 }
 
-function saveColor(id: string): void {
-    const saved = localStorage.getItem("colors");
-    const colors = saved ? JSON.parse(saved) : [];
-    
-    colors.push({
-        id,
-        color: state.players[id]?.color
-    });
-
-    localStorage.setItem("colors", JSON.stringify(colors));
-}
-
-
 export function setDead(id: string): boolean {
     const player = state.players[id]
     if (!player)
@@ -51,7 +38,7 @@ export function setDead(id: string): boolean {
     console.log(`Player ${state.players[id]?.name} died`)
     addScore(id, player.score)
     spawnDead_rest(id)
-    saveColor(id)
+    // changeSkin()
     return false
 }
 

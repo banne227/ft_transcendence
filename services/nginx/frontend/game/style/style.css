@@ -129,7 +129,7 @@ html, body {
 .chat-msgs {
   flex: 1;
   padding: 4px 6px;
-  overflow: hidden;
+  overflow: auto;
   display: flex;
   flex-direction: column;
   gap: 1px;

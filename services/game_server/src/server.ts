@@ -43,16 +43,7 @@ io.on('connection', (socket) => {
 	console.log('Connecté :', socket.id)
 
 	socket.on('join', (name: string) => {
-		const storedColor = localStorage.getItem("color");
-		if (storedColor) {
-			const colors: { id: string; color: string }[] = JSON.parse(storedColor);
-			const colorPlayer = colors.find((p: { id: string; color: string }) => p.id === socket.id);
-			addPlayer(socket.id, name)
-			const player = state.players[socket.id]
-			if (player && colorPlayer)
-				player.color = colorPlayer.color
-		}
-		else addPlayer(socket.id, name)
+		addPlayer(socket.id, name)
 		socket.emit('joined', { id: socket.id })
 	})
 
@@ -83,7 +74,7 @@ io.on('connection', (socket) => {
 	socket.on("changecolor", (color : string) => {
 		const player = state.players[socket.id]
 		if (player)
-		player.color = color
+			player.color = color
 	});
 })
 

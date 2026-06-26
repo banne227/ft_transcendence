@@ -26,12 +26,3 @@ export function sendMessage(id: string, text: string, io: Server, date: string):
     // Envoi à tous les joueurs
     io.emit("chatMessage", message);
 }
-
-export function receiveChat(message: Message): void{
-    const time = new Date(message.hour).toLocaleString("fr-FR", {
-        weekday: "short",
-        hour: "2-digit",
-        minute: "2-digit"
-    });
-    //structurer le messages comme voulu
-}

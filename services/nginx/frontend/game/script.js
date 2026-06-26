@@ -19,10 +19,6 @@ addEventListener('keydown', function (e) {
 	if (e.key === 'b' || e.key === 'click') {
 		socket.emit('boost')
 	}
-	if (e.key === 'Enter') {
-		const message = document.getElementById("chat-input").value;
-		socket.emit("chatMessage", message)
-	}
 })
 
 const playBtn = document.getElementById("play-btn");
@@ -33,9 +29,30 @@ playBtn.addEventListener("click", () => {
 	document.getElementById('start-msg').style.display = 'none'
 });
 
-socket.on("chatMessage", (message) => {
-	receiveChat(message)
-	//afficher le message
+socket.on("chatMessage", (msg) => {
+	const time = new Date(msg.hour).toLocaleString("fr-FR", {
+		hour: "2-digit",
+		minute: "2-digit"
+	});
+
+	const box = document.getElementById("chat-msgs");
+	const line = document.createElement("div");
+	line.className = "chat-line";
+
+	const isMe = msg.id === socket.id;
+	line.innerHTML = `<span class="chat-nick" style="${isMe ? "color:#ffffff" : ""}">${msg.name}</span> <span style="color:#555;font-size:10px">${time}</span><br>${msg.text}`;
+
+	box.appendChild(line);
+	box.scrollTop = box.scrollHeight;
+});
+
+document.getElementById("chat-input").addEventListener("keydown", (e) => {
+  if (e.key !== "Enter") return;
+  const input = document.getElementById("chat-input");
+  const msg = input.value.trim();
+  if (!msg) return;
+  socket.emit("chatMessage", msg);
+  input.value = "";
 });
 
 socket.on('gameState', (state) => {
