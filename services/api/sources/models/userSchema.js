@@ -30,10 +30,10 @@ const user_model = new Schema({
 		type: String,
 		index: true,
 	},
-	skin: {
-		type: Number,
+	color: {
+		type: String,
 		index: true,
-		default: 0,
+		default: '#ffffff',
 	},
 	history: [history_model],
 })

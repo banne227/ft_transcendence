@@ -150,6 +150,16 @@ api.get('/history/:userName', async (req, res) => {
 	return res.status(200).json(data.history)
 })
 
+api.get('/user/:user/getcolor', async (req, res) => {
+	const username = sanitizeUserInput(req.params.user)
+	if (username === '')
+		return res.status(400).json({ error: 'Invalid username' })
+	const data = await newUser.findOne({ username: { $eq: username } }).lean()
+	if (data === null)
+		return res.status(404).json({ error: `cannot find ${username}` })
+	return res.status(200).json({ color: data.color })
+})
+
 /* ----- POST REQUEST METHODE ----- */
 api.post('/register', async (req, res) => {
 	// Get the content of the body of the request
@@ -224,6 +234,9 @@ api.post('/login', async (req, res) => {
 	if (req.headers.authorization !== undefined)
 		return res.status(409).json({ error: 'Already logged' })
 
+	if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/))
+		return res.status(401).json({ error: 'invalid email' })
+
 	// Check if the user with the provided email exist
 	const exist = await newUser.findOne({ email: { $eq: email } })
 	if (exist === null) {
@@ -252,6 +265,9 @@ api.post('/forget', async (req, res) => {
 	// Check if the a email and a password is on the body
 	if (email === undefined || password === undefined)
 		return res.sendStatus(400)
+
+	if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/))
+		return res.status(401).json({ error: 'invalid email' })
 
 	// Check if the password of the user is superior that 12 character
 	if (
@@ -325,31 +341,37 @@ api.put('/changeSkin', async (req, res) => {
 	// Get the JWT from the header
 	const jwt = req.headers.authorization
 	// Get the skin from the body of the request
-	const skinColor = req.body.skin
+	const skinColor = req.body.color
 
 	// Check if we have the jwt and the skin color
-	if (jwt === undefined || skinColor === undefined)
-		res.status(400).json({ error: 'Missing header or body data' })
+	if (skinColor === undefined)
+		res.status(400).json({ error: 'Missing color' })
 	// Check if the skin color composed by number
-	if (isnum(skinColor) == false)
-		res.status(400).json({ error: 'Invalid skinColor' })
+	// if (skinColor.match("^#([A-Fa-f0-9]6|[A-Fa-f0-9]3)$") == false)
+	// res.status(400).json({ error: 'Invalid skinColor' })
 	// Decode the payload of the JWT and put his content to JSON
-	const jwtPayload = JSON.parse(decodeJwt(jwt))
-	// Search on the database if we got an account with this email and this uuid
-	let user = await newUser.findOne({
-		$and: [{ email: jwtPayload.email }, { uuid: jwtPayload.uuid }],
-	})
-	// If we found nothing
-	if (user === null)
-		return res.status(404).json({ error: `User ${jwtPayload.email}` })
-	// Update the database with the new skin
-	user = await newUser.updateOne(
-		{
+	if (jwt !== undefined) {
+		const jwtPayload = JSON.parse(decodeJwt(jwt))
+		// Search on the database if we got an account with this email and this uuid
+		let user = await newUser.findOne({
 			$and: [{ email: jwtPayload.email }, { uuid: jwtPayload.uuid }],
-		},
-		{ skin: skinColor },
-	)
-	return res.json({ succes: `Changed the skin to ${skinColor}` })
+		})
+		// If we found nothing
+		if (user === null)
+			return res.status(404).json({
+				error: `Provided account information invalid`,
+			})
+		// Update the database with the new skin
+		user = await newUser.updateOne(
+			{
+				$and: [{ email: jwtPayload.email }, { uuid: jwtPayload.uuid }],
+			},
+			{ color: skinColor },
+		)
+		return res
+			.status(200)
+			.json({ succes: `Changed the skin to color: ${skinColor}` })
+	}
 })
 
 /* ----- DELETE REQUEST METHODE ----- */
