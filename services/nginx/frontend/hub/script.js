@@ -106,17 +106,58 @@ document
 		}
 	});
 
+function afficherFenetreCompte(id) {
+	document.getElementById("window-log").style.display = "none";
+	document.getElementById("window-login").style.display = "none";
+	document.getElementById("window-register").style.display = "none";
+
+	document.getElementById(id).style.display = "block";
+}
+
 document.querySelector(".btn-login").addEventListener("click", function (e) {
 	e.stopPropagation();
-	document.getElementById("window-login").style.display = "block";
+	afficherFenetreCompte("window-login")
 });
+
 document.getElementById("btn-inscrire").addEventListener("click", function (e) {
 	e.preventDefault();
-	document.getElementById("window-register").style.display = "block";
+	afficherFenetreCompte("window-register")
 });
 
 document.querySelectorAll(".btn-close").forEach(function (btn) {
 	btn.addEventListener("click", function () {
 		btn.closest(".window").style.display = "none";
 	});
+});
+
+document.getElementById("form-register").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const username = document.getElementById("register-username").value;
+    const password = document.getElementById("register-password").value;
+    const passwordConfirm = document.getElementById("register-password-confirm").value;
+    const email = document.getElementById("register-email").value;
+
+    if (password !== passwordConfirm) {
+        alert("Les mots de passe ne correspondent pas.");
+        return;
+    }
+
+    socket.emit("register", {
+        username,
+        password,
+        email
+    });
+});
+
+document.getElementById("form-login").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const username = document.getElementById("login-username").value;
+    const password = document.getElementById("login-password").value;
+
+    socket.emit("login", {
+        username,
+        password
+    });
 });

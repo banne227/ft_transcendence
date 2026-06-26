@@ -46,6 +46,17 @@ export interface Game {
 	mapSize: { width: number; height: number }
 }
 
+export interface register_info {
+	username: string
+	password: string
+	email: string
+}
+
+export interface login_info {
+	username: string
+	password: string
+}
+
 //===init du jeu
 let state: Game = {
 	players: {},
