@@ -17,7 +17,6 @@ db.createUser({
 });
 
 db.createCollection("users");
-db.createCollection("leaderboard");
 EOF
 
 # mongosh "mongodb://user:user@127.0.0.1/databases"
