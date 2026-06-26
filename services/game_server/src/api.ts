@@ -67,7 +67,7 @@ export function addScore(id: string, to_add : number) {
 }
 
 //j'envoie une requete PUT pour changer le skin dun joueur
-export async function changeSkin(token : string, skin : number) {
+export async function changeSkin(token : string, color : string) {
     const response = await fetch("http://api:4444/changeskin",
         {
         method: "PUT",
@@ -76,7 +76,7 @@ export async function changeSkin(token : string, skin : number) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            skin: skin,
+            color: color,
         }),
         }
     );
@@ -87,4 +87,11 @@ export async function changeSkin(token : string, skin : number) {
         return null;
     }
     return data; // retourne les infos du joueur
+}
+
+
+export async function getcolor(username: string) : Promise<string> {
+    const response = await fetch(`http://api:4444/user/${username}/getcolor`);
+    const data = await response.json();
+    return data.color; 
 }

@@ -7,6 +7,7 @@ import { state, startGameLoop, Vector } from './game'
 import { addPlayer, removePlayer, setBoost } from './player'
 import { sendMessage } from './chat'
 import { updateDirMouse, updateDirArrow } from './movement'
+import { changeSkin } from './api'
 
 const { join } = require('node:path')
 const app = express() //gestion requete http
@@ -75,6 +76,11 @@ io.on('connection', (socket) => {
 		const player = state.players[socket.id]
 		if (player)
 		player.color = color
+		socket.emit("asktoken")
+		socket.on("gettoken", (token : string) =>{
+			if(token)
+				changeSkin(token, color)
+		});
 	});
 })
 

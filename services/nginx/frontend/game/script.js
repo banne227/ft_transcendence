@@ -33,6 +33,11 @@ playBtn.addEventListener("click", () => {
 	document.getElementById('start-msg').style.display = 'none'
 });
 
+socket.on("asktoken", () => {
+	const token = getItem("jwt") 
+	socket.emit("gettoken", token)
+})
+
 socket.on("chatMessage", (msg) => {
 	const time = new Date(msg.hour).toLocaleString("fr-FR", {
 		hour: "2-digit",
