@@ -337,7 +337,7 @@ api.get('/logged', async (req, res) => {
 	res.status(404).json({ error: 'No finish yettt' })
 })
 
-api.put('/changeSkin', async (req, res) => {
+api.put('/changecolor', async (req, res) => {
 	// Get the JWT from the header
 	const jwt = req.headers.authorization
 	// Get the skin from the body of the request
