@@ -13,6 +13,29 @@ services:
         volumes:
             - './services/nginx/run:/tmp'
         restart: 'on-failure:5'
+        depends_on:
+            - api
+            - game
+    anubis:
+        image: ghcr.io/techarohq/anubis:latest
+        environment:
+            BIND: ':9000'
+            TARGET: 'unix:/tmp/nginx.sock'
+        healthcheck:
+            test: ['CMD', 'anubis', '--healthcheck']
+            interval: 5s
+            timeout: 30s
+            retries: 5
+            start_period: 500ms
+        depends_on:
+            - nginx
+        networks:
+            - internal
+        volumes:
+            - './botPolicy.yaml:/data/cfg/botPolicy.yaml:ro'
+            - './services/nginx/run:/tmp'
+        restart: 'on-failure:5'
+
     mongodb:
         build:
             context: ./services/mongo
@@ -34,10 +57,22 @@ services:
             - internal
         restart: 'on-failure:5'
         depends_on:
-            - mongodb
-    api:
+            - api
+
+    gateway:
         build:
-            context: ./services/api
+            context: ./services/gateway
+        networks:
+            - internal
+        restart: 'on-failure:5'
+        environment:
+            - GATEWAY_PORT=$GATEWAY_PORT
+        depends_on:
+            - api
+            - auth
+    auth:
+        build:
+            context: ./services/auth
         networks:
             - internal
         restart: 'on-failure:5'
@@ -48,25 +83,17 @@ services:
             - MONGO_PASS=$MONGO_PASS
             - JWT_SECRET=$JWT_SECRET
             - JWT_HEADER_KEY=$JWT_HEADER_KEY
-    anubis:
-        image: ghcr.io/techarohq/anubis:latest
-        environment:
-            BIND: ':9000'
-            TARGET: 'unix:/tmp/nginx.sock'
-        healthcheck:
-            test: ['CMD', 'anubis', '--healthcheck']
-            interval: 5s
-            timeout: 30s
-            retries: 5
-            start_period: 500ms
-        depends_on:
-            - nginx
+            - AUTH_PORT=$AUTH_PORT
+    api:
+        build:
+            context: ./services/api
         networks:
             - internal
-        volumes:
-            - './botPolicy.yaml:/data/cfg/botPolicy.yaml:ro'
-            - './services/nginx/run:/tmp'
         restart: 'on-failure:5'
+        depends_on:
+            - mongodb
+        environment:
+            - API_PORT=$API_PORT
 
 networks:
     internal:
@@ -85,4 +112,4 @@ volumes:
             type: none
             o: bind
             device: $PWD/data/mongodb
-        name: ft_transcendence_mongodb
+        name: ft_transcendence_volume

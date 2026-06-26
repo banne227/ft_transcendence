@@ -1,0 +1,19 @@
+{
+	"main": "index.js",
+	"type": "commonjs",
+	"dependencies": {
+		"cors": "^2.8.6",
+		"express": "^5.2.1",
+		"helmet": "^8.2.0",
+		"http-proxy-middleware": "^4.1.1",
+		"morgan": "^1.11.0"
+	},
+	"name": "gateway",
+	"private": true,
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	}
+}
