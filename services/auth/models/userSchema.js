@@ -25,7 +25,14 @@ const user_model = new Schema({
 		require: true,
 		type: String,
 	},
-	history: [history_model],
+	data: {
+		history: [history_model],
+		color: {
+			require: true,
+			type: String,
+			Default: '#ffffff',
+		},
+	},
 })
 const newUser = model('users', user_model)
 module.exports = {
