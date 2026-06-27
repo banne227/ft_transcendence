@@ -132,33 +132,20 @@ api.get("/jwt/generate", (req, res) => {
 		});
 		return res.status(200).json({ jwt: jwt });
 	} catch (err) {
-		return res.status(500).json({
-			error: {
-				message: `${err}`,
-				code: 500,
-			},
-		});
+		return res.status(500).json;
 	}
 });
 
 api.get("/jwt/decode", async (req, res) => {
-	const { jwt } = req.body;
-
-	if (jwt === undefined) res.status(400).json({ error: "Missing jwt" });
-
-	const isvalid = await fetch("http://internal:1111/jwt/validate", {
-		method: GET,
-		headers: {
-			authorization: `${jwt}`,
-		},
-	});
-
-	if (isvalid.status !== 200)
-		return res.status(406).json({ error: "Cant decode invalid token" });
+	const { jwt } = req.query;
+	// Check if we have a jwt
+	if (jwt === undefined) {
+		return res.status(400).json({ error: "Invalid JWT" });
+	}
 	// Split our jwt in three part
 	let jwtData = jwt.split(".");
-	// Return the payload decode from base64 to JSON
-	return atob(jwtData[1]);
+	// Return the payload decoded in plain text
+	return res.status(200).json(atob(jwtData[1]));
 });
 
 api.post("/addScore", async (req, res) => {
@@ -168,19 +155,17 @@ api.post("/addScore", async (req, res) => {
 	if (username === undefined || score === undefined)
 		return res.status(400).json({ error: "Missing body content" });
 
-	score = sanitizeUserInput(score);
 	username = sanitizeUserInput(username);
 
 	// Check if the score is valid
-	if (isNaN(Number(score))) {
+	if (score === "" || isNaN(Number(score))) {
 		return res.status(400).json({ error: "Bad score type" });
 	}
 
-	// Creating our history object
-	const newData = { date: `${new Date()}`, score: Number(score) };
 	// Get the current date
 	const timestamp = new Date();
 
+	console.log(score)
 	// Pushing our new score into the history array
 	await newUser
 		.updateOne(
@@ -190,7 +175,7 @@ api.post("/addScore", async (req, res) => {
 					history: [
 						{
 							date: `${timestamp.toISOString()}`,
-							scores: Number(score),
+							score: Number(score),
 						},
 					],
 				},
