@@ -50,7 +50,16 @@ process.on("SIGTERM", (code_signal_error) => {
 });
 
 /* ----- GET REQUEST METHODE ----- */
-api.get("/health", (req, res) => {
+api.get("/", (req, res) => {
+	// Redirect the user to the API documentation
+	res
+		.status(301)
+		.redirect(
+			"https://github.com/banne227/ft_transcendence/blob/main/docs/API.md",
+		);
+});
+
+api.get("/health", async (req, res) => {
 	res.status(200).json({ status: "API status : OK" });
 });
 
@@ -62,15 +71,6 @@ api.get("/countUser", async (req, res) => {
 api.get("/logout", (req, res) => {
 	// Redirect the user to the hub page
 	res.redirect("/");
-});
-
-api.get("/", (req, res) => {
-	// Redirect the user to the API documentation
-	res
-		.status(301)
-		.redirect(
-			"https://github.com/banne227/ft_transcendence/blob/main/docs/API.md",
-		);
 });
 
 api.get("/history/:userName", async (req, res) => {
@@ -175,12 +175,17 @@ api.post("/register", async (req, res) => {
 	})
 		.then((response) => response.json()) // Convert the request data in json
 		.then((data) => {
-			res.cookie("jwt", data.jwt);
+			res.cookie("jwt", data.jwt); // Put the JWT in the cookie box
 			return res
 				.status(200)
-				.json({ Succes: `The user ${username} have been created` });
+				.json({ Succes: `The user ${username} have been created` }); // Send the response
 		})
-		.catch(console.error());
+		.catch((err) => {
+			console.log(err)
+			res.status(200).json({
+				Waring: `The user ${username} have been created but a JWT token wasnt created!`,
+			})
+		});
 });
 
 api.post("/login", async (req, res) => {
@@ -387,6 +392,9 @@ api.delete("/delete", async (req, res) => {
 api.get("/debug/db", async (req, res) => {
 	const rrr = await newUser.find();
 
+	console.log(rrr)
+	if (rrr === undefined || rrr.length == 0)
+		res.status(200).json({info: "The database is empty"})
 	res.status(200).json(rrr);
 });
 

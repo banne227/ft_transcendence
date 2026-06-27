@@ -1,88 +1,101 @@
 services:
-    nginx:
-        build:
-            context: ./services/nginx
-        ports:
-            - 0.0.0.0:80:80
-            - 0.0.0.0:443:443
-        secrets:
-            - nginx.crt
-            - nginx.key
-        networks:
-            - internal
-        volumes:
-            - './services/nginx/run:/tmp'
-        restart: 'on-failure:5'
-    mongodb:
-        build:
-            context: ./services/mongo
-        command: --config /etc/mongod.conf
-        volumes:
-            - mongodb:/data/db
-        networks:
-            - internal
-        restart: 'on-failure:5'
-        environment:
-            - MONGO_USER=$MONGO_USER
-            - MONGO_PASS=$MONGO_PASS
-            - MONGO_ADMIN_USER=$MONGO_ADMIN_USER
-            - MONGO_ADMIN_PASS=$MONGO_ADMIN_PASS
-    game:
-        build:
-            context: ./services/game_server
-        networks:
-            - internal
-        restart: 'on-failure:5'
-        depends_on:
-            - mongodb
-    api:
-        build:
-            context: ./services/api
-        networks:
-            - internal
-        restart: 'on-failure:5'
-        depends_on:
-            - mongodb
-        environment:
-            - MONGO_USER=$MONGO_USER
-            - MONGO_PASS=$MONGO_PASS
-            - JWT_SECRET=$JWT_SECRET
-            - JWT_HEADER_KEY=$JWT_HEADER_KEY
-    anubis:
-        image: ghcr.io/techarohq/anubis:latest
-        environment:
-            BIND: ':9000'
-            TARGET: 'unix:/tmp/nginx.sock'
-        healthcheck:
-            test: ['CMD', 'anubis', '--healthcheck']
-            interval: 5s
-            timeout: 30s
-            retries: 5
-            start_period: 500ms
-        depends_on:
-            - nginx
-        networks:
-            - internal
-        volumes:
-            - './botPolicy.yaml:/data/cfg/botPolicy.yaml:ro'
-            - './services/nginx/run:/tmp'
-        restart: 'on-failure:5'
+  nginx:
+    build:
+      context: ./services/nginx
+    ports:
+      - 0.0.0.0:80:80
+      - 0.0.0.0:443:443
+    secrets:
+      - nginx.crt
+      - nginx.key
+    networks:
+      - internal
+    volumes:
+      - "./services/nginx/run:/tmp"
+    restart: "on-failure:5"
+  mongodb:
+    build:
+      context: ./services/mongo
+    command: --config /etc/mongod.conf
+    volumes:
+      - mongodb:/data/db
+    networks:
+      - internal
+    restart: "on-failure:5"
+    environment:
+      - MONGO_USER=$MONGO_USER
+      - MONGO_PASS=$MONGO_PASS
+      - MONGO_ADMIN_USER=$MONGO_ADMIN_USER
+      - MONGO_ADMIN_PASS=$MONGO_ADMIN_PASS
+  game:
+    build:
+      context: ./services/game_server
+    networks:
+      - internal
+    restart: "on-failure:5"
+    depends_on:
+      - mongodb
+  api:
+    build:
+      context: ./services/api
+    networks:
+      - internal
+    restart: "on-failure:5"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_USER=$MONGO_USER
+      - MONGO_PASS=$MONGO_PASS
+      - JWT_SECRET=$JWT_SECRET
+      - JWT_HEADER_KEY=$JWT_HEADER_KEY
+  internal:
+    build:
+      context: ./services/internal
+    networks:
+      - internal
+    restart: "on-failure:5"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_USER=$MONGO_USER
+      - MONGO_PASS=$MONGO_PASS
+      - JWT_SECRET=$JWT_SECRET
+      - JWT_HEADER_KEY=$JWT_HEADER_KEY
+  anubis:
+    image: ghcr.io/techarohq/anubis:latest
+    environment:
+      BIND: ":9000"
+      TARGET: "unix:/tmp/nginx.sock"
+    healthcheck:
+      test: ["CMD", "anubis", "--healthcheck"]
+      interval: 5s
+      timeout: 30s
+      retries: 5
+      start_period: 500ms
+    depends_on:
+      - nginx
+    networks:
+      - internal
+    volumes:
+      - "./botPolicy.yaml:/data/cfg/botPolicy.yaml:ro"
+      - "./services/nginx/run:/tmp"
+    restart: "on-failure:5"
 
 networks:
-    internal:
-        driver: bridge
+  internal:
+    driver: bridge
 
 secrets:
-    nginx.key:
-        file: ./cert/nginx.key
-    nginx.crt:
-        file: ./cert/nginx.crt
+  nginx.key:
+    file: ./cert/nginx.key
+  nginx.crt:
+    file: ./cert/nginx.crt
 
 volumes:
-    mongodb:
-        driver: local
-        driver_opts:
-            type: none
-            o: bind
-            device: $PWD/data/mongodb
-        name: ft_transcendence_mongodb
+  mongodb:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: $PWD/data/mongodb
+    name: ft_transcendence_mongodb

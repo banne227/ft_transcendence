@@ -4,13 +4,15 @@
 	<h1>Summary: </h1>
 </div>
 
-## POST Endpoint
+<h2 align="center">Access from everywhere</h2>
+
+### POST Endpoint
 - [/register](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#register--post)
 - [/login](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#login--post)
 - [/forget](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#forget--post)
 - [/addscore](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#addscore--post)
 
-## GET Endpoint
+### GET Endpoint
 - [/health](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#health--get)
 - [/countuser](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#countuser--get)
 - [/logout](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#logout--get)
@@ -20,16 +22,28 @@
 - [/history/user](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#historyuser--get)
 - [/debug/db](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#debugdb--get)
 
-## PUT Endpoint
+### PUT Endpoint
 - [/changeSkin](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#changeskin--get)
 
+<h2 align="center">Internal network endpoints</h2>
+
+### GET Endpoint
+- [/jwt/generate](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#jwtvalidate--get)
+- [/jwt/regenerate](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#jwtvalidate--get)
+- [/jwt/validate](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#jwtvalidate--get)
+- [/jwt/decode](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#jwtvalidate--get)
+- [/health](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#health--get)
+
+
+### POST Endpoint
+- [/addscore](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#addscore--post)
 
 <div align="center">
 	<h1>Foreword:</h1>
 </div>
 
 - The body of every request should be in JSON format. So the header need to contain `Content-Type: application/json`
-- You can use software like **Insomnia** or **Postman** to simulate request
+- You can use software like **Insomnia** or **Postman** to simulate request 
 - Any user input who interact with the database will be sanitized to avoid NoSQLi or technic that could lead to an attacker to retrieve unauthorized data from the database. If the user put a character how is not on this list, the character is removed from his string. List of character accepted: `A-Z, a-z, 0-9, $,!,#,.,?,/,\,@,&,_,\,-,*`
 
 <div align="center">
