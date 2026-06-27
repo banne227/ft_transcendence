@@ -1,0 +1,43 @@
+const mongoose = require('mongoose')
+const { Schema, model } = mongoose
+// Database user schemas
+
+const history_model = new Schema({
+	date: String,
+	score: Number,
+	win: Boolean,
+})
+
+const user_model = new Schema({
+	username: {
+		require: true,
+		type: String,
+		index: true,
+	},
+	password: {
+		require: true,
+		type: String,
+		index: true,
+	},
+	email: {
+		require: true,
+		minlenght: 6,
+		type: String,
+		index: true,
+	},
+	uuid: {
+		require: true,
+		type: String,
+		index: true,
+	},
+	color: {
+		type: String,
+		index: true,
+		default: '#ffffff',
+	},
+	history: [history_model],
+})
+const newUser = model('users', user_model)
+module.exports = {
+	newUser,
+}
