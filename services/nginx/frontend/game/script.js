@@ -217,7 +217,7 @@ function render_p(camX, camY, scaleX, scaleY) {
 				// ctx.fill();
 			} else {
 				ctx.fillStyle =  player.color
-				ctx.fillRect(x - 5, y - 5, player.width, player.width)
+				ctx.fillRect(x - player.width / 2, x - player.width / 2 , player.width, player.width)
 			}
 			i++
 		}

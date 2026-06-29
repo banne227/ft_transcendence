@@ -49,7 +49,7 @@ export function removePlayer(id: string): void {
 
 // permet de regarder si la tete du joueur entre en collision avec un joueur
 export function findCollision(head: Segment, segments: Segment[], hitbox1: number, hitbox2: number): number {
-    let distance = hitbox1 + hitbox2
+    let distance = hitbox1 / 2 + hitbox2 / 2
     return segments.findIndex(segment =>
         Math.abs(segment.x - head.x) < distance &&
         Math.abs(segment.y - head.y) < distance
@@ -58,7 +58,7 @@ export function findCollision(head: Segment, segments: Segment[], hitbox1: numbe
 
 // collision entre une tête et la nourriture
 export function findFoodCollision(head: Segment, foods: Food[], hitbox: number): number {
-    let distance = hitbox + 5
+    let distance = hitbox / 2 + 5
     return foods.findIndex(food =>
         Math.abs(food.x - head.x) < distance &&
         Math.abs(food.y - head.y) < distance
