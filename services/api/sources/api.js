@@ -3,15 +3,10 @@ const express = require('express')
 const mongoose = require('mongoose')
 const {
 	isalnum,
-	generateHash,
-	generateJwt,
-	validateJwt,
-	sanitizeUserInput,
 	isnum,
-	decodeJwt,
-} = require('./utils')
-const { jwt } = require('jsonwebtoken')
-const bcrypt = require('bcryptjs')
+	generateHash,
+	sanitizeUserInput,
+} = require('./utils.js')
 
 // Import mongoose models
 const { newUser } = require('./models/userSchema')
@@ -49,6 +44,18 @@ process.on('SIGTERM', (code_signal_error) => {
 	process.exit(0)
 })
 
+async function isUp(url) {
+	try {
+		response = await fetch(`${url}`, {
+			method: 'GET',
+		})
+		console.log(response.status)
+	} catch (err) {
+		console.log('HERE')
+		console.log(err)
+	}
+}
+
 /* ----- GET REQUEST METHODE ----- */
 api.get('/', (req, res) => {
 	// Redirect the user to the API documentation
@@ -64,11 +71,6 @@ api.get('/health', async (req, res) => {
 api.get('/countUser', async (req, res) => {
 	let numberOfUser = await newUser.collection.count()
 	res.status(200).json({ users: numberOfUser })
-})
-
-api.get('/logout', (req, res) => {
-	// Redirect the user to the hub page
-	res.redirect('/')
 })
 
 api.get('/history/:userName', async (req, res) => {
@@ -100,54 +102,6 @@ api.get('/user/:user/getcolor', async (req, res) => {
 	if (data === null)
 		return res.status(404).json({ error: `cannot find ${username}` })
 	return res.status(200).json({ color: data.color })
-})
-
-/* ----- POST REQUEST METHODE ----- */
-api.post('/addScore', async (req, res) => {
-	let { score, username } = req.body
-
-	// Check if the body contain a username and a score
-	if (username === undefined || score === undefined)
-		return res.status(400).json({ error: 'Missing body content' })
-
-	score = sanitizeUserInput(score)
-	username = sanitizeUserInput(username)
-
-	// Check if the score is valid
-	if (isNaN(Number(score))) {
-		return res.status(400).json({ error: 'Bad score type' })
-	}
-
-	// Get the current date
-	const timestamp = new Date()
-
-	// Pushing our new score into the history array
-	await newUser
-		.updateOne(
-			{ username: username },
-			{
-				$push: {
-					history: [
-						{
-							date: `${timestamp.toISOString()}`,
-							scores: Number(score),
-						},
-					],
-				},
-			},
-		)
-		.catch((err) => {
-			console.log('catch')
-		})
-	return res.status(200).json({
-		succes: `Added ${username}:${score}`,
-	})
-})
-
-api.get('/logged', async (req, res) => {
-	// Take the jwt from the request
-	const token = req.authorization
-	res.status(404).json({ error: 'No finish yettt' })
 })
 
 api.put('/changecolor', async (req, res) => {
@@ -216,7 +170,7 @@ api.delete('/delete', async (req, res) => {
 			.exec()
 	} catch (err) {
 		// In case of error
-		res.status(301).json({ error: `Cant delete account ${err}` })
+		res.status(500).json({ error: `Cant delete account ${err}` })
 	}
 	// In case of succes
 	res.status(200).json({ succes: `Deleted ${email} account` })

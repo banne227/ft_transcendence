@@ -159,17 +159,17 @@ api.post('/addScore', async (req, res) => {
 	if (username === undefined || score === undefined)
 		return res.status(400).json({ error: 'Missing body content' })
 
+	score = sanitizeUserInput(score)
 	username = sanitizeUserInput(username)
 
 	// Check if the score is valid
-	if (score === '' || isNaN(Number(score))) {
+	if (isNaN(Number(score))) {
 		return res.status(400).json({ error: 'Bad score type' })
 	}
 
 	// Get the current date
 	const timestamp = new Date()
 
-	console.log(score)
 	// Pushing our new score into the history array
 	await newUser
 		.updateOne(
@@ -179,7 +179,7 @@ api.post('/addScore', async (req, res) => {
 					history: [
 						{
 							date: `${timestamp.toISOString()}`,
-							score: Number(score),
+							scores: Number(score),
 						},
 					],
 				},
