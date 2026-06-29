@@ -3,11 +3,12 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 import express from 'express'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
-import { state, startGameLoop, Vector, register_info, login_info } from './game'
+import { state, startGameLoop, Vector} from './game'
 import { addPlayer, removePlayer, setBoost } from './player'
 import { sendMessage } from './chat'
 import { updateDirMouse, updateDirArrow } from './movement'
 import { changeSkin, register, login} from './api'
+import { extractJwt } from './utils'
 
 const { join } = require("node:path");
 const app = express(); //gestion requete http
@@ -46,6 +47,10 @@ io.on("connection", (socket) => {
 	socket.on('join', (name: string) => {
 		addPlayer(socket.id, name)
 		socket.emit('joined', { id: socket.id })
+	})
+
+	socket.on('addplayer', (name: string) => {
+		addPlayer(socket.id, name)
 	})
 
 	socket.on('direction', (dir: 'LEFT' | 'RIGHT') => {
@@ -105,12 +110,30 @@ io.on("connection", (socket) => {
 		});
 	});
 
-	socket.on("register", (username: string,password: string,email: string) =>{
-		register(username, password, email)
+	socket.on("register", async (username: string,password: string,email: string) =>{
+		console.log(`register emit received`);
+		const cookie = await register(username, email, password)
+		console.log('HERE', cookie)
+		if (cookie !== null){
+			console.log('enter in here')
+			let jwt = extractJwt(cookie)
+			console.log("cookie: ", jwt)
+			console.log(`register? emit send succes`);
+			socket.emit("register?", {succes: true, token:jwt, username:username})
+		}
+		else 
+		{
+			socket.emit("register?", { success: false });
+		}
 	});
 
-	socket.on("login", (username:string ,password:string ) =>{
-		login(username, password)
+	socket.on("login", async (username:string ,password:string ) =>{
+		const res = await login(username, password)
+		if (res !== null){
+			const jwt = res.cookie
+			socket.emit("connected?", {succes: true, token:jwt, username:username})
+		}
+		else socket.emit("connected?", { success: false });
 	})
 })
 
