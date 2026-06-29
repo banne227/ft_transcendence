@@ -15,24 +15,24 @@ addEventListener('keydown', function (e) {
 	if (e.key === 'Escape') {
 		window.location.href = 'https://transcendence.42.fr/hub'
 	}
-	if (e.key === 'b' || e.key === 'click') {socket.emit('boost')}
+	if (e.key === 'b' || e.key === 'click') { socket.emit('boost') }
 })
 
 socket.on("connect", () => {
-    const username = localStorage.getItem("username") ?? "anonymous";
-    socket.emit("join", username);
+	const username = localStorage.getItem("username") ?? "anonymous";
+	socket.emit("join", username);
 });
 
 const playBtn = document.getElementById("play-btn");
 
 playBtn.addEventListener("click", () => {
-    const username = localStorage.getItem("username") ?? "anonymous";
+	const username = localStorage.getItem("username") ?? "anonymous";
 	socket.emit('addplayer', username)
 	document.getElementById('start-msg').style.display = 'none'
 });
 
 socket.on("asktoken", () => {
-	const token = getItem("jwt") 
+	const token = getItem("jwt")
 	socket.emit("gettoken", token)
 })
 
@@ -54,12 +54,12 @@ socket.on("chatMessage", (msg) => {
 });
 
 document.getElementById("chat-input").addEventListener("keydown", (e) => {
-  if (e.key !== "Enter") return;
-  const input = document.getElementById("chat-input");
-  const msg = input.value.trim();
-  if (!msg) return;
-  socket.emit("chatMessage", msg);
-  input.value = "";
+	if (e.key !== "Enter") return;
+	const input = document.getElementById("chat-input");
+	const msg = input.value.trim();
+	if (!msg) return;
+	socket.emit("chatMessage", msg);
+	input.value = "";
 });
 
 socket.on('gameState', (state) => {
@@ -159,21 +159,10 @@ function render() {
 	const scaleX = canvas.width / 2000
 	const scaleY = canvas.height / 2000
 
-	// position de la tête de MON joueur, utilisée pour centrer la caméra
 	const me = gameState.players[socket.id]
 	const camX = me && me.body.length ? me.body[0].x : 1000
 	const camY = me && me.body.length ? me.body[0].y : 1000
 
-	//for (const food of gameState.foods) {
-	//	const x = (food.x - camX) * scaleX + canvas.width / 2;
-	//	const y = (food.y - camY) * scaleY + canvas.height / 2;
-	//	const r = 4 + food.feed;
-	//	const hue = 120 - (food.feed - 1) * 24;
-	//	ctx.beginPath();
-	//	ctx.arc(x, y, r, 0, Math.PI * 2);
-	//	ctx.fillStyle = `hsl(${hue}, 80%, 50%)`;
-	//	ctx.fill();
-	//}
 	for (const food of gameState.foods) {
 		const x = (food.x - camX) * scaleX + canvas.width / 2
 		const y = (food.y - camY) * scaleY + canvas.height / 2
@@ -183,6 +172,23 @@ function render() {
 		ctx.fillStyle = '#aaffaa'
 		ctx.fill()
 	}
+
+	const borderX = (0 - camX) * scaleX + canvas.width / 2
+	const borderY = (0 - camY) * scaleY + canvas.height / 2
+	const borderW = 2000 * scaleX
+	const borderH = 2000 * scaleY
+
+	const dangerSize = 40
+	ctx.fillStyle = 'rgba(255, 0, 0, 0.15)'
+	ctx.fillRect(borderX, borderY, borderW, dangerSize * scaleY)                                   // top
+	ctx.fillRect(borderX, borderY + borderH - dangerSize * scaleY, borderW, dangerSize * scaleY)   // bottom
+	ctx.fillRect(borderX, borderY, dangerSize * scaleX, borderH)                                   // left
+	ctx.fillRect(borderX + borderW - dangerSize * scaleX, borderY, dangerSize * scaleX, borderH)   // right
+
+	ctx.strokeStyle = 'rgba(255, 60, 60, 0.9)'
+	ctx.lineWidth = 3
+	ctx.strokeRect(borderX + 1.5, borderY + 1.5, borderW - 3, borderH - 3)
+
 	render_p(camX, camY, scaleX, scaleY)
 }
 
@@ -193,10 +199,10 @@ const brushImg = new Image()
 brushImg.src = '../images/brush.png'
 
 document.querySelectorAll('.colors').forEach(color => {
-    color.addEventListener('click', () => {
+	color.addEventListener('click', () => {
 		console.log(color.style.background);
-        socket.emit("changecolor",color.style.background);
-    });
+		socket.emit("changecolor", color.style.background);
+	});
 });
 
 function render_p(camX, camY, scaleX, scaleY) {
@@ -216,7 +222,7 @@ function render_p(camX, camY, scaleX, scaleY) {
 				// ctx.fillStyle =`hsl(244, 95%, 22%)`;
 				// ctx.fill();
 			} else {
-				ctx.fillStyle =  player.color
+				ctx.fillStyle = player.color
 				ctx.fillRect(x - 5, y - 5, player.width, player.width)
 			}
 			i++

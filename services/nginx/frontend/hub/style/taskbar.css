@@ -4,7 +4,9 @@
 
 .taskbar {
   position: fixed;
-  bottom: 0; left: 0; right: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   height: 30px;
   background: linear-gradient(to bottom, #1f5fa6, #1a4d8a);
   border-top: 2px solid #5a8fd4;
@@ -21,12 +23,42 @@
   font-size: 12px;
   cursor: pointer;
   background: linear-gradient(to bottom, #f0ede4, #d4d0c8);
-  border-top:    2px solid #ffffff;
-  border-left:   2px solid #ffffff;
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
   border-bottom: 2px solid #808080;
-  border-right:  2px solid #808080;
+  border-right: 2px solid #808080;
 }
 
+.taskbar-right {
+display: flex;
+align-items: center;
+gap: 10px;
+margin-left: auto; /* pousse tout le groupe à droite */
+margin-right: 25px;
+}
+
+.confi {
+height: 40px;
+width: 40px;
+padding: 0;
+margin-left: auto; /* le pousse tout seul vers la droite */
+cursor: pointer;
+background: linear-gradient(to bottom, #f0ede4, #d4d0c8);
+border-top:    2px solid #ffffff;
+border-left:   2px solid #ffffff;
+border-bottom: 2px solid #808080;
+border-right:  2px solid #808080;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.confi img {
+width: 24px;
+height: 24px;
+margin-bottom: 5px;
+object-fit: contain;
+}
 .task-btn.stop {
   height: 44px;
   padding: 0 10px;
@@ -35,10 +67,10 @@
   font-weight: bold;
   background: linear-gradient(to bottom, #ff6666, #cc0000);
   color: white;
-  border-top:    2px solid #ff9999;
-  border-left:   2px solid #ff9999;
+  border-top: 2px solid #ff9999;
+  border-left: 2px solid #ff9999;
   border-bottom: 2px solid #800000;
-  border-right:  2px solid #800000;
+  border-right: 2px solid #800000;
 }
 
 .task-info {
@@ -48,4 +80,7 @@
   padding: 0 2px;
 }
 
-.task-icon { width: 18px; height: 18px; }
+.task-icon {
+  width: 18px;
+  height: 18px;
+}

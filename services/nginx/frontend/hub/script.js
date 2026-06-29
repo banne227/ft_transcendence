@@ -47,10 +47,7 @@ makeDraggable(
 	document.querySelector("#window-title"),
 	document.querySelector("#window-title .titlebar"),
 );
-makeDraggable(
-	document.querySelector("#window-chat"),
-	document.querySelector("#window-chat .titlebar"),
-);
+
 makeDraggable(
 	document.querySelector("#window-login"),
 	document.querySelector("#window-login .titlebar"),
@@ -81,31 +78,9 @@ btn.addEventListener("click", () => {
 	}
 });
 
-document
-	.querySelector("#chat-input-row button")
-	.addEventListener("click", function () {
-		const input = document.querySelector("#chat-input-row input");
-		const texte = input.value;
-
-		const message = document.createElement("div");
-		message.classList.add("chat-line");
-		message.textContent = texte;
-
-		document.querySelector("#chat-messages").appendChild(message);
-		input.value = "";
-	});
-
 document.querySelector("#window-log").addEventListener("click", function () {
 	document.getElementById("window-login").style.display = "block";
 });
-
-document
-	.querySelector("#chat-input-row input")
-	.addEventListener("keydown", function (e) {
-		if (e.key === "Enter") {
-			document.querySelector("#chat-input-row button").click();
-		}
-	});
 
 function afficherFenetreCompte(id) {
 	document.getElementById("window-log").style.display = "none";
@@ -131,6 +106,38 @@ document.querySelectorAll(".btn-close").forEach(function (btn) {
 		btn.closest(".window").style.display = "none";
 	});
 });
+
+document.getElementById("btn-privacy").addEventListener("click", function () {
+	fetch("confi/confidentialite.md")
+		.then(response => response.text())
+		.then(markdown => {
+			document.getElementById("privacy-content").innerHTML = markdownToHtml(markdown);
+			document.getElementById("window-privacy").style.display = "block";
+		})
+		.catch(error => {
+			document.getElementById("privacy-content").innerText = "Impossible de charger le document.";
+			document.getElementById("window-privacy").style.display = "block";
+		});
+});
+
+makeDraggable(
+	document.querySelector("#window-privacy"),
+	document.querySelector("#window-privacy .titlebar"),
+);
+
+// Convertisseur Markdown -> HTML très simple (titres, gras, listes, paragraphes)
+function markdownToHtml(md) {
+	return md
+		.replace(/^### (.*$)/gim, "<h3>$1</h3>")
+		.replace(/^## (.*$)/gim, "<h2>$1</h2>")
+		.replace(/^# (.*$)/gim, "<h1>$1</h1>")
+		.replace(/\*\*(.*?)\*\*/gim, "<strong>$1</strong>")
+		.replace(/^- (.*$)/gim, "<li>$1</li>")
+		.replace(/(<li>.*<\/li>)/gims, "<ul>$1</ul>")
+		.split(/\n\n+/)
+		.map(p => (p.startsWith("<h") || p.startsWith("<ul")) ? p : `<p>${p}</p>`)
+		.join("");
+}
 
 socket.on("register?", (data) => {
 	console.log(`register emit here data.succes= ${data.succes}`);
