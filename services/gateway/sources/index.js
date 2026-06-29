@@ -21,8 +21,9 @@ gateway.use(morgan('combined'))
 gateway.disable('x-powered-by')
 
 const services = [
+	{ route: '/api', target: 'http://api:4444/' },
 	{ route: '/auth', target: 'http://auth:9999/' },
-	{ route: '/', target: 'http://api:4444/' },
+	{ route: '/user', target: 'http://user:9999/' },
 ]
 
 /*
@@ -69,7 +70,7 @@ function rateLimitAndTimeout(req, res, next) {
 		})
 		req.abort() // Abort the request
 	})
-
+	console.log(req.body)
 	next() // Continue to the next middleware
 }
 

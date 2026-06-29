@@ -17,4 +17,4 @@ EXPOSE 4444
 # Install every JS dependancy with bun
 RUN /root/.bun/bin/bun install
 # Launch the API
-CMD [ "/root/.bun/bin/bun", "run", "./index.js" ]
+CMD [ "/root/.bun/bin/bun", "run", "./sources/index.js" ]
