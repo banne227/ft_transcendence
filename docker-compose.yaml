@@ -94,6 +94,19 @@ services:
             - JWT_SECRET=$JWT_SECRET
             - JWT_HEADER_KEY=$JWT_HEADER_KEY
             - AUTH_PORT=$AUTH_PORT
+    internal:
+        build:
+            context: ./services/internal
+        networks:
+            - internal
+        restart: 'on-failure:5'
+        depends_on:
+            - mongodb
+        environment:
+            - MONGO_USER=$MONGO_USER
+            - MONGO_PASS=$MONGO_PASS
+            - JWT_SECRET=$JWT_SECRET
+            - JWT_HEADER_KEY=$JWT_HEADER_KEY
 
 networks:
     internal:
@@ -112,4 +125,4 @@ volumes:
             type: none
             o: bind
             device: $PWD/data/mongodb
-        name: ft_transcendence_volume
+        name: ft_transcendence_mongodb

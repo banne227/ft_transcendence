@@ -1,8 +1,8 @@
 import { state, Segment, Player, Food, MAP_SIZE } from './game'
 import { spawnFood, spawnDead_rest } from './food'
-import { addScore } from './api'
+import { addScore, getcolor } from './api'
 
-export function addPlayer(id: string, name: string): void {
+export async function addPlayer(id: string, name: string) {
     console.log(`Player ${name} join`)
     state.players[id] = {
         id: id,
@@ -21,22 +21,13 @@ export function addPlayer(id: string, name: string): void {
         boost_time: 0,
         width: 1,
         popTail: 0,
-        color: `hsl(0, 0%, 100%)`
+        color: await getcolor(name) 
     }
 }
 
 export function update_width(id: string): void {
     if (state.players[id] && state.players[id].alive)
         state.players[id].width = 10 + state.players[id].body.length / 10
-}
-
-function saveColor(id: string): void {
-    const color = {
-        id: id,
-        value: state.players[id]?.color
-    };
-
-    localStorage.setItem("color", JSON.stringify(color));
 }
 
 export function setDead(id: string): boolean {
@@ -47,7 +38,6 @@ export function setDead(id: string): boolean {
     console.log(`Player ${state.players[id]?.name} died`)
     addScore(id, player.score)
     spawnDead_rest(id)
-    // saveColor(id)
     return false
 }
 

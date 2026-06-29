@@ -4,25 +4,26 @@ const { Schema, model } = mongoose
 
 const history_model = new Schema({
 	date: String,
-	score: {
-		type: Number,
-		default: 0,
-	},
-	win: { type: Boolean, default: false },
+	score: Number,
+	win: Boolean,
 })
 
 const user_model = new Schema({
 	username: {
 		require: true,
 		type: String,
+		index: true,
 	},
 	password: {
 		require: true,
 		type: String,
+		index: true,
 	},
 	email: {
 		require: true,
+		minlenght: 6,
 		type: String,
+		index: true,
 	},
 	uuid: {
 		require: true,

@@ -50,7 +50,14 @@ process.on('SIGTERM', (code_signal_error) => {
 })
 
 /* ----- GET REQUEST METHODE ----- */
-api.get('/health', (req, res) => {
+api.get('/', (req, res) => {
+	// Redirect the user to the API documentation
+	res.status(301).redirect(
+		'https://github.com/banne227/ft_transcendence/blob/main/docs/API.md',
+	)
+})
+
+api.get('/health', async (req, res) => {
 	res.status(200).json({ status: 'API status : OK' })
 })
 
@@ -59,70 +66,9 @@ api.get('/countUser', async (req, res) => {
 	res.status(200).json({ users: numberOfUser })
 })
 
-api.get('/', (req, res) => {
-	// Redirect the user to the API documentation
-	res.status(301).redirect(
-		'https://github.com/banne227/ft_transcendence/blob/main/docs/API.md',
-	)
-})
-
-api.get('/jwt/validate', (req, res) => {
-	// Take the JWT from the authorization section in the header
-	const token = req.headers.authorization
-
-	// Check if a token is on the authorization header
-	if (token === undefined) {
-		return res.status(400).json({ error: 'No token provided' })
-	}
-
-	// Use the function to check if the token was not altered
-	const valid = validateJwt(token)
-	if (valid) {
-		return res.status(200).json({ succes: 'The JWT is valid' })
-	} else {
-		return res.status(401).json({ error: 'Invalid JWT' })
-	}
-})
-
-api.get('/jwt/regenerate', async (req, res) => {
-	// Take the token from the header
-	const currentToken = req.headers.authorization
-
-	console.log(currentToken)
-	if (currentToken === undefined) {
-		return res
-			.status(200)
-			.json({ succes: 'The user is currently not logged' })
-	}
-
-	try {
-		// Verify the token using the jwt verify methode
-		const { uuid, email } = jwt.verify(currentToken, process.env.JWT_SECRET)
-		// If the uuid or the email of the JWT is empty
-		if (!uuid || !email) {
-			return res.status(401).json({ error: 'Invalid token' })
-		}
-		// Search on the database if a user who have this uuid and this email exist
-		const userData = await newUser.findOne({
-			$and: [{ email: email }, { uuid: uuid }],
-		})
-		// If not exist
-		if (userData === null) {
-			return res.status(401).json({ error: 'Invalid token' })
-		}
-		// Generating our new jwt and put him on the cookie of the response
-		res.cookie('jwt', generateJwt(email, uuid))
-		// Say that we have succesfully create the token
-		return res
-			.status(200)
-			.json({ succes: 'Token successfully regenerated' })
-	} catch (err) {
-		// Check if the error catch is because the token expired
-		if (err.name === 'TokenExpiredError')
-			return res.status(401).json({ error: 'Token has expired' })
-		// Dfault error
-		return res.status(401).json({ error: 'Invalid token' })
-	}
+api.get('/logout', (req, res) => {
+	// Redirect the user to the hub page
+	res.redirect('/')
 })
 
 api.get('/history/:userName', async (req, res) => {
@@ -134,7 +80,9 @@ api.get('/history/:userName', async (req, res) => {
 		.lean()
 	// if the user doesnt exist
 	if (data === null)
-		return res.status(404).json({ error: `cannot find ${username}` })
+		return res
+			.status(404)
+			.json({ error: { message: `cannot find ${username}`, code: 404 } })
 	// if the user exist but it doesnt played a single match
 	if (data.history == '[]')
 		return res
@@ -144,40 +92,53 @@ api.get('/history/:userName', async (req, res) => {
 	return res.status(200).json(data.history)
 })
 
+api.get('/user/:user/getcolor', async (req, res) => {
+	const username = sanitizeUserInput(req.params.user)
+	if (username === '')
+		return res.status(400).json({ error: 'Invalid username' })
+	const data = await newUser.findOne({ username: { $eq: username } }).lean()
+	if (data === null)
+		return res.status(404).json({ error: `cannot find ${username}` })
+	return res.status(200).json({ color: data.color })
+})
+
 /* ----- POST REQUEST METHODE ----- */
 api.post('/addScore', async (req, res) => {
 	let { score, username } = req.body
 
-	score = sanitizeUserInput(score)
-	username = sanitizeUserInput(username)
 	// Check if the body contain a username and a score
 	if (username === undefined || score === undefined)
 		return res.status(400).json({ error: 'Missing body content' })
+
+	score = sanitizeUserInput(score)
+	username = sanitizeUserInput(username)
 
 	// Check if the score is valid
 	if (isNaN(Number(score))) {
 		return res.status(400).json({ error: 'Bad score type' })
 	}
 
-	// Creating our history object
-	const newData = { date: `${new Date()}`, score: Number(score) }
 	// Get the current date
 	const timestamp = new Date()
 
 	// Pushing our new score into the history array
-	await newUser.updateOne(
-		{ username: username },
-		{
-			$push: {
-				history: [
-					{
-						date: `${timestamp.toISOString()}`,
-						score: Number(score),
-					},
-				],
+	await newUser
+		.updateOne(
+			{ username: username },
+			{
+				$push: {
+					history: [
+						{
+							date: `${timestamp.toISOString()}`,
+							scores: Number(score),
+						},
+					],
+				},
 			},
-		},
-	)
+		)
+		.catch((err) => {
+			console.log('catch')
+		})
 	return res.status(200).json({
 		succes: `Added ${username}:${score}`,
 	})
@@ -189,35 +150,51 @@ api.get('/logged', async (req, res) => {
 	res.status(404).json({ error: 'No finish yettt' })
 })
 
-api.put('/changeSkin', async (req, res) => {
+api.put('/changecolor', async (req, res) => {
 	// Get the JWT from the header
 	const jwt = req.headers.authorization
 	// Get the skin from the body of the request
-	const skinColor = req.body.skin
+	const skinColor = req.body.color
 
 	// Check if we have the jwt and the skin color
-	if (jwt === undefined || skinColor === undefined)
-		res.status(400).json({ error: 'Missing header or body data' })
+	if (skinColor === undefined)
+		res.status(400).json({ error: 'Missing color' })
 	// Check if the skin color composed by number
-	if (isnum(skinColor) == false)
-		res.status(400).json({ error: 'Invalid skinColor' })
+	// if (skinColor.match("^#([A-Fa-f0-9]6|[A-Fa-f0-9]3)$") == false)
+	// res.status(400).json({ error: 'Invalid skinColor' })
 	// Decode the payload of the JWT and put his content to JSON
-	const jwtPayload = JSON.parse(decodeJwt(jwt))
-	// Search on the database if we got an account with this email and this uuid
-	let user = await newUser.findOne({
-		$and: [{ email: jwtPayload.email }, { uuid: jwtPayload.uuid }],
-	})
-	// If we found nothing
-	if (user === null)
-		return res.status(404).json({ error: `User ${jwtPayload.email}` })
-	// Update the database with the new skin
-	user = await newUser.updateOne(
-		{
+	if (jwt !== undefined) {
+		const jwtPayload = JSON.parse(decodeJwt(jwt))
+		// Search on the database if we got an account with this email and this uuid
+		let user = await newUser.findOne({
 			$and: [{ email: jwtPayload.email }, { uuid: jwtPayload.uuid }],
-		},
-		{ skin: skinColor },
-	)
-	return res.json({ succes: `Changed the skin to ${skinColor}` })
+		})
+		// If we found nothing
+		if (user === null)
+			return res.status(404).json({
+				error: `Provided account information invalid`,
+			})
+		// Update the database with the new skin
+		try {
+			user = await newUser.updateOne(
+				{
+					$and: [
+						{ email: jwtPayload.email },
+						{ uuid: jwtPayload.uuid },
+					],
+				},
+				{ colors: skinColor },
+			)
+		} catch (err) {
+			console.log(err)
+			return res
+				.status(404)
+				.json({ succes: `Changed the skin to color: ${skinColor}` })
+		}
+		return res
+			.status(200)
+			.json({ succes: `Changed the skin to color: ${skinColor}` })
+	}
 })
 
 /* ----- DELETE REQUEST METHODE ----- */
@@ -248,6 +225,9 @@ api.delete('/delete', async (req, res) => {
 api.get('/debug/db', async (req, res) => {
 	const rrr = await newUser.find()
 
+	console.log(rrr)
+	if (rrr === undefined || rrr.length == 0)
+		res.status(200).json({ info: 'The database is empty' })
 	res.status(200).json(rrr)
 })
 

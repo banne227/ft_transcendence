@@ -9,7 +9,7 @@ const {
 	sanitizeUserInput,
 	isnum,
 	decodeJwt,
-} = require('utils.js')
+} = require('./utils.js')
 const { jwt } = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
@@ -142,7 +142,7 @@ auth.post('/login', async (req, res) => {
 	}
 })
 
-api.post('/forget', async (req, res) => {
+auth.post('/forget', async (req, res) => {
 	let { email, password } = req.body
 
 	email = sanitizeUserInput(String(email).toLowerCase())
@@ -176,10 +176,12 @@ api.post('/forget', async (req, res) => {
 })
 
 // Start listening on the port
-auth.listen(PORT, () => {
-	console.log(`[+] Auth endpoint listening on port ${PORT}`)
-}).catch((error) => {
+try {
+	auth.listen(PORT, () => {
+		console.log(`[+] Auth endpoint listening on port ${PORT}`)
+	})
+} catch (error) {
 	console.log(`[!] Error caught :`)
 	console.log(error)
 	process.exit(1)
-})
+}

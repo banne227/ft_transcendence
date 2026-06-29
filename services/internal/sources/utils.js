@@ -59,7 +59,9 @@ function generateJwt(email, uuid) {
 		uuid: uuid,
 	};
 	/* Create the token */
-	token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "15m" });
+	token = jsonwebtoken.sign(payload, process.env.JWT_SECRET, {
+		expiresIn: "15m",
+	});
 	return token;
 }
 
@@ -88,20 +90,6 @@ function sanitizeUserInput(userInput) {
 		}
 	}
 	return sanitizedString;
-}
-
-/* Check if the user input is valid  */
-function validateUserInput(input, type) {
-	if (input === undefined || input === null || !isnum(type)) return false
-	// CHECK IF EMAIL
-	if (type === 0) {
-		const input_len = input.length()
-		// 	if ()
-	}
-	// CHECK IF PASSWORD
-	elif(type === 1)
-	{
-	}
 }
 
 /* Give access to other file to import those function */
