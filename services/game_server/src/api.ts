@@ -13,13 +13,13 @@ export async function login(email: string, password: string) {
 		}),
 	});
 
-	const data = await response.json(); // récupère la réponse du serveur
-	if (!response.ok) {
-		console.error("Login échoué:", data.message);
-		return null;
-	}
-	localStorage.setItem("username", data.username); // stocke le nom
-	return data; // retourne les infos du joueur
+    const data = await response.json(); // récupère la réponse du serveur
+    if (!response.ok) {
+        console.error("Login échoué:", data.message);
+        return null;
+    }
+    console.log(`login succes for ${email}`)
+    return data; // retourne les infos du joueur
 }
 
 //j'envoie une requete POST pour ajouter un player a la db

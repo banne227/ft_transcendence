@@ -43,9 +43,33 @@ app.get("/leadrrr", (req, res) => {
 io.on("connection", (socket) => {
 	console.log("Connecté :", socket.id);
 
-	socket.on("join", (name: string) => {
-		addPlayer(socket.id, name);
-		socket.emit("joined", { id: socket.id });
+	socket.on('join', (name: string) => {
+		addPlayer(socket.id, name)
+		socket.emit('joined', { id: socket.id })
+	})
+
+	socket.on('direction', (dir: 'LEFT' | 'RIGHT') => {
+		console.log(`turn ${dir} so ${dir}`)
+		updateDirArrow(socket.id, dir)
+	})
+
+	socket.on('mouseMove', (vect: Vector) => {
+		updateDirMouse(socket.id, vect)
+	})
+
+	socket.on('disconnect', () => {
+		console.log(`${socket.id} left serv`) // log l'id AVANT de supprimer
+		removePlayer(socket.id)
+	})
+
+	socket.on('boost', () => {
+		console.log(`${socket.id} speed up`)
+		setBoost(socket.id)
+	})
+
+	socket.on("chatMessage", (text : string) => {
+		const timestamp = new Date()
+		sendMessage(socket.id, text, io, timestamp.toISOString())
 	});
 
 	socket.on("direction", (dir: "LEFT" | "RIGHT") => {
