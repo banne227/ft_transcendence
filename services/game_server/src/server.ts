@@ -1,13 +1,13 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-import express from "express";
-import { createServer } from "http";
-import { Server } from "socket.io";
-import { state, startGameLoop, Vector } from "./game";
-import { addPlayer, removePlayer, setBoost } from "./player";
-import { sendMessage } from "./chat";
-import { updateDirMouse, updateDirArrow } from "./movement";
-import { changeSkin } from "./api";
+import express from 'express'
+import { createServer } from 'http'
+import { Server } from 'socket.io'
+import { state, startGameLoop, Vector, register_info, login_info } from './game'
+import { addPlayer, removePlayer, setBoost } from './player'
+import { sendMessage } from './chat'
+import { updateDirMouse, updateDirArrow } from './movement'
+import { changeSkin, register, login} from './api'
 
 const { join } = require("node:path");
 const app = express(); //gestion requete http
@@ -80,7 +80,15 @@ io.on("connection", (socket) => {
 			if (token) changeSkin(token, color);
 		});
 	});
-});
+
+	socket.on("register", (username: string,password: string,email: string) =>{
+		register(username, password, email)
+	});
+
+	socket.on("login", (username:string ,password:string ) =>{
+		login(username, password)
+	})
+})
 
 startGameLoop((state) => {
 	io.emit("gameState", state);
