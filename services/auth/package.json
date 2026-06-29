@@ -1,18 +1,11 @@
 {
-	"name": "auth",
-	"version": "1.0.0",
-	"description": "Authentification endpoint",
-	"license": "ISC",
-	"author": "Gun8hoot",
-	"type": "commonjs",
 	"main": "index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
+	"type": "commonjs",
 	"dependencies": {
 		"bcryptjs": "^3.0.3",
+		"bson": "7.2.0",
 		"express": "^5.2.1",
 		"jsonwebtoken": "^9.0.3",
-		"mongoose": "^9.7.2"
+		"mongoose": "^9.7.3"
 	}
 }

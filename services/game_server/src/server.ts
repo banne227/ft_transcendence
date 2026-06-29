@@ -1,51 +1,51 @@
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
 import express from 'express'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
-import { state, startGameLoop, Vector} from './game'
+import { state, startGameLoop, Vector } from './game'
 import { addPlayer, removePlayer, setBoost } from './player'
 import { sendMessage } from './chat'
 import { updateDirMouse, updateDirArrow } from './movement'
-import { changeSkin, register, login} from './api'
+import { changeSkin, register, login } from './api'
 import { extractJwt } from './utils'
 
-const { join } = require("node:path");
-const app = express(); //gestion requete http
-const httpServer = createServer(app); //socket.io pour la transmission client serv
+const { join } = require('node:path')
+const app = express() //gestion requete http
+const httpServer = createServer(app) //socket.io pour la transmission client serv
 const io = new Server(httpServer, {
-	cors: { origin: "*" },
-	path: "/socket.io/",
-});
+	cors: { origin: '*' },
+	path: '/socket.io/',
+})
 
-app.use("/leaderboard", express.static(join(__dirname, "leaderboard")));
+app.use('/leaderboard', express.static(join(__dirname, 'leaderboard')))
 
 // Better docker stop handling by treated SIGTERM signals
 // ref : https://docs.docker.com/reference/cli/docker/container/stop/
-process.on("SIGTERM", function (code_signal_error) {
-	process.exit(0);
-});
+process.on('SIGTERM', function (code_signal_error) {
+	process.exit(0)
+})
 
 //permet de verifier que le server est en place http://localhost:3000/health
-app.get("/health", (_req, res) => {
-	res.json({ status: "ok" });
-});
+app.get('/health', (_req, res) => {
+	res.json({ status: 'ok' })
+})
 
-io.engine.on("connection_error", (err) => {
-    console.log("Code :", err.code);
-    console.log("Message :", err.message);
-    console.log("Contexte :", err.context);
-});
+io.engine.on('connection_error', (err) => {
+	console.log('Code :', err.code)
+	console.log('Message :', err.message)
+	console.log('Contexte :', err.context)
+})
 
-io.on("connection", (socket) => {
-    console.log(socket.conn.transport.name);
+io.on('connection', (socket) => {
+	console.log(socket.conn.transport.name)
 
-    socket.conn.on("upgrade", () => {
-        console.log("Upgrade :", socket.conn.transport.name);
-    });
-});
+	socket.conn.on('upgrade', () => {
+		console.log('Upgrade :', socket.conn.transport.name)
+	})
+})
 
-io.on("connection", (socket) => {
+io.on('connection', (socket) => {
 	socket.on('join', (name: string, token: string) => {
 		// console.log(`${name} log with jwt: ${token}`)
 		socket.emit('joined', { id: socket.id })
@@ -71,49 +71,60 @@ io.on("connection", (socket) => {
 		setBoost(socket.id)
 	})
 
-	socket.on("chatMessage", (text: string, player: string) => {
-		const timestamp = new Date();
-		sendMessage(player, text, io, timestamp.toISOString());
-	});
-
-	socket.on("changecolor", (color: string) => {
-		const player = state.players[socket.id];
-		if (player) player.color = color;
-		socket.emit("asktoken");
-		socket.on("gettoken", (token: string) => {
-			if (token) changeSkin(token, color);
-		});
-	});
-
-	socket.on("register", async (username: string,password: string,email: string) =>{
-		const cookie = await register(username, email, password)
-		if (cookie !== null){
-			let jwt = extractJwt(cookie)
-			socket.emit("register?", {succes: true, token:jwt, username:username})
-		}
-		else 
-		{
-			socket.emit("register?", { success: false });
-		}
-	});
-
-	socket.on("login", async (username:string , email : string, password:string ) =>{
-		const res = await login(email, password)
-		if (res !== null){
-			const jwt = extractJwt(res)
-			socket.emit("connected?", {succes: true, token:jwt, username:username})
-		}
-		else socket.emit("connected?", { success: false });
+	socket.on('chatMessage', (text: string, player: string) => {
+		const timestamp = new Date()
+		sendMessage(player, text, io, timestamp.toISOString())
 	})
+
+	socket.on('changecolor', (color: string) => {
+		const player = state.players[socket.id]
+		if (player) player.color = color
+		socket.emit('asktoken')
+		socket.on('gettoken', (token: string) => {
+			if (token) changeSkin(token, color)
+		})
+	})
+
+	socket.on(
+		'register',
+		async (username: string, password: string, email: string) => {
+			const cookie = await register(username, email, password)
+			if (cookie !== null) {
+				let jwt = extractJwt(cookie)
+				socket.emit('register?', {
+					succes: true,
+					token: jwt,
+					username: username,
+				})
+			} else {
+				socket.emit('register?', { success: false })
+			}
+		},
+	)
+
+	socket.on(
+		'login',
+		async (username: string, email: string, password: string) => {
+			const res = await login(email, password)
+			if (res !== null) {
+				const jwt = extractJwt(res)
+				socket.emit('connected?', {
+					succes: true,
+					token: jwt,
+					username: username,
+				})
+			} else socket.emit('connected?', { success: false })
+		},
+	)
 })
 
 startGameLoop((state) => {
-	io.emit("gameState", state);
-});
+	io.emit('gameState', state)
+})
 
 //message envoyer quand le server est pret
 httpServer.listen(3000, () => {
 	console.log(
 		`Serveur sur https://transcendence.42.fr or http://game:3000 (in the container network)`,
-	);
-});
+	)
+})

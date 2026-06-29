@@ -1,7 +1,7 @@
 const socket = io('https://transcendence.42.fr/', {
 	path: '/ws/serv/socket.io/',
 })
-console.log("Socket créé", socket.id);
+console.log('Socket créé', socket.id)
 
 const output = document.getElementById('output')
 
@@ -11,64 +11,65 @@ function showChar(e) {
 document.addEventListener('keydown', showChar)
 
 addEventListener('keydown', function (e) {
-
 	if (e.key === 'ArrowLeft') socket.emit('direction', 'LEFT')
 	if (e.key === 'ArrowRight') socket.emit('direction', 'RIGHT')
 	if (e.key === 'Escape') {
 		window.location.href = 'https://transcendence.42.fr/hub'
 	}
-	if (e.key === 'b' || e.key === 'click') { socket.emit('boost') }
+	if (e.key === 'b' || e.key === 'click') {
+		socket.emit('boost')
+	}
 })
 
-socket.on("connect", () => {
-	console.log("Connecté", socket.id);
-	const username = localStorage.getItem("username") ?? "anonymous";
-	const token = localStorage.getItem("token");
-	if (!token) window.location.href = "/hub";
+socket.on('connect', () => {
+	console.log('Connecté', socket.id)
+	const username = localStorage.getItem('username') ?? 'anonymous'
+	const token = localStorage.getItem('token')
+	if (!token) window.location.href = '/hub'
 
-	socket.emit("join", username, token);
-});
+	socket.emit('join', username, token)
+})
 
-const playBtn = document.getElementById("play-btn");
+const playBtn = document.getElementById('play-btn')
 
-playBtn.addEventListener("click", () => {
-	const username = localStorage.getItem("username") ?? "anonymous";
+playBtn.addEventListener('click', () => {
+	const username = localStorage.getItem('username') ?? 'anonymous'
 	socket.emit('addplayer', username)
 	document.getElementById('start-msg').style.display = 'none'
-});
-
-socket.on("asktoken", () => {
-	const token = localStorage.getItem("token")
-
-	socket.emit("gettoken", token)
 })
 
-socket.on("chatMessage", (msg) => {
-	const time = new Date(msg.hour).toLocaleString("fr-FR", {
-		hour: "2-digit",
-		minute: "2-digit"
-	});
+socket.on('asktoken', () => {
+	const token = localStorage.getItem('token')
 
-	const box = document.getElementById("chat-msgs");
-	const line = document.createElement("div");
-	line.className = "chat-line";
+	socket.emit('gettoken', token)
+})
 
-	const isMe = msg.id === socket.id;
-	line.innerHTML = `<span class="chat-nick" style="${isMe ? "color:#ffffff" : ""}">${msg.name}</span> <span style="color:#555;font-size:10px">${time}</span><br>${msg.text}`;
+socket.on('chatMessage', (msg) => {
+	const time = new Date(msg.hour).toLocaleString('fr-FR', {
+		hour: '2-digit',
+		minute: '2-digit',
+	})
 
-	box.appendChild(line);
-	box.scrollTop = box.scrollHeight;
-});
+	const box = document.getElementById('chat-msgs')
+	const line = document.createElement('div')
+	line.className = 'chat-line'
 
-document.getElementById("chat-input").addEventListener("keydown", (e) => {
-	if (e.key !== "Enter") return;
-	const input = document.getElementById("chat-input");
-	const msg = input.value.trim();
-	if (!msg) return;
-	const username = localStorage.getItem("username") ?? "anonymous";
-	socket.emit("chatMessage", msg, username);
-	input.value = "";
-});
+	const isMe = msg.id === socket.id
+	line.innerHTML = `<span class="chat-nick" style="${isMe ? 'color:#ffffff' : ''}">${msg.name}</span> <span style="color:#555;font-size:10px">${time}</span><br>${msg.text}`
+
+	box.appendChild(line)
+	box.scrollTop = box.scrollHeight
+})
+
+document.getElementById('chat-input').addEventListener('keydown', (e) => {
+	if (e.key !== 'Enter') return
+	const input = document.getElementById('chat-input')
+	const msg = input.value.trim()
+	if (!msg) return
+	const username = localStorage.getItem('username') ?? 'anonymous'
+	socket.emit('chatMessage', msg, username)
+	input.value = ''
+})
 
 let gameState = null
 
@@ -97,25 +98,23 @@ socket.on('gameState', (state) => {
 	}
 	const players = state.leaderbord
 
-	const leaderboard = document.getElementById("leaderboard");
+	const leaderboard = document.getElementById('leaderboard')
 
-	leaderboard.innerHTML = "";
+	leaderboard.innerHTML = ''
 
 	players.forEach((player, index) => {
-		const li = document.createElement("li");
-		li.className = "lb-item";
+		const li = document.createElement('li')
+		li.className = 'lb-item'
 
 		li.innerHTML = `
 			<span class="lb-rank">#${index + 1}</span>
 			<span>${player.name}</span>
 			<span class="lb-score">${player.score}</span>
-		`;
+		`
 
-		leaderboard.appendChild(li);
-	});
+		leaderboard.appendChild(li)
+	})
 })
-
-
 
 // ── Ton code de rendu après ici ──────────────────────────────────
 
@@ -137,11 +136,9 @@ canvas.addEventListener('mousemove', (e) => {
 	const scaleX = canvas.width / 2000
 	const scaleY = canvas.height / 2000
 
-	const mouseWorldX =
-		(mouseScreenX - canvas.width / 2) / scaleX + camX
+	const mouseWorldX = (mouseScreenX - canvas.width / 2) / scaleX + camX
 
-	const mouseWorldY =
-		(mouseScreenY - canvas.height / 2) / scaleY + camY
+	const mouseWorldY = (mouseScreenY - canvas.height / 2) / scaleY + camY
 
 	socket.emit('mouseMove', {
 		x: mouseWorldX,
@@ -186,10 +183,20 @@ function render() {
 
 	const dangerSize = 40
 	ctx.fillStyle = 'rgba(255, 0, 0, 0.15)'
-	ctx.fillRect(borderX, borderY, borderW, dangerSize * scaleY)                                   // top
-	ctx.fillRect(borderX, borderY + borderH - dangerSize * scaleY, borderW, dangerSize * scaleY)   // bottom
-	ctx.fillRect(borderX, borderY, dangerSize * scaleX, borderH)                                   // left
-	ctx.fillRect(borderX + borderW - dangerSize * scaleX, borderY, dangerSize * scaleX, borderH)   // right
+	ctx.fillRect(borderX, borderY, borderW, dangerSize * scaleY) // top
+	ctx.fillRect(
+		borderX,
+		borderY + borderH - dangerSize * scaleY,
+		borderW,
+		dangerSize * scaleY,
+	) // bottom
+	ctx.fillRect(borderX, borderY, dangerSize * scaleX, borderH) // left
+	ctx.fillRect(
+		borderX + borderW - dangerSize * scaleX,
+		borderY,
+		dangerSize * scaleX,
+		borderH,
+	) // right
 
 	ctx.strokeStyle = 'rgba(255, 60, 60, 0.9)'
 	ctx.lineWidth = 3
@@ -205,27 +212,24 @@ const brushImg = new Image()
 brushImg.src = '../images/brush.png'
 
 function componentToHex(c) {
-    const hex = parseInt(c, 10).toString(16);
-    return hex.length === 1 ? "0" + hex : hex;
+	const hex = parseInt(c, 10).toString(16)
+	return hex.length === 1 ? '0' + hex : hex
 }
 
 function rgbToHex(rgb) {
-    let value = rgb.replace("rgb(", "").replace(")", "");
+	let value = rgb.replace('rgb(', '').replace(')', '')
 
-    const [r, g, b] = value.split(',');
+	const [r, g, b] = value.split(',')
 
-    return "#" +
-        componentToHex(r) +
-        componentToHex(g) +
-        componentToHex(b);
+	return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b)
 }
 
-document.querySelectorAll('.colors').forEach(color => {
+document.querySelectorAll('.colors').forEach((color) => {
 	color.addEventListener('click', () => {
 		// console.log(rgbToHex(color.style.background));
-		socket.emit("changecolor", rgbToHex(color.style.background));
-	});
-});
+		socket.emit('changecolor', rgbToHex(color.style.background))
+	})
+})
 
 function render_p(camX, camY, scaleX, scaleY) {
 	var i = 0
@@ -244,8 +248,13 @@ function render_p(camX, camY, scaleX, scaleY) {
 				// ctx.fillStyle =`hsl(244, 95%, 22%)`;
 				// ctx.fill();
 			} else {
-				ctx.fillStyle =  player.color
-				ctx.fillRect(x - player.width / 2, y - player.width / 2 , player.width, player.width)
+				ctx.fillStyle = player.color
+				ctx.fillRect(
+					x - player.width / 2,
+					y - player.width / 2,
+					player.width,
+					player.width,
+				)
 			}
 			i++
 		}
