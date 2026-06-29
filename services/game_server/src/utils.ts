@@ -10,3 +10,13 @@ export function displayState(state: Game): void {
 		)
 	}
 }
+
+export function extractJwt(cookies: string[]): string | undefined {
+  const cookie = cookies.find((c) => c.startsWith("jwt="));
+
+  if (!cookie) return undefined;
+
+  const [jwt] = cookie.replace("jwt=", "").split(";");
+
+  return jwt;
+}

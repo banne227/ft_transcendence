@@ -68,7 +68,6 @@ export function findFoodCollision(head: Segment, foods: Food[], hitbox: number):
 export function setBoost(id: string): void {
     if (state.players[id]) {
         if (state.players[id].score <= 0 || state.players[id].body.length <= 4) {
-            console.log(`player ${id} can't speed up`)
             return
         }
         state.players[id].boost_time = 0

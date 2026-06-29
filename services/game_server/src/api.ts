@@ -23,26 +23,25 @@ export async function login(email: string, password: string) {
 }
 
 //j'envoie une requete POST pour ajouter un player a la db
-export async function register(id: string, email: string, password: string) {
+export async function register(name: string, email: string, password: string) {
 	const response = await fetch("http://api:4444/register", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 		},
 		body: JSON.stringify({
-			username: state.players[id]?.name,
+			username: name,
 			email: email,
 			password: password,
 		}),
 	});
 
 	const data = await response.json(); // récupère la réponse du serveur
-
 	if (!response.ok) {
 		console.error("register échoué:", data.message);
 		return null;
 	}
-	return data; // retourne les infos du joueur
+	return response.headers.getSetCookie(); // retourne les infos du joueur
 }
 
 //j'envoie une requete POST pour ajouter le score de mon player a la db
@@ -84,5 +83,6 @@ export async function changeSkin(token: string, color: string) {
 export async function getcolor(username: string): Promise<string> {
 	const response = await fetch(`http://api:4444/user/${username}/getcolor`);
 	const data = await response.json();
+	console.log(data)
 	return data.color;
 }

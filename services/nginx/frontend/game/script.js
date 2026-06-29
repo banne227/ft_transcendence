@@ -13,23 +13,21 @@ addEventListener('keydown', function (e) {
 	if (e.key === 'ArrowLeft') socket.emit('direction', 'LEFT')
 	if (e.key === 'ArrowRight') socket.emit('direction', 'RIGHT')
 	if (e.key === 'Escape') {
-		// socket.emit("disconnect")
 		window.location.href = 'https://transcendence.42.fr/hub'
 	}
 	if (e.key === 'b' || e.key === 'click') {socket.emit('boost')}
 })
 
+socket.on("connect", () => {
+    const username = localStorage.getItem("username") ?? "anonymous";
+    socket.emit("join", username);
+});
+
 const playBtn = document.getElementById("play-btn");
 
 playBtn.addEventListener("click", () => {
-	// const storedColor = localStorage.getItem("color");
-	// if (storedColor) {
-	// 	const color = JSON.parse(storedColor);
-	// }
-
-	// const player = {name: 'anonymous', color: color}
-	socket.emit('join', 'anonymous')
-	socket.on('joined')
+    const username = localStorage.getItem("username") ?? "anonymous";
+	socket.emit('addplayer', username)
 	document.getElementById('start-msg').style.display = 'none'
 });
 
@@ -140,10 +138,6 @@ canvas.addEventListener('mousemove', (e) => {
 })
 
 let gameState = null
-
-// socket.on("connect", () => {
-//   console.log("Connecté :", socket.id);
-// });
 
 socket.on('gameState', (state) => {
 	gameState = state

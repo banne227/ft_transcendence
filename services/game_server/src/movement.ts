@@ -89,7 +89,6 @@ export function movePlayer(id: string): boolean {
 		if (food)
 		{
 			player.score += food.feed //ajt au score
-			// console.log(`Player ${id} ate food ${food.id} (+${food.feed})`)
 			if (!state.foods[foodIndex]?.poop)
 				state.foods.push(spawnFood(false, null)) //spawn une nouvelle
 			state.foods.splice(foodIndex, 1) //suprimer ce qui a ete manger

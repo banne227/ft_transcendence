@@ -1,5 +1,6 @@
-//la ou est-ce-que j'ecoute
-const socket = io("http://127.0.0.1:3000/");
+const socket = io('https://transcendence.42.fr/', {
+	path: '/ws/serv/socket.io/',
+})
 
 function makeDraggable(fenetre, barre) {
 	let isDragging = false;
@@ -111,6 +112,7 @@ function afficherFenetreCompte(id) {
 	document.getElementById("window-login").style.display = "none";
 	document.getElementById("window-register").style.display = "none";
 
+
 	document.getElementById(id).style.display = "block";
 }
 
@@ -130,8 +132,34 @@ document.querySelectorAll(".btn-close").forEach(function (btn) {
 	});
 });
 
+socket.on("register?", (data) => {
+	console.log(`register emit here data.succes= ${data.succes}`);
+    if (data.succes)
+	{
+		afficherFenetreCompte("window-login");
+		localStorage.setItem("token", data.token);
+        localStorage.setItem("username", data.username);
+	}
+    else
+        alert("register fail");
+});	
+
+socket.on("connected?", (data) => {
+    if (data.succes === true)
+	{
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("username", data.username);
+		window.location.href = "https://transcendence.42.fr/game";
+	}
+    else
+        alert("login failed");
+});
+
+
 document.getElementById("form-register").addEventListener("submit", function (e) {
     e.preventDefault();
+
+	console.log("submit register");
 
     const username = document.getElementById("register-username").value;
     const password = document.getElementById("register-password").value;
@@ -142,22 +170,18 @@ document.getElementById("form-register").addEventListener("submit", function (e)
         alert("Les mots de passe ne correspondent pas.");
         return;
     }
-
-    socket.emit("register", {
-        username,
-        password,
-        email
-    });
+	console.log(`socket connec: ${socket.connected}`);
+    socket.emit("register", username, password, email);
 });
 
 document.getElementById("form-login").addEventListener("submit", function (e) {
     e.preventDefault();
 
+	console.log("submit login");
+
     const username = document.getElementById("login-username").value;
     const password = document.getElementById("login-password").value;
 
-    socket.emit("login", {
-        username,
-        password
-    });
+	console.log(`socket connec: ${socket.connected}`);
+    socket.emit("login", username, password);
 });
