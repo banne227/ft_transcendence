@@ -37,9 +37,6 @@ export async function register(name: string, email: string, password: string) {
 	});
 
 	const data = await response.json(); // récupère la réponse du serveur
-	console.log(email)
-	console.log(data)
-	console.log(response.ok)
 	if (!response.ok) {
 		console.error("register échoué:", data.message);
 		return null;
@@ -86,5 +83,6 @@ export async function changeSkin(token: string, color: string) {
 export async function getcolor(username: string): Promise<string> {
 	const response = await fetch(`http://api:4444/user/${username}/getcolor`);
 	const data = await response.json();
+	console.log(data)
 	return data.color;
 }

@@ -26,7 +26,8 @@ socket.on("connect", () => {
 const playBtn = document.getElementById("play-btn");
 
 playBtn.addEventListener("click", () => {
-	socket.emit('addplayer', 'anonymous')
+    const username = localStorage.getItem("username") ?? "anonymous";
+	socket.emit('addplayer', username)
 	document.getElementById('start-msg').style.display = 'none'
 });
 

@@ -45,7 +45,6 @@ io.on("connection", (socket) => {
 	console.log("Connecté :", socket.id);
 
 	socket.on('join', (name: string) => {
-		addPlayer(socket.id, name)
 		socket.emit('joined', { id: socket.id })
 	})
 
@@ -54,7 +53,6 @@ io.on("connection", (socket) => {
 	})
 
 	socket.on('direction', (dir: 'LEFT' | 'RIGHT') => {
-		console.log(`turn ${dir} so ${dir}`)
 		updateDirArrow(socket.id, dir)
 	})
 
@@ -63,38 +61,12 @@ io.on("connection", (socket) => {
 	})
 
 	socket.on('disconnect', () => {
-		console.log(`${socket.id} left serv`) // log l'id AVANT de supprimer
 		removePlayer(socket.id)
 	})
 
 	socket.on('boost', () => {
-		console.log(`${socket.id} speed up`)
 		setBoost(socket.id)
 	})
-
-	socket.on("chatMessage", (text : string) => {
-		const timestamp = new Date()
-		sendMessage(socket.id, text, io, timestamp.toISOString())
-	});
-
-	socket.on("direction", (dir: "LEFT" | "RIGHT") => {
-		console.log(`turn ${dir} so ${dir}`);
-		updateDirArrow(socket.id, dir);
-	});
-
-	socket.on("mouseMove", (vect: Vector) => {
-		updateDirMouse(socket.id, vect);
-	});
-
-	socket.on("disconnect", () => {
-		console.log(`${socket.id} left serv`); // log l'id AVANT de supprimer
-		removePlayer(socket.id);
-	});
-
-	socket.on("boost", () => {
-		console.log(`${socket.id} speed up`);
-		setBoost(socket.id);
-	});
 
 	socket.on("chatMessage", (text: string) => {
 		const timestamp = new Date();
@@ -111,14 +83,9 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("register", async (username: string,password: string,email: string) =>{
-		console.log(`register emit received`);
 		const cookie = await register(username, email, password)
-		console.log('HERE', cookie)
 		if (cookie !== null){
-			console.log('enter in here')
 			let jwt = extractJwt(cookie)
-			console.log("cookie: ", jwt)
-			console.log(`register? emit send succes`);
 			socket.emit("register?", {succes: true, token:jwt, username:username})
 		}
 		else 
