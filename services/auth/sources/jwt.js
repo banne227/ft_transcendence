@@ -36,6 +36,9 @@ async function callDecodeJWT(tokenValue) {
 
 	const response = await fetch(url, {
 		method: 'GET',
+		headers: {
+			Authorization: `${tokenValue}`, // Error here
+		},
 	})
 	const data = await response.json()
 	console.log(data)

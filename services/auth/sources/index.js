@@ -195,15 +195,14 @@ auth.delete('/delete', async (req, res) => {
 		// Decode the JWT and parse is data into JS object
 		const jwtData = JSON.parse(await callDecodeJWT(token))
 		// Check if the email provide and the email in the jwt match
-		if (jwtData.email != email)
-			throw
+		if (jwtData.email != email) throw 'err'
 		// Try to delete the account
 		await newUser
 			.find({ email: { $eq: email } })
 			.deleteOne()
 			.exec()
 	} catch (err) {
-		res.status(500).json({ error: `Cant delete account ${err}` })
+		res.status(500).json({ error: `Cant delete account` })
 	}
 	// In case of succes
 	res.status(200).json({ succes: `Deleted ${email} account` })

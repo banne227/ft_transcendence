@@ -143,7 +143,8 @@ api.get('/jwt/generate', (req, res) => {
 })
 
 api.get('/jwt/decode', async (req, res) => {
-	const { jwt } = req.query
+	// const { jwt } = req.query
+	const jwt = req.headers.authorization
 	// Check if we have a jwt
 	console.log(jwt)
 	if (jwt === undefined) {
