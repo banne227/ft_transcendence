@@ -45,7 +45,7 @@ io.on("connection", (socket) => {
 	console.log("Connecté :", socket.id);
 
 	socket.on('join', (name: string, token: string) => {
-		console.log(`${name} log with jwt: ${token}`)
+		// console.log(`${name} log with jwt: ${token}`)
 		socket.emit('joined', { id: socket.id })
 	})
 

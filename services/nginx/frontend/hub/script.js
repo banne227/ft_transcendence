@@ -156,7 +156,7 @@ socket.on("connected?", (data) => {
 	{
         localStorage.setItem("token", data.token);
         localStorage.setItem("username", data.username);
-		console.log(`${data.username} log with jwt: ${data.token}`)
+		// console.log(`${data.username} log with jwt: ${data.token}`)
 		window.location.href = "https://transcendence.42.fr/game";
 	}
     else

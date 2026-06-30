@@ -61,8 +61,8 @@ export function addScore(id: string, to_add: number) {
 
 //j'envoie une requete PUT pour changer le skin dun joueur
 export async function changeSkin(token: string, color: string) {
-	console.log("mthode change color for", color)
-	const response = await fetch("http://api:4444/changeskin", {
+	// console.log("mthode change color for", color)
+	const response = await fetch("http://api:4444/changecolor", {
 		method: "PUT",
 		headers: {
 			Authorization: token,
@@ -78,6 +78,7 @@ export async function changeSkin(token: string, color: string) {
 		console.error("changeSkin échoué:", data.message);
 		return null;
 	}
+	console.log(data)
 	return data; // retourne les infos du joueur
 }
 

@@ -128,7 +128,7 @@ api.get("/jwt/generate", (req, res) => {
 
 	try {
 		const jwt = jsonwebtoken.sign(payload, process.env.JWT_SECRET, {
-			expiresIn: "15m",
+			expiresIn: "1d",
 		});
 		return res.status(200).json({ jwt: jwt });
 	} catch (err) {

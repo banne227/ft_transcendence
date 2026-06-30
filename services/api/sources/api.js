@@ -326,6 +326,8 @@ api.put("/changecolor", async (req, res) => {
 	const jwt = req.headers.authorization;
 	// Get the skin from the body of the request
 	const skinColor = req.body.color;
+	console.log("--- ---")
+	console.log(skinColor)
 
 	// Check if we have the jwt and the skin color
 	if (skinColor === undefined) res.status(400).json({ error: "Missing color" });
@@ -350,13 +352,13 @@ api.put("/changecolor", async (req, res) => {
 				{
 					$and: [{ email: jwtPayload.email }, { uuid: jwtPayload.uuid }],
 				},
-				{ colors: skinColor },
+				{ color: skinColor },
 			);
 		} catch (err) {
 			console.log(err);
 			return res
 				.status(404)
-				.json({ succes: `Changed the skin to color: ${skinColor}` });
+				.json({ succes: `ERROR` });
 		}
 		return res
 			.status(200)

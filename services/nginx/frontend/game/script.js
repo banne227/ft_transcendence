@@ -204,10 +204,26 @@ resize()
 const brushImg = new Image()
 brushImg.src = '../images/brush.png'
 
+function componentToHex(c) {
+    const hex = parseInt(c, 10).toString(16);
+    return hex.length === 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(rgb) {
+    let value = rgb.replace("rgb(", "").replace(")", "");
+
+    const [r, g, b] = value.split(',');
+
+    return "#" +
+        componentToHex(r) +
+        componentToHex(g) +
+        componentToHex(b);
+}
+
 document.querySelectorAll('.colors').forEach(color => {
 	color.addEventListener('click', () => {
-		console.log(color.style.background);
-		socket.emit("changecolor", color.style.background);
+		console.log(rgbToHex(color.style.background));
+		socket.emit("changecolor", rgbToHex(color.style.background));
 	});
 });
 
