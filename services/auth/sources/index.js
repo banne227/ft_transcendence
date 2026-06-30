@@ -23,6 +23,9 @@ const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@mongo
 // Import the user modele scheme
 const { newUser } = require('./models/userSchema')
 
+auth.use(express.json())
+auth.use(express.urlencoded({ extended: true }))
+
 // Initialized connection with the database
 mongoose
 	.connect(url)
@@ -44,21 +47,28 @@ process.on('SIGTERM', (code_signal_error) => {
 	process.exit(0)
 })
 
+auth.get('/health', async (req, res) => {
+	res.status(200).json({ status: 'API status : OK' })
+})
+
 auth.get('/logout', (req, res) => {
 	// Redirect the user to the hub page
 	res.redirect('/')
 })
 
 auth.post('/register', async (req, res) => {
+	console.log(req.headers)
+	console.log(req.body)
 	// Get the content of the body of the request
 	let { username, password, email } = req.body
+
+	// Check if the  username, password, and email is on the body
+	if (username === '' || password === '' || email === '')
+		return res.status(400).json({ error: 'Invalid body' })
 
 	username = sanitizeUserInput(username)
 	password = sanitizeUserInput(password)
 	email = sanitizeUserInput(String(email).toLowerCase())
-	// Check if the user have put an username, password, and email
-	if (username === '' || password === '' || email === '')
-		return res.status(400).json({ error: 'Invalid body' })
 
 	// Check if the user already have a JWT
 	if (req.headers.authorization !== undefined) {

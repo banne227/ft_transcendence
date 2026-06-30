@@ -1,0 +1,5 @@
+- Check de password
+- Meilleur condition d'erreur endpoint
+- Mettre des port par default si les vars d'env sont pas set
+- Switch des fonction comme decodejwt() vers les endpoint interne
+- Passer tous sous bun
