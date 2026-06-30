@@ -10,21 +10,18 @@ const {
 	isnum,
 	decodeJwt,
 } = require('./utils.js')
-const { jwt } = require('jsonwebtoken')
+
+const { callGenerateJWT, callDecodeJWT, callValidateJWT } = require('./jwt.js')
 const bcrypt = require('bcryptjs')
 
-// --- DEFINE CONSTANT ---
-// Create the server
-const auth = express()
-// Assign the port where to listen
-const PORT = 9999
-// URL of our mongodb database
-const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@mongodb/databases`
-// Import the user modele scheme
-const { newUser } = require('./models/userSchema')
+const auth = express() // Create the server
+const PORT = 9999 // Assign the port where to listen
+const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@mongodb/databases` // URL of our mongodb database
+const { newUser } = require('./models/userSchema') // Import the user modele scheme
 
-auth.use(express.json())
+auth.use(express.json()) // Parse the body in json
 auth.use(express.urlencoded({ extended: true }))
+auth.disable('x-powered-by')
 
 // Initialized connection with the database
 mongoose
@@ -33,8 +30,7 @@ mongoose
 		console.log(`[+] Succesfully connected to ${url}`)
 	})
 	.catch((error) => {
-		console.log(`[!] Error caught :`)
-		console.log(error)
+		console.log(`[!] Cant connect to the database !`)
 		process.exit(1)
 	})
 
@@ -57,76 +53,103 @@ auth.get('/logout', (req, res) => {
 })
 
 auth.post('/register', async (req, res) => {
-	console.log(req.headers)
-	console.log(req.body)
 	// Get the content of the body of the request
 	let { username, password, email } = req.body
 
 	// Check if the  username, password, and email is on the body
-	if (username === '' || password === '' || email === '')
-		return res.status(400).json({ error: 'Invalid body' })
+	try {
+		if (String(username) == '' || username === undefined)
+			throw 'Missing username'
+		if (String(password) == '' || password === undefined)
+			throw 'Missing password'
+		if (String(email) == '' || email === undefined) throw 'Missing email'
+	} catch (err) {
+		return res.status(400).json({ error: `${err}` })
+	}
 
-	username = sanitizeUserInput(username)
-	password = sanitizeUserInput(password)
-	email = sanitizeUserInput(String(email).toLowerCase())
+	const userData = {}
+	userData.username = sanitizeUserInput(String(username))
+	userData.password = sanitizeUserInput(String(password))
+	userData.email = sanitizeUserInput(String(email).toLowerCase())
 
-	// Check if the user already have a JWT
+	if (userData.password.length > 128) {
+		return res.status(400).json({ error: 'The password is too long' })
+	} else if (userData.password.length < 8) {
+		return res.status(400).json({ error: 'The password is too short' })
+	}
 	if (req.headers.authorization !== undefined) {
+		// Check if the user already have a JWT
 		// Do a request to /jwt/validate to check if the JWT is valid
-		const response = await fetch('http://api:4444/jwt/validate', {
+		const response = await fetch('http://internal:1111/jwt/validate', {
 			method: 'GET',
 			headers: {
 				authorization: `${req.headers.authorization}`,
 			},
 		})
 		if (response.status === 200)
-			return res.status(200).json({ error: 'Already logged' })
+			return res.status(409).json({ error: 'Already logged' })
 	}
 
 	// Search in the database who have the same username and email than the user (partially work the 12/06)
 	const alreadyExist = await newUser.findOne({
-		$or: [{ email: { $eq: email } }, { username: { $eq: username } }],
+		$or: [
+			{ email: { $eq: userData.email } },
+			{ username: { $eq: userData.username } },
+		],
 	})
-
 	// If a user or a email is already associate with da account
 	if (alreadyExist !== null)
 		return res.status(401).json({
-			error: `The username ${String(username).substring(0, 20)} or the email ${String(email).substring(0, 20)} is already taken`,
+			error: `The username ${String(userData.username).substring(0, 128)} or the email ${String(userData.email).substring(0, 128)} is already taken`,
 		})
 
 	// Generate a unique identifier
 	let uuid
 	while (1) {
-		uuid = crypto.randomUUID()
+		uuid = String(crypto.randomUUID())
 		if ((await newUser.findOne({ uuid: uuid })) === null) break
 	}
 	// Create the user on the db
 	await newUser.create({
-		username: String(username),
-		email: String(email),
-		password: String(await generateHash(password)),
-		uuid: String(uuid),
+		username: userData.username,
+		email: userData.email,
+		password: String(await generateHash(userData.password)),
+		uuid: uuid,
 		history: [],
 	})
 
 	// Creating our JWT
-	const jwt = generateJwt(email, uuid)
-	// Putting the JWT in the cookie response for the client
-	res.cookie('jwt', jwt)
-	// Tell to our client that our user have been created by sending a status code 200
-	return res.status(200).json({ jwt: jwt })
+	callGenerateJWT(userData.email, uuid)
+		.then((jwt) => {
+			res.cookie('jwt', jwt) // Putting our JWT on the cookie of the response
+			return res.status(200).json({
+				succes: `User ${userData.username} have been created !`,
+			}) // Everything work well
+		})
+		.catch((err) => {
+			return res.status(500).json({ error: `${err}` })
+		})
 })
 
 auth.post('/login', async (req, res) => {
 	// Get the body of the request
 	let { email, password } = req.body
 
-	email = sanitizeUserInput(String(email).toLowerCase())
-	password = sanitizeUserInput(password)
+	// Check if the  username, password, and email is on the body
+	try {
+		if (String(email) == '' || email === undefined) throw 'Missing email'
+		if (String(password) == '' || password === undefined)
+			throw 'Missing password'
+	} catch (err) {
+		return res.status(400).json({ error: `${err}` })
+	}
 
-	// Check if the email and the password is here
-	if (email === null || password === null)
-		return res.status(400).json({ error: 'Invalid body data' })
+	try {
+		email = sanitizeUserInput(String(email).toLowerCase())
+		password = sanitizeUserInput(String(password))
+	} catch (err) {
+		return res.status(400).json({ error: `${err}` })
+	}
 
 	// Check if the user already have a JWT
 	if (req.headers.authorization !== undefined)
@@ -152,37 +175,38 @@ auth.post('/login', async (req, res) => {
 	}
 })
 
-auth.post('/forget', async (req, res) => {
-	let { email, password } = req.body
+auth.delete('/delete', async (req, res) => {
+	const token = req.headers.authorization
+	let email = req.body.email
 
-	email = sanitizeUserInput(String(email).toLowerCase())
-	password = sanitizeUserInput(password)
-	// Check if the a email and a password is on the body
-	if (email === undefined || password === undefined)
-		return res.sendStatus(400)
+	try {
+		if (String(email) == '' || email === undefined) throw 'Missing email'
+		if (String(token) == '' || token === undefined) throw 'Missing token'
 
-	// Check if the password of the user is superior that 12 character
-	if (
-		(String(password).length <= 12 && String(password).length > 128) ||
-		isalnum(password) == false
-	) {
-		return res.status(401).json({ error: 'invalid password' })
+		email = sanitizeUserInput(String(email).toLowerCase())
+
+		if ((await callValidateJWT(token)) === false)
+			return res.status(401).json({ error: 'Your JWT is not valid' })
+	} catch (err) {
+		return res.status(400).json({ error: `${err}` })
 	}
 
-	// Search on the database if the user exist
-	let user = await newUser.findOne({ email: { $eq: email } })
-	// If not exist
-	if (!user)
-		return res.status(401).json({ error: 'cannot edit the password' })
-	// Update the password associate to the email on the database
-	user = await newUser.updateOne(
-		{ email: email },
-		{ password: generateHash(password) },
-	)
-	res.cookie('jwt', generateJwt(user.username, email))
-	return res.status(200).json({
-		succes: 'The password have been succesfully changed',
-	})
+	try {
+		// Decode the JWT and parse is data into JS object
+		const jwtData = JSON.parse(await callDecodeJWT(token))
+		// Check if the email provide and the email in the jwt match
+		if (jwtData.email != email)
+			throw
+		// Try to delete the account
+		await newUser
+			.find({ email: { $eq: email } })
+			.deleteOne()
+			.exec()
+	} catch (err) {
+		res.status(500).json({ error: `Cant delete account ${err}` })
+	}
+	// In case of succes
+	res.status(200).json({ succes: `Deleted ${email} account` })
 })
 
 // Start listening on the port

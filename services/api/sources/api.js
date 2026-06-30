@@ -1,12 +1,6 @@
 // Import every dependency
 const express = require('express')
 const mongoose = require('mongoose')
-const {
-	isalnum,
-	isnum,
-	generateHash,
-	sanitizeUserInput,
-} = require('./utils.js')
 
 // Import mongoose models
 const { newUser } = require('./models/userSchema')
@@ -35,6 +29,18 @@ api.use(express.json())
 api.use(express.urlencoded({ extended: true }))
 api.disable('x-powered-by')
 
+/* This function take a string who was send by a client to prevent any injection */
+function sanitizeUserInput(userInput) {
+	let sanitizedString = ''
+
+	for (let index = 0; index < userInput.length && index < 128; index++) {
+		if (userInput[index].match(/[a-zA-Z0-9$!#.?/\\@&_\-*]+/) !== null) {
+			sanitizedString = sanitizedString + userInput[index]
+		}
+	}
+	return sanitizedString
+}
+
 /*
  * When stopping docker container, docker send SIGTERM
  * to the container. This function is a special signal
@@ -44,18 +50,6 @@ process.on('SIGTERM', (code_signal_error) => {
 	process.exit(0)
 })
 
-async function isUp(url) {
-	try {
-		response = await fetch(`${url}`, {
-			method: 'GET',
-		})
-		console.log(response.status)
-	} catch (err) {
-		console.log('HERE')
-		console.log(err)
-	}
-}
-
 /* ----- GET REQUEST METHODE ----- */
 api.get('/', (req, res) => {
 	// Redirect the user to the API documentation
@@ -64,15 +58,12 @@ api.get('/', (req, res) => {
 	)
 })
 
+// Lightest pages to know if the services is down
 api.get('/health', async (req, res) => {
 	res.status(200).json({ status: 'API status : OK' })
 })
 
-api.get('/countUser', async (req, res) => {
-	let numberOfUser = await newUser.collection.count()
-	res.status(200).json({ users: numberOfUser })
-})
-
+// Retrieve the history of every match of a user
 api.get('/history/:userName', async (req, res) => {
 	// Get the username specified in uri parameter
 	const username = sanitizeUserInput(req.params.userName)
@@ -94,6 +85,7 @@ api.get('/history/:userName', async (req, res) => {
 	return res.status(200).json(data.history)
 })
 
+// Retrieve the skin color of a user
 api.get('/user/:user/getcolor', async (req, res) => {
 	const username = sanitizeUserInput(req.params.user)
 	if (username === '')
@@ -104,78 +96,7 @@ api.get('/user/:user/getcolor', async (req, res) => {
 	return res.status(200).json({ color: data.color })
 })
 
-api.put('/changecolor', async (req, res) => {
-	// Get the JWT from the header
-	const jwt = req.headers.authorization
-	// Get the skin from the body of the request
-	const skinColor = req.body.color
-
-	// Check if we have the jwt and the skin color
-	if (skinColor === undefined)
-		res.status(400).json({ error: 'Missing color' })
-	// Check if the skin color composed by number
-	// if (skinColor.match("^#([A-Fa-f0-9]6|[A-Fa-f0-9]3)$") == false)
-	// res.status(400).json({ error: 'Invalid skinColor' })
-	// Decode the payload of the JWT and put his content to JSON
-	if (jwt !== undefined) {
-		const jwtPayload = JSON.parse(decodeJwt(jwt))
-		// Search on the database if we got an account with this email and this uuid
-		let user = await newUser.findOne({
-			$and: [{ email: jwtPayload.email }, { uuid: jwtPayload.uuid }],
-		})
-		// If we found nothing
-		if (user === null)
-			return res.status(404).json({
-				error: `Provided account information invalid`,
-			})
-		// Update the database with the new skin
-		try {
-			user = await newUser.updateOne(
-				{
-					$and: [
-						{ email: jwtPayload.email },
-						{ uuid: jwtPayload.uuid },
-					],
-				},
-				{ colors: skinColor },
-			)
-		} catch (err) {
-			console.log(err)
-			return res
-				.status(404)
-				.json({ succes: `Changed the skin to color: ${skinColor}` })
-		}
-		return res
-			.status(200)
-			.json({ succes: `Changed the skin to color: ${skinColor}` })
-	}
-})
-
-/* ----- DELETE REQUEST METHODE ----- */
-api.delete('/delete', async (req, res) => {
-	// Take the JWT from the authorization section in the header
-	const token = req.headers.authorization
-	// Take the email from the body
-	const email = sanitizeUserInput(String(req.body.email).toLowerCase())
-
-	// If the email wasnt set
-	if (email === undefined) {
-		res.status(400).json({ error: 'Email not provided' })
-	}
-	try {
-		// Try to delete the account
-		await newUser
-			.find({ email: { $eq: email } })
-			.deleteOne()
-			.exec()
-	} catch (err) {
-		// In case of error
-		res.status(500).json({ error: `Cant delete account ${err}` })
-	}
-	// In case of succes
-	res.status(200).json({ succes: `Deleted ${email} account` })
-})
-
+// --- TO COMMENT ---
 api.get('/debug/db', async (req, res) => {
 	const rrr = await newUser.find()
 
@@ -191,5 +112,7 @@ api.listen(PORT, (err) => {
 		console.log(
 			`Listening on https://transcendence.42.fr/api or http://api:${PORT} in the docker network`,
 		)
+	} else {
+		console.log(err)
 	}
 })

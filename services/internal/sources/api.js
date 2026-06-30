@@ -7,7 +7,7 @@ const {
 	sanitizeUserInput,
 	decodeJwt,
 } = require('./utils')
-const jsonwebtoken = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
 // Import mongoose models
@@ -52,16 +52,16 @@ api.get('/health', (req, res) => {
 
 api.get('/jwt/validate', (req, res) => {
 	// Take the JWT from the authorization section in the header
-	const token = req.headers.authorization
+	const currentToken = req.headers.authorization
 
 	// Check if a token is on the authorization header
-	if (token === undefined) {
+	if (currentToken === undefined) {
 		return res.status(400).json({ error: 'No token provided' })
 	}
 
 	// Use the function to check if the token was not altered
 	try {
-		const valid = jwt.verify(userJwt, process.env.JWT_SECRET)
+		const valid = jwt.verify(currentToken, process.env.JWT_SECRET)
 		if (valid) {
 			return res.status(200).json({ succes: 'The JWT is valid' })
 		} else {
@@ -116,6 +116,7 @@ api.get('/jwt/regenerate', async (req, res) => {
 api.get('/jwt/generate', (req, res) => {
 	const { email, uuid } = req.query
 
+	console.log(email, uuid)
 	// Check if we got something in parameter
 	if (email === undefined)
 		return res.status(400).json({ error: 'Missing email' })
@@ -131,20 +132,22 @@ api.get('/jwt/generate', (req, res) => {
 	}
 
 	try {
-		const jwt = jsonwebtoken.sign(payload, process.env.JWT_SECRET, {
+		const currentToken = jwt.sign(payload, process.env.JWT_SECRET, {
 			expiresIn: '1d',
 		})
-		return res.status(200).json({ jwt: jwt })
+		console.log(currentToken)
+		return res.status(200).json({ jwt: currentToken })
 	} catch (err) {
-		return res.status(500).json
+		return res.status(500).json({ error: 'Failed to generate JWT' })
 	}
 })
 
 api.get('/jwt/decode', async (req, res) => {
 	const { jwt } = req.query
 	// Check if we have a jwt
+	console.log(jwt)
 	if (jwt === undefined) {
-		return res.status(400).json({ error: 'Invalid JWT' })
+		return res.status(400).json({ error: 'Missing JWT' })
 	}
 	// Split our jwt in three part
 	let jwtData = jwt.split('.')
@@ -191,6 +194,53 @@ api.post('/addScore', async (req, res) => {
 	return res.status(200).json({
 		succes: `Added ${username}:${score}`,
 	})
+})
+
+// Change the color of his snake on the database
+api.put('/user/changecolor', async (req, res) => {
+	// Get the JWT from the header
+	const jwt = req.headers.authorization
+	// Get the skin from the body of the request
+	const newColor = req.body.color
+
+	// Check if we have the jwt and the skin color
+	if (newColor === undefined) res.status(400).json({ error: 'Missing color' })
+	// Check if the skin color composed by number
+	// if (newColor.match("^#([A-Fa-f0-9]6|[A-Fa-f0-9]3)$") == false)
+	// res.status(400).json({ error: 'Invalid newColor' })
+	// Decode the payload of the JWT and put his content to JSON
+	if (jwt !== undefined) {
+		const jwtPayload = JSON.parse(decodeJwt(jwt))
+		// Search on the database if we got an account with this email and this uuid
+		let user = await newUser.findOne({
+			$and: [{ email: jwtPayload.email }, { uuid: jwtPayload.uuid }],
+		})
+		// If we found nothing
+		if (user === null)
+			return res.status(404).json({
+				error: `Provided account information invalid`,
+			})
+		// Update the database with the new skin
+		try {
+			user = await newUser.updateOne(
+				{
+					$and: [
+						{ email: jwtPayload.email },
+						{ uuid: jwtPayload.uuid },
+					],
+				},
+				{ colors: newColor },
+			)
+		} catch (err) {
+			console.log(err)
+			return res
+				.status(404)
+				.json({ succes: `Changed the skin to color: ${newColor}` })
+		}
+		return res
+			.status(200)
+			.json({ succes: `Changed the skin to color: ${newColor}` })
+	}
 })
 
 // Start our API
