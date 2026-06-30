@@ -62,6 +62,23 @@
   justify-content: center;
 }
 
+.btn-close-log {
+  width: 18px;
+  height: 16px;
+  background: linear-gradient(to bottom, #f55, #c00);
+  border-top: 1px solid #ff9999;
+  border-left: 1px solid #ff9999;
+  border-bottom: 1px solid #800000;
+  border-right: 1px solid #800000;
+  color: white;
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 .window-body {
   padding: 10px 25px 10px 10px;
   text-align: left;

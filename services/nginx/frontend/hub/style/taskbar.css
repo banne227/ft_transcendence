@@ -73,6 +73,20 @@ object-fit: contain;
   border-right: 2px solid #800000;
 }
 
+.task-btn-log.stop {
+  height: 44px;
+  padding: 0 10px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 20px;
+  font-weight: bold;
+  background: linear-gradient(to bottom, #ff6666, #cc0000);
+  color: white;
+  border-top: 2px solid #ff9999;
+  border-left: 2px solid #ff9999;
+  border-bottom: 2px solid #800000;
+  border-right: 2px solid #800000;
+}
+
 .task-info {
   font-family: 'Press Start 2P', monospace;
   color: white;

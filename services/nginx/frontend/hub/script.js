@@ -83,12 +83,12 @@ document.querySelector("#window-log").addEventListener("click", function () {
 });
 
 function afficherFenetreCompte(id) {
-	document.getElementById("window-log").style.display = "none";
+	// document.getElementById("window-log").style.display = "none";
 	document.getElementById("window-login").style.display = "none";
 	document.getElementById("window-register").style.display = "none";
 
-
-	document.getElementById(id).style.display = "block";
+	if (id !== "window-log")
+		document.getElementById(id).style.display = "block";
 }
 
 document.querySelector(".btn-login").addEventListener("click", function (e) {
@@ -120,10 +120,29 @@ document.getElementById("btn-privacy").addEventListener("click", function () {
 		});
 });
 
+document.getElementById("CGU").addEventListener("click", function () {
+	fetch("confi/CGU.md")
+		.then(response => response.text())
+		.then(markdown => {
+			document.getElementById("privacy-content").innerHTML = markdownToHtml(markdown);
+			document.getElementById("window-privacy").style.display = "block";
+		})
+		.catch(error => {
+			document.getElementById("privacy-content").innerText = "Impossible de charger le document.";
+			document.getElementById("window-privacy").style.display = "block";
+		});
+});
+
 makeDraggable(
 	document.querySelector("#window-privacy"),
 	document.querySelector("#window-privacy .titlebar"),
 );
+
+makeDraggable(
+	document.querySelector("#window-privacy"),
+	document.querySelector("#window-privacy .titlebar"),
+);
+
 
 // Convertisseur Markdown -> HTML très simple (titres, gras, listes, paragraphes)
 function markdownToHtml(md) {
