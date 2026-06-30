@@ -58,7 +58,8 @@ document.getElementById("chat-input").addEventListener("keydown", (e) => {
 	const input = document.getElementById("chat-input");
 	const msg = input.value.trim();
 	if (!msg) return;
-	socket.emit("chatMessage", msg);
+	const username = localStorage.getItem("username") ?? "anonymous";
+	socket.emit("chatMessage", msg, username);
 	input.value = "";
 });
 
@@ -66,8 +67,9 @@ socket.on('gameState', (state) => {
 	const me = state.players[socket.id]
 	if (!me) return
 
-	if (!me.alive)
-		document.getElementById('start-msg').style.display = 'block'
+	if (!me.alive) document.getElementById('start-msg').style.display = 'block'
+	else document.getElementById('start-msg').style.display = 'none'
+
 	document.getElementById('hud-len').textContent = me.body.length
 	document.getElementById('hud-score').textContent = me.score
 	document.getElementById('hud-boost').textContent = me.boost
@@ -223,7 +225,7 @@ function render_p(camX, camY, scaleX, scaleY) {
 				// ctx.fill();
 			} else {
 				ctx.fillStyle =  player.color
-				ctx.fillRect(x - player.width / 2, x - player.width / 2 , player.width, player.width)
+				ctx.fillRect(x - player.width / 2, y - player.width / 2 , player.width, player.width)
 			}
 			i++
 		}

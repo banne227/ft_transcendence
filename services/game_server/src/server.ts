@@ -68,9 +68,9 @@ io.on("connection", (socket) => {
 		setBoost(socket.id)
 	})
 
-	socket.on("chatMessage", (text: string) => {
+	socket.on("chatMessage", (text: string, player: string) => {
 		const timestamp = new Date();
-		sendMessage(socket.id, text, io, timestamp.toISOString());
+		sendMessage(player, text, io, timestamp.toISOString());
 	});
 
 	socket.on("changecolor", (color: string) => {

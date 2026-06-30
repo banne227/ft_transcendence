@@ -8,11 +8,9 @@ export interface Message {
     hour: string
 }
 
-export function sendMessage(id: string, text: string, io: Server, date: string): void{
-    const player = state.players[id]
+export function sendMessage(player: string, text: string, io: Server, date: string): void{
     const message = {
-        id: player?.id,
-        name: player?.name,
+        name: player,
         text: text,
         hour: date 
     }
