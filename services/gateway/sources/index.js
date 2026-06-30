@@ -19,10 +19,9 @@ gateway.use(cors()) // Handle Cross-Origin Ressource Sharing
 gateway.use(helmet()) // Middleware to dont have XSS
 gateway.use(morgan('combined')) // Logged on the console every connection done
 
-gateway.disable('x-powered-by') // Dont have x-powered-by on the header of the response
+gateway.disable('x-powered-by') // Disable x-powered-by on the header of the response
 const services = [
 	{ route: '/auth', target: 'http://auth:9999/' }, // Where the request should go when accessing to /auth
-	{ route: '/user', target: 'http://user:9999/' }, // Where the request should go when accessing to /user
 	{ route: '/', target: 'http://api:4444/' }, // Where the request should go when accessing to /api
 ]
 
