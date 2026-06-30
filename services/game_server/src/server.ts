@@ -31,16 +31,6 @@ app.get("/health", (_req, res) => {
 	res.json({ status: "ok" });
 });
 
-app.get("/lead", (req, res) => {
-	console.log(join(__dirname, "leaderboard", "lead.html"));
-	res.sendFile(join(__dirname, "leaderboard", "lead.html"));
-});
-
-app.get("/leadrrr", (req, res) => {
-	console.log(join(__dirname, "leaderboard", "lead.html"));
-	res.sendFile(join(__dirname, "leaderboard", "lead.js"));
-});
-
 io.on("connection", (socket) => {
 	console.log("Connecté :", socket.id);
 

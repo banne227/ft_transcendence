@@ -3,7 +3,7 @@ async function loadPlayer() {
     {
         const username = document.getElementById("username").value; //recupere le username tape
 
-        const res = await fetch(`https://127.0.0.1/api/history/${username}`); //await attent une reonse avant de passer a la suite
+        const res = await fetch(`https://transcendence.42.fr/api/history/${username}`); //await attent une reonse avant de passer a la suite
         const data = await res.json(); //recupere lle json avec fetch rempli auparavent coter api
 
         renderChart(data);
