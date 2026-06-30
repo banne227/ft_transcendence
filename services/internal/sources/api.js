@@ -21,6 +21,13 @@ const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@mongo
 // Create the webserver with ExpressJS
 const api = express()
 
+api.get("/health", (_req, res) => {
+    res.status(200).json({
+        status: "UP"
+    });
+});
+
+
 // Initialized connection to the database
 mongoose
 	.connect(url)
@@ -44,10 +51,6 @@ api.disable('x-powered-by')
  */
 process.on('SIGTERM', (code_signal_error) => {
 	process.exit(0)
-})
-
-api.get('/health', (req, res) => {
-	res.status(200).json({ status: 'Internal API status : OK' })
 })
 
 api.get('/jwt/validate', (req, res) => {
