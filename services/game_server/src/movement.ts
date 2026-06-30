@@ -67,7 +67,7 @@ export function movePlayer(id: string): boolean {
     if (!newhead) return (false)
 
 	//si la tete touche un mur
-	if (newhead.x <= 0 || newhead.x >= MAP_SIZE.width || newhead.y <= 0 || newhead.y >= MAP_SIZE.height)
+	if (newhead.x <= 0 + player.width / 2 || newhead.x >= MAP_SIZE.width - player.width / 2 || newhead.y <= 0 + player.width / 2 || newhead.y >= MAP_SIZE.height - player.width / 2)
 		return setDead(id)
 
 	//je verifie s'il y a une collision avec un joueur
