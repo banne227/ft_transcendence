@@ -1,6 +1,8 @@
 const socket = io('https://transcendence.42.fr/', {
 	path: '/ws/serv/socket.io/',
 })
+console.log("Socket créé", socket.id);
+
 const output = document.getElementById('output')
 
 function showChar(e) {
@@ -19,6 +21,7 @@ addEventListener('keydown', function (e) {
 })
 
 socket.on("connect", () => {
+	console.log("Connecté", socket.id);
 	const username = localStorage.getItem("username") ?? "anonymous";
 	const token = localStorage.getItem("token");
 	if (!token) window.location.href = "/hub";
@@ -67,7 +70,10 @@ document.getElementById("chat-input").addEventListener("keydown", (e) => {
 	input.value = "";
 });
 
+let gameState = null
+
 socket.on('gameState', (state) => {
+	gameState = state
 	const me = state.players[socket.id]
 	if (!me) return
 
@@ -143,12 +149,6 @@ canvas.addEventListener('mousemove', (e) => {
 	})
 })
 
-let gameState = null
-
-socket.on('gameState', (state) => {
-	gameState = state
-})
-
 function resize() {
 	canvas.width = window.innerWidth
 	canvas.height = window.innerHeight
@@ -222,7 +222,7 @@ function rgbToHex(rgb) {
 
 document.querySelectorAll('.colors').forEach(color => {
 	color.addEventListener('click', () => {
-		console.log(rgbToHex(color.style.background));
+		// console.log(rgbToHex(color.style.background));
 		socket.emit("changecolor", rgbToHex(color.style.background));
 	});
 });
@@ -253,7 +253,7 @@ function render_p(camX, camY, scaleX, scaleY) {
 }
 
 if (gameState) {
-	console.log(gameState.players.x, gameState.players.y, '\n')
+	// console.log(gameState.players.x, gameState.players.y, '\n')
 	render_p()
 }
 

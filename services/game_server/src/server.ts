@@ -31,9 +31,21 @@ app.get("/health", (_req, res) => {
 	res.json({ status: "ok" });
 });
 
-io.on("connection", (socket) => {
-	console.log("Connecté :", socket.id);
+io.engine.on("connection_error", (err) => {
+    console.log("Code :", err.code);
+    console.log("Message :", err.message);
+    console.log("Contexte :", err.context);
+});
 
+io.on("connection", (socket) => {
+    console.log(socket.conn.transport.name);
+
+    socket.conn.on("upgrade", () => {
+        console.log("Upgrade :", socket.conn.transport.name);
+    });
+});
+
+io.on("connection", (socket) => {
 	socket.on('join', (name: string, token: string) => {
 		// console.log(`${name} log with jwt: ${token}`)
 		socket.emit('joined', { id: socket.id })
@@ -87,10 +99,8 @@ io.on("connection", (socket) => {
 
 	socket.on("login", async (username:string , email : string, password:string ) =>{
 		const res = await login(email, password)
-		console.log(res)
 		if (res !== null){
 			const jwt = extractJwt(res)
-			console.log("jwt: ", jwt)
 			socket.emit("connected?", {succes: true, token:jwt, username:username})
 		}
 		else socket.emit("connected?", { success: false });

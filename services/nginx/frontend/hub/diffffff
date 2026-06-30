@@ -159,8 +159,6 @@ socket.on("connected?", (data) => {
 document.getElementById("form-register").addEventListener("submit", function (e) {
     e.preventDefault();
 
-	console.log("submit register");
-
     const username = document.getElementById("register-username").value;
     const password = document.getElementById("register-password").value;
     const passwordConfirm = document.getElementById("register-password-confirm").value;
@@ -176,8 +174,6 @@ document.getElementById("form-register").addEventListener("submit", function (e)
 
 document.getElementById("form-login").addEventListener("submit", function (e) {
     e.preventDefault();
-
-	console.log("submit login");
 
     const username = document.getElementById("login-username").value;
     const password = document.getElementById("login-password").value;
