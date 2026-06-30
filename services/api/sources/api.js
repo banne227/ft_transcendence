@@ -13,6 +13,12 @@ const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@mongo
 // Create the webserver with ExpressJS
 const api = express()
 
+api.get("/health", (_req, res) => {
+    res.status(200).json({
+        status: "UP"
+    });
+});
+
 // Initialized connection to the database
 mongoose
 	.connect(url)
@@ -59,9 +65,17 @@ api.get('/', (req, res) => {
 })
 
 // Lightest pages to know if the services is down
-api.get('/health', async (req, res) => {
-	res.status(200).json({ status: 'API status : OK' })
-})
+api.get("/health", (_req, res) => {
+    if (mongoose.connection.readyState !== 1) {
+        return res.status(503).json({
+            status: "DOWN"
+        });
+    }
+
+    res.status(200).json({
+        status: "UP"
+    });
+});
 
 // Retrieve the history of every match of a user
 api.get('/history/:userName', async (req, res) => {

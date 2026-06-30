@@ -43,9 +43,11 @@ process.on('SIGTERM', (code_signal_error) => {
 	process.exit(0)
 })
 
-auth.get('/health', async (req, res) => {
-	res.status(200).json({ status: 'API status : OK' })
-})
+auth.get("/health", (_req, res) => {
+    res.status(200).json({
+        status: "UP"
+    });
+});
 
 auth.get('/logout', (req, res) => {
 	// Redirect the user to the hub page
