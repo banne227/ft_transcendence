@@ -5,36 +5,33 @@ const express = require('express')
 const cors = require('cors')
 const helmet = require('helmet')
 const morgan = require('morgan')
+const bodyParser = require('body-parser')
 const { createProxyMiddleware } = require('http-proxy-middleware')
 
-// Define constant
-const PORT = process.env.GATEWAY_PORT
-const rateLimit = 20 // req per minutes max
-const interval = 60 * 1000 // Interval that define when every should be remove from the list (1 minutes)
+const PORT = process.env.GATEWAY_PORT // The port used by the gateway
+const rateLimit = 20 // The number of req per minutes max
+const interval = 60 * 1000 // Interval that define when the IP list should be wipe (1 minutes)
 const requestLogged = {} // Who will contain every ip with the number of request they have done in the last 1 minutes
-const gateway = express()
+const gateway = express() // The server
 
 // Configure middleware
-gateway.use(cors())
-gateway.use(helmet())
-gateway.use(morgan('combined'))
-gateway.disable('x-powered-by')
+gateway.use(cors()) // Handle Cross-Origin Ressource Sharing
+gateway.use(helmet()) // Middleware to dont have XSS
+gateway.use(morgan('combined')) // Logged on the console every connection done
 
+gateway.disable('x-powered-by') // Dont have x-powered-by on the header of the response
 const services = [
-	{ route: '/api', target: 'http://api:4444/' },
-	{ route: '/auth', target: 'http://auth:9999/' },
-	{ route: '/user', target: 'http://user:9999/' },
+	{ route: '/auth', target: 'http://auth:9999/' }, // Where the request should go when accessing to /auth
+	{ route: '/user', target: 'http://user:9999/' }, // Where the request should go when accessing to /user
+	{ route: '/', target: 'http://api:4444/' }, // Where the request should go when accessing to /api
 ]
 
-/*
- * When stopping docker container, docker send SIGTERM
- * to the container. This function is a special signal
- * handler when the container recieve a SIGTERM
- */
+// Exit the container on the good manner
 process.on('SIGTERM', (code_signal_error) => {
 	process.exit(0)
 })
 
+// Reset The number of request done by an IP
 setInterval(() => {
 	Object.keys(requestLogged).forEach((ip) => {
 		requestLogged[ip] = 0 // Reset request count for each IP address
