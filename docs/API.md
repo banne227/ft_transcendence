@@ -292,7 +292,7 @@
 - This endpoint is for debug only and will be remove, it retrieve any information in the users collection of the database
 
 ### Usage
-- Send the proper constructed request to `https://transcendence.42.fr/api/debug/db`
+- Send the proper constructed request to `https://transcendence.42.fr/api/debuFg/db`
 
 <div align=left>
 	<h2>/changeSkin : PUT</h2>

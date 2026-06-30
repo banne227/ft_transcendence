@@ -27,7 +27,7 @@ export async function addPlayer(id: string, name: string) {
 
 export function update_width(id: string): void {
     if (state.players[id] && state.players[id].alive)
-        state.players[id].width = 10 + state.players[id].body.length / 10
+        state.players[id].width = 10 + state.players[id].body.length / 9
 }
 
 export function setDead(id: string): boolean {
@@ -58,7 +58,7 @@ export function findCollision(head: Segment, segments: Segment[], hitbox1: numbe
 
 // collision entre une tête et la nourriture
 export function findFoodCollision(head: Segment, foods: Food[], hitbox: number): number {
-    let distance = hitbox / 2 + 5
+    let distance = hitbox / 2 + 10
     return foods.findIndex(food =>
         Math.abs(food.x - head.x) < distance &&
         Math.abs(food.y - head.y) < distance

@@ -156,6 +156,7 @@ socket.on("connected?", (data) => {
 	{
         localStorage.setItem("token", data.token);
         localStorage.setItem("username", data.username);
+		console.log(`${data.username} log with jwt: ${data.token}`)
 		window.location.href = "https://transcendence.42.fr/game";
 	}
     else
@@ -186,9 +187,10 @@ document.getElementById("form-login").addEventListener("submit", function (e) {
 
 	console.log("submit login");
 
+    const email = document.getElementById("login-email").value;
     const username = document.getElementById("login-username").value;
     const password = document.getElementById("login-password").value;
 
 	console.log(`socket connec: ${socket.connected}`);
-    socket.emit("login", username, password);
+    socket.emit("login", username, email, password);
 });

@@ -19,7 +19,7 @@ export async function login(email: string, password: string) {
         return null;
     }
     console.log(`login succes for ${email}`)
-    return data; // retourne les infos du joueur
+	return response.headers.getSetCookie(); // retourne les infos du joueur
 }
 
 //j'envoie une requete POST pour ajouter un player a la db
@@ -61,6 +61,7 @@ export function addScore(id: string, to_add: number) {
 
 //j'envoie une requete PUT pour changer le skin dun joueur
 export async function changeSkin(token: string, color: string) {
+	console.log("mthode change color for", color)
 	const response = await fetch("http://api:4444/changeskin", {
 		method: "PUT",
 		headers: {
@@ -83,6 +84,6 @@ export async function changeSkin(token: string, color: string) {
 export async function getcolor(username: string): Promise<string> {
 	const response = await fetch(`http://api:4444/user/${username}/getcolor`);
 	const data = await response.json();
-	console.log(data)
+	console.log("methode getcolor ", username, data)
 	return data.color;
 }

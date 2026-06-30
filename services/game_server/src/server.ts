@@ -44,7 +44,8 @@ app.get("/leadrrr", (req, res) => {
 io.on("connection", (socket) => {
 	console.log("Connecté :", socket.id);
 
-	socket.on('join', (name: string) => {
+	socket.on('join', (name: string, token: string) => {
+		console.log(`${name} log with jwt: ${token}`)
 		socket.emit('joined', { id: socket.id })
 	})
 
@@ -94,10 +95,12 @@ io.on("connection", (socket) => {
 		}
 	});
 
-	socket.on("login", async (username:string ,password:string ) =>{
-		const res = await login(username, password)
+	socket.on("login", async (username:string , email : string, password:string ) =>{
+		const res = await login(email, password)
+		console.log(res)
 		if (res !== null){
-			const jwt = res.cookie
+			const jwt = extractJwt(res)
+			console.log("jwt: ", jwt)
 			socket.emit("connected?", {succes: true, token:jwt, username:username})
 		}
 		else socket.emit("connected?", { success: false });

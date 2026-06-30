@@ -20,7 +20,10 @@ addEventListener('keydown', function (e) {
 
 socket.on("connect", () => {
 	const username = localStorage.getItem("username") ?? "anonymous";
-	socket.emit("join", username);
+	const token = localStorage.getItem("token");
+	if (!token) window.location.href = "/hub";
+
+	socket.emit("join", username, token);
 });
 
 const playBtn = document.getElementById("play-btn");
@@ -32,7 +35,8 @@ playBtn.addEventListener("click", () => {
 });
 
 socket.on("asktoken", () => {
-	const token = getItem("jwt")
+	const token = localStorage.getItem("token")
+
 	socket.emit("gettoken", token)
 })
 
@@ -177,8 +181,8 @@ function render() {
 
 	const borderX = (0 - camX) * scaleX + canvas.width / 2
 	const borderY = (0 - camY) * scaleY + canvas.height / 2
-	const borderW = 2000 * scaleX
-	const borderH = 2000 * scaleY
+	const borderW = 2500 * scaleX
+	const borderH = 2500 * scaleY
 
 	const dangerSize = 40
 	ctx.fillStyle = 'rgba(255, 0, 0, 0.15)'
