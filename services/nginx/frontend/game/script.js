@@ -222,8 +222,8 @@ function render_p(camX, camY, scaleX, scaleY) {
 				// ctx.fillStyle =`hsl(244, 95%, 22%)`;
 				// ctx.fill();
 			} else {
-				ctx.fillStyle = player.color
-				ctx.fillRect(x - 5, y - 5, player.width, player.width)
+				ctx.fillStyle =  player.color
+				ctx.fillRect(x - player.width / 2, x - player.width / 2 , player.width, player.width)
 			}
 			i++
 		}
