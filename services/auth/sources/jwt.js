@@ -5,11 +5,11 @@ async function callGenerateJWT(emailValue, uuidValue) {
 		method: 'GET',
 	})
 	if (response.status !== 200) {
-		throw `The user have been created but something wrong happen when generating a new token for the user. Please try again later`
+		throw `Failed to generating a new token for the user. Please try again later`
 	}
 	const body = await response.json()
 	if (body === undefined || body == null)
-		throw `The user have been created but something wrong happen when generating a new token for the user. Please try again later`
+		throw `Failed to generating a new token for the user. Please try again later`
 	return body.jwt
 }
 
@@ -41,7 +41,6 @@ async function callDecodeJWT(tokenValue) {
 		},
 	})
 	const data = await response.json()
-	console.log(data)
 	if (response.status == 200) {
 		return data
 	} else {

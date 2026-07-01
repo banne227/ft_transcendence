@@ -43,11 +43,11 @@ process.on('SIGTERM', (code_signal_error) => {
 	process.exit(0)
 })
 
-auth.get("/health", (_req, res) => {
-    res.status(200).json({
-        status: "UP"
-    });
-});
+auth.get('/health', (_req, res) => {
+	res.status(200).json({
+		status: 'UP',
+	})
+})
 
 auth.get('/logout', (req, res) => {
 	// Redirect the user to the hub page
@@ -167,13 +167,19 @@ auth.post('/login', async (req, res) => {
 	const passwordIsValid = await bcrypt.compare(password, exist.password)
 
 	if (passwordIsValid == true) {
-		// Generate a new JWT for this session and put him on the cookies
-		res.cookie('jwt', generateJwt(email, exist.uuid))
-		return res.status(200).send(`Connection success!`)
+		try {
+			// Generate the new JWT
+			const jwt = await callGenerateJWT(email, exist.uuid)
+			// Put him on the cookies of the response
+			res.cookie('jwt', jwt)
+			return res.status(200).json({ succes: 'Connection success!' })
+		} catch (err) {
+			res.status(500).json({ error: `${err}` })
+		}
 	} else {
 		// Sleep for 1000ms (1s) to prevent bruteforce attack to work
 		await new Promise((r) => setTimeout(r, 1000))
-		return res.status(401).send(`Invalid password`)
+		return res.status(401).json({ error: `Invalid password` })
 	}
 })
 
@@ -193,21 +199,28 @@ auth.delete('/delete', async (req, res) => {
 		return res.status(400).json({ error: `${err}` })
 	}
 
-	try {
-		// Decode the JWT and parse is data into JS object
-		const jwtData = JSON.parse(await callDecodeJWT(token))
-		// Check if the email provide and the email in the jwt match
-		if (jwtData.email != email) throw 'err'
-		// Try to delete the account
-		await newUser
-			.find({ email: { $eq: email } })
-			.deleteOne()
-			.exec()
-	} catch (err) {
-		res.status(500).json({ error: `Cant delete account` })
-	}
+	// Decode the JWT and parse is data into JS object
+	const jwtData = JSON.parse(await callDecodeJWT(token))
+	// Check if the email provide and the email in the jwt match
+	if (jwtData.email != email)
+		return res.status(500).json({
+			error: `The email on the JWT and the email provided doesnt match`,
+		})
+	// Try to delete the account
+	let checkAction = await newUser.findOne({
+		$and: [{ email: email }, { uuid: jwtData.uuid }],
+	})
+	if (checkAction === null)
+		return res.status(500).json({ error: `An account doesnt exist` })
+	checkAction = await newUser.deleteOne({
+		$and: [{ email: email }, { uuid: jwtData.uuid }],
+	})
+	if (checkAction.deletedCount != 0)
+		return res.status(200).json({
+			succes: `Failed to delete ${email}. Please try again later`,
+		})
 	// In case of succes
-	res.status(200).json({ succes: `Deleted ${email} account` })
+	return res.status(200).json({ succes: `Deleted ${email} account` })
 })
 
 // Start listening on the port
