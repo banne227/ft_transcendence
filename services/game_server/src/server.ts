@@ -31,19 +31,19 @@ app.get('/health', (_req, res) => {
 	res.json({ status: 'ok' })
 })
 
-io.engine.on('connection_error', (err) => {
-	console.log('Code :', err.code)
-	console.log('Message :', err.message)
-	console.log('Contexte :', err.context)
-})
+// io.engine.on('connection_error', (err) => {
+// 	console.log('Code :', err.code)
+// 	console.log('Message :', err.message)
+// 	console.log('Contexte :', err.context)
+// })
 
-io.on('connection', (socket) => {
-	console.log(socket.conn.transport.name)
+// io.on('connection', (socket) => {
+// 	console.log(socket.conn.transport.name)
 
-	socket.conn.on('upgrade', () => {
-		console.log('Upgrade :', socket.conn.transport.name)
-	})
-})
+// 	socket.conn.on('upgrade', () => {
+// 		console.log('Upgrade :', socket.conn.transport.name)
+// 	})
+// })
 
 io.on('connection', (socket) => {
 	socket.on('join', (name: string, token: string) => {
