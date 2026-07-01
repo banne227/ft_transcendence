@@ -116,19 +116,22 @@ api.get('/jwt/regenerate', async (req, res) => {
 })
 
 api.get('/jwt/generate', (req, res) => {
-	const { email, uuid } = req.query
+	const { email, uuid, username } = req.query
 
 	// Check if we got something in parameter
 	if (email === undefined)
 		return res.status(400).json({ error: 'Missing email' })
 	if (uuid === undefined)
 		return res.status(400).json({ error: 'Missing uuid' })
+	if (username === undefined)
+		return res.status(400).json({ error: 'Missing username' })
 
 	// Building the JWT payload
 	const payload = {
 		iss: 'https://transcendence.42.fr',
 		date: Date.now(),
 		email: email,
+		username: username,
 		uuid: uuid,
 	}
 

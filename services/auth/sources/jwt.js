@@ -1,5 +1,5 @@
-async function callGenerateJWT(emailValue, uuidValue) {
-	const url = `http://internal:1111/jwt/generate?${new URLSearchParams({ email: emailValue, uuid: uuidValue })}`
+async function callGenerateJWT(usernameValue, emailValue, uuidValue) {
+	const url = `http://internal:1111/jwt/generate?${new URLSearchParams({ username: usernameValue, email: emailValue, uuid: uuidValue })}`
 
 	const response = await fetch(url, {
 		method: 'GET',
@@ -7,6 +7,7 @@ async function callGenerateJWT(emailValue, uuidValue) {
 	if (response.status !== 200) {
 		throw `Failed to generating a new token for the user. Please try again later`
 	}
+
 	const body = await response.json()
 	if (body === undefined || body == null)
 		throw `Failed to generating a new token for the user. Please try again later`

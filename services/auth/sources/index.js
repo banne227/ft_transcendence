@@ -121,7 +121,7 @@ auth.post('/register', async (req, res) => {
 	})
 
 	// Creating our JWT
-	callGenerateJWT(userData.email, uuid)
+	callGenerateJWT(userData.username, userData.email, uuid)
 		.then((jwt) => {
 			res.cookie('jwt', jwt) // Putting our JWT on the cookie of the response
 			return res.status(200).json({
@@ -169,7 +169,7 @@ auth.post('/login', async (req, res) => {
 	if (passwordIsValid == true) {
 		try {
 			// Generate the new JWT
-			const jwt = await callGenerateJWT(email, exist.uuid)
+			const jwt = await callGenerateJWT(exist.username, email, exist.uuid)
 			// Put him on the cookies of the response
 			res.cookie('jwt', jwt)
 			return res.status(200).json({ succes: 'Connection success!' })
@@ -201,9 +201,10 @@ auth.delete('/delete', async (req, res) => {
 
 	// Decode the JWT and parse is data into JS object
 	const jwtData = JSON.parse(await callDecodeJWT(token))
+	console.log(jwtData)
 	// Check if the email provide and the email in the jwt match
 	if (jwtData.email != email)
-		return res.status(500).json({
+		return res.status(401).json({
 			error: `The email on the JWT and the email provided doesnt match`,
 		})
 	// Try to delete the account
@@ -211,12 +212,13 @@ auth.delete('/delete', async (req, res) => {
 		$and: [{ email: email }, { uuid: jwtData.uuid }],
 	})
 	if (checkAction === null)
-		return res.status(500).json({ error: `An account doesnt exist` })
+		return res.status(404).json({ error: `An account doesnt exist` })
 	checkAction = await newUser.deleteOne({
 		$and: [{ email: email }, { uuid: jwtData.uuid }],
 	})
-	if (checkAction.deletedCount != 0)
-		return res.status(200).json({
+	console.log('Number of account deleted ', checkAction.deletedCount)
+	if (checkAction.deletedCount == 0)
+		return res.status(500).json({
 			succes: `Failed to delete ${email}. Please try again later`,
 		})
 	// In case of succes
