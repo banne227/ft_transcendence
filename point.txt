@@ -1,0 +1,27 @@
+Minor: Use a backend framework (Express, Fastify, NestJS, Django, etc.).
+banne
+Major: Implement real-time features using WebSockets or similar technology.
+
+Major: A public API to interact with the database with a secured API key, rate
+limiting, documentation, and at least 5 endpoints:
+
+Minor: Use an ORM for the database.
+
+Minor: Custom-made design system with reusable components, including a proper
+color palette, typography, and icons (minimum: 10 reusable components).
+
+Minor: Game statistics and match history (requires a game module).
+
+Minor: User activity analytics and insights dashboard.
+
+Major: Implement a complete web-based game where users can play against each
+other.
+
+Major: Remote players — Enable two players on separate computers to play the
+same game in real-time.
+
+Major: Multiplayer game (more than two players).
+
+Minor: Game customization options.
+
+Minor: Implement spectator mode for games
