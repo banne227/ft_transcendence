@@ -12,5 +12,5 @@ Trie du plus long au plus court :
 
 
 
-verifier nom vide visualizer 
+verifier nom vide visualizer
 neutraliser les inputs utilisateur 

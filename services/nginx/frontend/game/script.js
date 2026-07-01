@@ -43,6 +43,15 @@ socket.on('asktoken', () => {
 	socket.emit('gettoken', token)
 })
 
+function escapeHtml(str) {
+    return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 socket.on('chatMessage', (msg) => {
 	const time = new Date(msg.hour).toLocaleString('fr-FR', {
 		hour: '2-digit',
@@ -52,6 +61,7 @@ socket.on('chatMessage', (msg) => {
 	const box = document.getElementById('chat-msgs')
 	const line = document.createElement('div')
 	line.className = 'chat-line'
+	msg.text = escapeHtml(msg.text)
 
 	const isMe = msg.id === socket.id
 	line.innerHTML = `<span class="chat-nick" style="${isMe ? 'color:#ffffff' : ''}">${msg.name}</span> <span style="color:#555;font-size:10px">${time}</span><br>${msg.text}`
