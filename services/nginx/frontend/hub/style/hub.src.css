@@ -1,0 +1,284 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ────────────────────────────────────────────────────────────
+   HUB - RESET & BODY
+──────────────────────────────────────────────────────────── */
+
+@layer base {
+  * {
+    @apply select-none;
+  }
+
+  body {
+    @apply bg-cover bg-no-repeat h-[60vh] relative;
+    background-image: url('../../images/bliss.png');
+    background-size: cover;
+  }
+
+  h1 {
+    @apply text-xl font-bold text-blue-900 mb-2 text-left;
+  }
+
+  p {
+    @apply mt-4 text-xs text-gray-600;
+  }
+
+  a {
+    @apply text-xp-blue text-xs;
+  }
+
+  label {
+    @apply block mb-1 mt-3;
+  }
+
+  input {
+    @apply w-full px-1.5 py-1 font-tahoma text-sm bg-white
+           border-t-2 border-l-2 border-xp-border
+           border-b-2 border-r-2 border-b-white border-r-white
+           outline-none;
+  }
+
+  button {
+    @apply mt-4 px-5 py-1 font-tahoma text-xs bg-gradient-to-b 
+           from-xp-grayBtnFrom to-xp-panel cursor-pointer
+           border-t-2 border-l-2 border-white
+           border-b-2 border-r-2 border-b-xp-border border-r-xp-border
+           transition-colors;
+  }
+
+  button:hover {
+    @apply bg-gradient-to-b from-indigo-100 to-indigo-200;
+  }
+
+  button:active {
+    @apply border-t-2 border-l-2 border-xp-border
+           border-b-2 border-r-2 border-b-white border-r-white;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────
+   WINDOW GENERIC (XP STYLE)
+──────────────────────────────────────────────────────────── */
+
+@layer components {
+  .window {
+    @apply bg-xp-panel
+           border-t-2 border-l-2 border-white
+           border-b-2 border-r-2 border-b-xp-border border-r-xp-border;
+  }
+
+  .titlebar {
+    @apply bg-gradient-to-r from-xp-blue to-xp-blueLight
+           px-2 py-1 flex justify-between items-center cursor-grab;
+  }
+
+  .titlebar-title {
+    @apply text-white font-bold text-sm;
+  }
+
+  .titlebar-buttons {
+    @apply flex gap-0.5;
+  }
+
+  .btn-close,
+  .btn-close-log {
+    @apply w-[18px] h-4 bg-gradient-to-b from-xp-closeFrom to-xp-closeTo
+           border-t border-l border-xp-closeBorderLight
+           border-b border-r border-xp-closeBorderDark
+           text-white text-xs cursor-pointer flex items-center justify-center;
+  }
+
+  .window-body {
+    @apply px-1.5 pt-2.5 pb-2.5 pl-1 text-left text-xs;
+  }
+
+  /* ────────────────────────────────────────────────────────────
+     DESKTOP - POSITIONED WINDOWS & ICONS
+  ──────────────────────────────────────────────────────────── */
+
+  #window-title {
+    @apply absolute -top-1/2 left-1/2 transform -translate-x-1/2 w-[750px] h-52 overflow-hidden;
+  }
+
+  #window-title img {
+    @apply w-full h-full object-cover block;
+  }
+
+  #window-log {
+    @apply absolute -top-[330px] left-5 w-40 h-auto overflow-visible;
+  }
+
+  #window-log .window-body {
+    @apply px-2.5 py-2 flex flex-col gap-1.5;
+  }
+
+  .status-offline {
+    @apply text-red-700 text-xs font-bold px-1.5 py-0.5 bg-red-100
+           border-t border-l border-xp-border
+           border-b border-r border-white m-0;
+  }
+
+  .btn-login {
+    @apply mt-0 px-0 py-1 text-xs font-tahoma bg-gradient-to-b
+           from-xp-grayBtnFrom to-xp-panel cursor-pointer
+           border-t-2 border-l-2 border-white
+           border-b-2 border-r-2 border-b-xp-border border-r-xp-border
+           w-full;
+  }
+
+  .btn-login:hover {
+    @apply bg-gradient-to-b from-indigo-100 to-indigo-200;
+  }
+
+  .btn-login:active {
+    @apply border-t-2 border-l-2 border-xp-border
+           border-b-2 border-r-2 border-b-white border-r-white;
+  }
+
+  #window-login,
+  #window-register {
+    @apply absolute h-auto overflow-visible px-0 py-0;
+  }
+
+  #window-login {
+    @apply -top-[360px] left-[30px] w-[390px] hidden;
+  }
+
+  #window-register {
+    @apply -top-[300px] left-[70px] w-[390px] hidden;
+  }
+
+  .play_button {
+    @apply flex justify-center items-center mt-[400px] mb-8;
+  }
+
+  .play_button img {
+    @apply w-16 h-16;
+  }
+
+  .play_button a {
+    @apply flex justify-center;
+  }
+
+  .visualizer_button {
+    @apply flex justify-center items-center mb-8;
+  }
+
+  .visualizer_button a {
+    @apply flex justify-center;
+  }
+
+  .visualizer_button button {
+    @apply px-6 py-2 bg-blue-500 text-white rounded font-bold hover:bg-blue-600;
+  }
+
+  .formulaire {
+    @apply text-center;
+  }
+
+  .login_register img {
+    @apply w-16 h-16;
+  }
+
+  .fenetre {
+    @apply w-80 bg-slate-900 border border-gray-700 rounded-lg
+           absolute top-[100px] left-[100px] resize overflow-hidden;
+  }
+
+  .fenetre_barre {
+    @apply bg-gray-800 px-3 py-2 cursor-grab rounded-t-lg text-white text-sm;
+  }
+
+  .fenetre_contenu {
+    @apply px-4 py-4 text-white;
+  }
+
+  /* ────────────────────────────────────────────────────────────
+     TASKBAR
+  ──────────────────────────────────────────────────────────── */
+
+  .taskbar {
+    @apply fixed bottom-0 left-0 right-0 h-[30px]
+           bg-gradient-to-b from-blue-700 to-blue-900
+           border-t-2 border-blue-400 flex items-center 
+           px-0 py-1 gap-0.5;
+  }
+
+  .task-btn {
+    @apply h-10 px-2 font-['Press_Start_2P'] text-xs cursor-pointer
+           bg-gradient-to-b from-xp-grayBtnFrom to-xp-panel
+           border-t-2 border-l-2 border-white
+           border-b-2 border-r-2 border-b-xp-border border-r-xp-border;
+  }
+
+  .taskbar-right {
+    @apply flex items-center gap-2.5 ml-auto mr-6;
+  }
+
+  .confi {
+    @apply h-10 w-10 px-0 ml-auto cursor-pointer
+           bg-gradient-to-b from-xp-grayBtnFrom to-xp-panel
+           border-t-2 border-l-2 border-white
+           border-b-2 border-r-2 border-b-xp-border border-r-xp-border
+           flex items-center justify-center;
+  }
+
+  .confi img {
+    @apply w-6 h-6 mb-1 object-contain;
+  }
+
+  .task-btn.stop,
+  .task-btn-log.stop {
+    @apply h-11 px-2.5 font-['Press_Start_2P'] text-xl font-bold
+           bg-gradient-to-b from-red-500 to-red-700 text-white
+           border-t-2 border-l-2 border-red-300
+           border-b-2 border-r-2 border-red-900;
+  }
+
+  .task-info {
+    @apply font-['Press_Start_2P'] text-white text-xs px-0.5;
+  }
+
+  .task-icon {
+    @apply w-4.5 h-4.5;
+  }
+
+  /* ────────────────────────────────────────────────────────────
+     ANIMATIONS
+  ──────────────────────────────────────────────────────────── */
+
+  @keyframes slide-in {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0%);
+    }
+  }
+
+  .maClasse {
+    animation: 3s linear 1s infinite alternate slide-in;
+  }
+
+  /* ────────────────────────────────────────────────────────────
+     PRIVACY WINDOW
+  ──────────────────────────────────────────────────────────── */
+
+  #window-privacy {
+    @apply absolute top-20 left-[100px] w-[400px] max-h-96 hidden;
+  }
+
+  #privacy-content {
+    @apply overflow-y-auto max-h-[350px];
+  }
+
+  /* ────────────────────────────────────────────────────────────
+     SCREAMER (for easter egg)
+  ──────────────────────────────────────────────────────────── */
+
+  #screamer {
+    @apply hidden fixed top-0 left-0 w-full h-full object-cover z-[9999];
+  }
+}

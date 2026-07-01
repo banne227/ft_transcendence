@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ────────────────────────────────────────────────────────────
+   ERROR PAGES
+──────────────────────────────────────────────────────────── */
+
+@layer base {
+  body {
+    @apply bg-blue-900 text-white font-mono;
+  }
+}
+
+@layer components {
+  .text {
+    @apply flex justify-center items-center text-center m-0;
+  }
+
+  .not-happy {
+    @apply mr-[20%] mb-0 text-5xl;
+  }
+
+  .content {
+    @apply text-2xl;
+  }
+}

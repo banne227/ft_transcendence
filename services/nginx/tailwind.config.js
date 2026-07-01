@@ -7,9 +7,14 @@ module.exports = {
     "./hub/**/*.js",
     "./stats/*.html",
     "./stats/**/*.js",
+    "./error/*.html",
   ],
   theme: {
     extend: {
+      fontFamily: {
+        tahoma: ['Tahoma', 'MS Sans Serif', 'sans-serif'],
+        mono: ['"Courier New"', 'Courier', 'monospace'],
+      },
       colors: {
         xp: {
           blue: '#0054e3',
@@ -37,6 +42,12 @@ module.exports = {
 
           grayBtnFrom: '#f0ede4',
         },
+        // Custom colors for game elements
+        'custom-red': '#ff5555',
+        'custom-green': '#aaffaa',
+      },
+      spacing: {
+        '4.5': '1.125rem',
       },
     },
   },

@@ -1,0 +1,311 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ────────────────────────────────────────────────────────────
+   RESET & BODY
+──────────────────────────────────────────────────────────── */
+
+@layer base {
+  * {
+    @apply m-0 p-0 box-border;
+  }
+
+  html,
+  body {
+    @apply w-full h-full overflow-hidden bg-black;
+  }
+
+  h1 {
+    @apply text-lg font-bold text-blue-900 mb-2 text-left;
+  }
+
+  p {
+    @apply mt-4 text-xs text-gray-600;
+  }
+
+  a {
+    @apply text-xp-blue text-xs;
+  }
+
+  label {
+    @apply block mb-1 mt-3;
+  }
+
+  input {
+    @apply w-full px-1.5 py-1 font-tahoma text-xs bg-white 
+           border-t-2 border-l-2 border-xp-border border-b-2 border-r-2 border-b-white border-r-white
+           outline-none;
+  }
+
+  button {
+    @apply mt-4 px-5 py-1 font-tahoma text-xs bg-gradient-to-b from-xp-grayBtnFrom to-xp-panel
+           cursor-pointer border-t-2 border-l-2 border-white border-b-2 border-r-2 border-b-xp-border border-r-xp-border
+           transition-colors;
+  }
+
+  button:hover {
+    @apply bg-gradient-to-b from-indigo-100 to-indigo-200;
+  }
+
+  button:active {
+    @apply border-t-2 border-l-2 border-xp-border border-b-2 border-r-2 border-b-white border-r-white;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────
+   DOS-STYLE GAME CONTAINER
+──────────────────────────────────────────────────────────── */
+
+@layer components {
+  .dos {
+    @apply bg-blue-900 text-black font-mono text-sm w-screen h-screen 
+           flex flex-col border-0;
+  }
+
+  /* ── Titlebar XP ── */
+  .titlebar {
+    @apply flex justify-between items-center px-1 py-0.5 
+         bg-gradient-to-r from-xp-blue to-xp-blueLight flex-shrink-0 h-6;
+  }
+
+  .titlebar-left {
+    @apply text-white font-tahoma text-xs font-bold flex items-center gap-1.5;
+  }
+
+  .titlebar-icon {
+    @apply w-4 h-4 bg-yellow-400 border border-gray-600 flex-shrink-0;
+  }
+
+  .win-btns {
+    @apply flex gap-0.5;
+  }
+
+  .wbtn {
+    @apply w-[22px] h-5 flex items-center justify-center text-xs font-bold 
+           text-white cursor-pointer border border-solid font-tahoma 
+           bg-gradient-to-b from-xp-btnFrom to-xp-btnTo
+           border-t-xp-btnBorderLight border-l-xp-btnBorderLight
+           border-b-xp-btnBorderDark border-r-xp-btnBorderDark;
+  }
+
+  .wbtn.close {
+    @apply bg-gradient-to-b from-xp-closeFrom to-xp-closeTo
+           border-t-xp-closeBorderLight border-l-xp-closeBorderLight
+           border-b-xp-closeBorderDark border-r-xp-closeBorderDark;
+  }
+
+  .wbtn:hover {
+    @apply brightness-125;
+  }
+
+  /* ── Topbar ── */
+  .topbar {
+    @apply border-b border-gray-700 px-2 py-0.5 flex justify-between 
+           flex-shrink-0 bg-gray-400;
+  }
+
+  .hi {
+    @apply text-gray-400 bg-blue-900 px-1 font-bold;
+  }
+
+  /* ── Main layout ── */
+  .main {
+    @apply flex flex-1 overflow-hidden min-h-0;
+  }
+
+  /* ── Left column (Leaderboard & Mini-map) ── */
+  .left-col {
+    @apply w-[170px] border-r border-gray-700 flex flex-col flex-shrink-0 bg-gray-400;
+  }
+
+  /* ── Panel header ── */
+  .panel-hdr {
+    @apply text-white bg-blue-950 px-1 py-0.5 font-bold text-xs 
+           tracking-widest flex-shrink-0;
+  }
+
+  .panel-body {
+    @apply px-1.5 py-1 flex-1;
+  }
+
+  /* ── Leaderboard ── */
+  .leaderboard {
+    @apply list-none;
+  }
+
+  .lb-item {
+    @apply flex justify-between px-0 py-0.5 border-b border-dashed
+           border-blue-900 text-black;
+  }
+
+  .lb-item.me {
+    @apply text-red-900 font-bold;
+  }
+
+  .lb-rank {
+    @apply text-blue-700;
+  }
+
+  .lb-score {
+    @apply text-blue-900 font-bold;
+  }
+
+  /* ── Mini-map ── */
+  .mini-map {
+    @apply px-1.5 py-1 bg-gray-400 flex-shrink-0;
+  }
+
+  .mini-map svg {
+    @apply block w-full h-auto;
+  }
+
+  .sidebar-sep {
+    @apply h-0.5 bg-gray-400;
+  }
+
+  /* ── Palette Colors ── */
+  .palette-inline {
+    @apply w-full flex items-center gap-1 p-0.5;
+  }
+
+  .palette-preview-small {
+    @apply w-[26px] h-[26px] relative flex-shrink-0;
+  }
+
+  .palette-preview-small .bg {
+    @apply absolute bottom-0 right-0 w-4 h-4;
+  }
+
+  .palette-preview-small .fg {
+    @apply absolute top-0 left-0 w-4 h-4 z-10;
+  }
+
+  .palette-colors {
+    @apply flex flex-col gap-0.5;
+  }
+
+  .palette-row {
+    @apply flex gap-0.5;
+  }
+
+  .colors {
+    @apply w-3.5 h-3.5 cursor-pointer flex-shrink-0;
+  }
+
+  /* ── Canvas area ── */
+  .canvas-area {
+    @apply flex-1 relative overflow-hidden bg-blue-900 min-w-0;
+  }
+
+  #game-canvas {
+    @apply absolute top-0 left-0 w-full h-full;
+  }
+
+  /* ── HUD (Top/Bottom info bars) ── */
+  .hud-top,
+  .hud-bot {
+    @apply absolute left-0 right-0 flex justify-between px-1.5 py-0.5
+           bg-gray-400 flex-shrink-0;
+  }
+
+  .hud-top {
+    @apply top-0 border-b border-dashed border-blue-900;
+  }
+
+  .hud-bot {
+    @apply bottom-0 border-t border-dashed border-blue-900;
+  }
+
+  .hud-label {
+    @apply text-gray-700;
+  }
+
+  .hud-val {
+    @apply text-black font-bold;
+  }
+
+  /* ── Center Message ── */
+  .center-msg {
+    @apply absolute top-[7%] left-1/2 transform -translate-x-1/2 
+           text-center border-2 border-gray-400 px-5 py-3 bg-gray-400;
+  }
+
+  .blink {
+    @apply text-blue-900 font-bold;
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%,
+    100% {
+      @apply opacity-100;
+    }
+    50% {
+      @apply opacity-0;
+    }
+  }
+
+  .sub {
+    @apply text-gray-700 text-xs mt-1.5;
+  }
+
+  /* ── Right column (Chat) ── */
+  .right-col {
+    @apply w-40 border-l border-gray-700 flex flex-col flex-shrink-0 bg-gray-400;
+  }
+
+  /* ── Chat ── */
+  .chat-msgs {
+    @apply flex-1 px-1.5 py-1 overflow-hidden flex flex-col gap-0.5 min-h-0;
+  }
+
+  .chat-line {
+    @apply text-xs leading-tight text-black;
+  }
+
+  .chat-nick {
+    @apply text-blue-900 font-bold;
+  }
+
+  .chat-in {
+    @apply border-t border-gray-700 flex bg-gray-400 flex-shrink-0;
+  }
+
+  .chat-in input {
+    @apply flex-1 bg-gray-400 text-black border-0 outline-0 px-1 py-0.5
+           font-mono text-xs;
+  }
+
+  .chat-in span {
+    @apply text-black px-1 py-0.5;
+  }
+
+  /* ── Legend ── */
+  .legend {
+    @apply px-1.5 py-1 flex flex-col gap-0.5 flex-shrink-0;
+  }
+
+  /* ── Bottom bar ── */
+  .botbar {
+    @apply border-t border-gray-700 px-2 py-0.5 flex gap-4 flex-shrink-0 bg-gray-400;
+  }
+
+  .key {
+    @apply text-gray-400 bg-blue-900 px-0.5 text-xs font-bold;
+  }
+
+  .key-lbl {
+    @apply text-black text-xs;
+  }
+
+  /* ── Play Button ── */
+  .play-btn {
+    @apply px-6 py-3 text-lg font-bold cursor-pointer 
+           border-2 border-white bg-transparent text-white rounded;
+  }
+
+  .play-btn:hover {
+    @apply bg-white text-black;
+  }
+}

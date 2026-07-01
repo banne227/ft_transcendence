@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Painter.io — Partie</title>
-  <link rel="stylesheet" href="style/style.css" />
+  <link rel="stylesheet" href="style/style-theme.css" />
 </head>
 <body>
 
@@ -23,9 +23,9 @@
   </div>
 
   <div class="topbar">
-    <span style="color:#000">PAINTER<span class="hi">IO</span>.EXE&nbsp;&nbsp;v1.0</span>
-    <span style="color:#000">JOUEURS: <span style="color:#000080;font-weight:bold" id="player-count">--</span></span>
-    <span style="color:#333" id="timer">00:00:00</span>
+    <span class="text-black">PAINTER<span class="hi">IO</span>.EXE&nbsp;&nbsp;v1.0</span>
+    <span class="text-black">JOUEURS: <span class="text-blue-900 font-bold" id="player-count">--</span></span>
+    <span class="text-gray-700" id="timer">00:00:00</span>
   </div>
 
   <div class="main">
@@ -41,7 +41,7 @@
           <li class="lb-item"><span class="lb-rank">#5</span><span>---</span><span class="lb-score">0</span></li>
         </ul>
       </div>
-      <div class="panel-hdr" style="margin-top:auto">MINI-MAP</div>
+      <div class="panel-hdr mt-auto">MINI-MAP</div>
       <div class="mini-map">
         <svg viewBox="0 0 118 90" xmlns="http://www.w3.org/2000/svg">
           <rect width="118" height="90" fill="#8888cc" stroke="#555" stroke-width="1"/>
@@ -159,11 +159,11 @@
         <span>&gt;</span>
         <input type="text" id="chat-input" placeholder="msg_" />
       </div>
-      <div class="panel-hdr" style="margin-top:auto">LEGENDE</div>
+      <div class="panel-hdr mt-auto">LEGENDE</div>
       <div class="legend">
-        <div style="font-size:11px;color:#000"><span style="color:#ffffff">&#9632;</span> toi</div>
-        <div style="font-size:11px;color:#000"><span style="color:#ff5555">&#9632;</span> ennemi</div>
-        <div style="font-size:11px;color:#000"><span style="color:#aaffaa">&#9679;</span> nourriture</div>
+        <div class="text-xs text-black"><span class="text-white">&#9632;</span> toi</div>
+        <div class="text-xs text-black"><span class="text-custom-red">&#9632;</span> ennemi</div>
+        <div class="text-xs text-black"><span class="text-custom-green">&#9679;</span> nourriture</div>
       </div>
     </div>
 
@@ -174,7 +174,7 @@
     <span><span class="key">FLECHES</span> <span class="key-lbl">diriger</span></span>
     <span><span class="key">B</span> <span class="key-lbl">boost</span></span>
     <span><span class="key">ESC</span> <span class="key-lbl">menu</span></span>
-    <span style="margin-left:auto;color:#333" id="output"></span>
+    <span class="ml-auto text-gray-700" id="output"></span>
   </div>
 
 </div>

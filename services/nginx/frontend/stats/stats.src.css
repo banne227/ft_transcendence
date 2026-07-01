@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ────────────────────────────────────────────────────────────
+   STATS PAGE - LEADERBOARD CARD
+──────────────────────────────────────────────────────────── */
+
+@layer components {
+  .card {
+    @apply w-[min(920px,calc(100vw-32px))] bg-white rounded-2xl shadow-2xl p-6;
+  }
+
+  h1 {
+    @apply m-0 mb-4 text-2xl;
+  }
+
+  input {
+    @apply mb-4 px-3 py-2 border border-gray-300 rounded outline-none;
+  }
+
+  button {
+    @apply ml-2 px-4 py-2 bg-blue-500 text-white rounded cursor-pointer transition-colors;
+  }
+
+  button:hover {
+    @apply bg-blue-600;
+  }
+
+  canvas {
+    @apply w-full h-80 block mt-4;
+  }
+}

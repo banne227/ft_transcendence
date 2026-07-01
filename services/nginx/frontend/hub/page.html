@@ -3,10 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<title>WEEEEEEEEEEEEEEEEEEEEEE</title>
-		<link rel="stylesheet" href="style/base.css" />
-		<link rel="stylesheet" href="style/window.css" />
-		<link rel="stylesheet" href="style/taskbar.css" />
-		<link rel="stylesheet" href="style/desktop.css" />
+		<link rel="stylesheet" href="style/hub.css" />
 		<link
 			href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
 			rel="stylesheet"
@@ -133,16 +130,8 @@
 
 		<!--WINDOW CONFIDENTIALITE-->
 		<div
-			class="window"
+			class="window absolute top-20 left-[100px] w-[400px] max-h-96 hidden"
 			id="window-privacy"
-			style="
-				position: absolute;
-				top: 80px;
-				left: 100px;
-				width: 400px;
-				max-height: 400px;
-				display: none;
-			"
 		>
 			<div class="titlebar">
 				<span class="titlebar-title">Confidentialité</span>
@@ -151,9 +140,8 @@
 				</div>
 			</div>
 			<div
-				class="window-body"
+				class="window-body overflow-y-auto max-h-[350px]"
 				id="privacy-content"
-				style="overflow-y: auto; max-height: 350px"
 			>
 				Chargement...
 			</div>
@@ -187,10 +175,6 @@
 			<a href="https://transcendence.42.fr/stats" title="Visualizer">
 				<button>Visualizer</button>
 			</a>
-		</div>
-
-		<div class="formulaire">
-			<b>username.exe</b>
 		</div>
 
 		<!--<div class="fenetre">

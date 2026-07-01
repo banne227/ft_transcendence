@@ -12,3 +12,10 @@ node_modules
 **/node_modules
 dist
 **/dist
+
+# --- TAILWIND CSS (Compiled) ---
+# Compiled CSS files generated from .src.css sources
+services/nginx/frontend/game/style/style-theme.css
+services/nginx/frontend/hub/style/hub.css
+services/nginx/frontend/stats/stats.css
+services/nginx/frontend/error.css
