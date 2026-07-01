@@ -1,11 +1,10 @@
-FROM alpine:3.22
-RUN apk add --no-cache nodejs npm curl
-RUN mkdir -p /srv/game_server
+# Import th image base model
+FROM oven/bun
 
-COPY . /srv/game_server/
-
-WORKDIR /srv/game_server/
-
+RUN mkdir -p /srv/webapp
+WORKDIR /srv/webapp
+COPY . /srv/webapp
 EXPOSE 3000
-RUN npm install
-CMD [ "npm", "run", "dev" ]
+
+RUN bun i
+CMD [ "bun", "run", "./src/server.ts" ]

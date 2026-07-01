@@ -4,8 +4,11 @@ const { Schema, model } = mongoose
 
 const history_model = new Schema({
 	date: String,
-	score: Number,
-	win: Boolean,
+	score: {
+		type: Number,
+		default: 0,
+	},
+	win: { type: Boolean, default: false },
 })
 
 const user_model = new Schema({

@@ -180,7 +180,6 @@ api.post('/addScore', async (req, res) => {
 	if (username === undefined || score === undefined)
 		return res.status(400).json({ error: 'Missing body content' })
 
-	score = sanitizeUserInput(score)
 	username = sanitizeUserInput(username)
 
 	// Check if the score is valid
@@ -191,24 +190,28 @@ api.post('/addScore', async (req, res) => {
 	// Get the current date
 	const timestamp = new Date()
 
+	console.log(username, score)
 	// Pushing our new score into the history array
-	await newUser
+	const debug = await newUser
 		.updateOne(
 			{ username: username },
 			{
 				$push: {
 					history: [
 						{
-							date: `${timestamp.toISOString()}`,
-							scores: Number(score),
+							date: `${String(timestamp.toISOString())}`,
+							score: Number(score),
 						},
 					],
 				},
 			},
 		)
 		.catch((err) => {
-			console.log('catch')
+			return res
+				.status(500)
+				.json({ error: 'Failed to add score to the history' })
 		})
+	console.log(debug)
 	return res.status(200).json({
 		succes: `Added ${username}:${score}`,
 	})

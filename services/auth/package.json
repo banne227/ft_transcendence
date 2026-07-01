@@ -1,5 +1,5 @@
 {
-	"main": "./sources/index.js",
+	"main": "./sources/auth.js",
 	"type": "commonjs",
 	"dependencies": {
 		"bcryptjs": "^3.0.3",

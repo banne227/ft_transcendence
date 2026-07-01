@@ -4,8 +4,11 @@ const { Schema, model } = mongoose
 
 const history_model = new Schema({
 	date: String,
-	score: Number,
-	win: Boolean,
+	score: {
+		type: Number,
+		default: 0,
+	},
+	win: { type: Boolean, default: false },
 })
 
 const user_model = new Schema({
@@ -24,15 +27,14 @@ const user_model = new Schema({
 	uuid: {
 		require: true,
 		type: String,
+		index: true,
 	},
-	data: {
-		history: [history_model],
-		color: {
-			require: true,
-			type: String,
-			Default: '#ffffff',
-		},
+	color: {
+		type: String,
+		index: true,
+		default: '#ffffff',
 	},
+	history: [history_model],
 })
 const newUser = model('users', user_model)
 module.exports = {
