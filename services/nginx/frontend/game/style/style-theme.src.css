@@ -1,0 +1,153 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*   style-theme.css — THÈME WINDOWS XP (version Tailwind)                    */
+/*   Mêmes classes qu'avant, styles générés via @apply.                       */
+/*   Ne touche pas au HTML/TS existant.                                       */
+/*                                                                            */
+/* ************************************************************************** */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+
+  /* ── Canvas ── */
+  #game-canvas {
+    @apply bg-white;
+  }
+
+  /* ── Barre de titre ── */
+  .titlebar {
+    @apply bg-gradient-to-r from-xp-blue to-xp-blueLight;
+  }
+
+  .titlebar-left {
+    @apply text-white;
+  }
+
+  .win-btn {
+    @apply bg-gradient-to-b from-xp-btnFrom to-xp-btnTo text-white
+           border-t border-l border-xp-btnBorderLight
+           border-b border-r border-xp-btnBorderDark
+           hover:brightness-125;
+  }
+
+  .win-btn.close {
+    @apply bg-gradient-to-b from-xp-closeFrom to-xp-closeTo
+           border-t border-l border-xp-closeBorderLight
+           border-b border-r border-xp-closeBorderDark;
+  }
+
+  /* ── Barre de menu ── */
+  .menubar {
+    @apply bg-xp-panel border-b border-xp-border;
+  }
+
+  .menu-item {
+    @apply text-black hover:bg-xp-blue hover:text-white;
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    @apply bg-xp-panel border-r-2 border-xp-border;
+  }
+
+  /* ── Grille outils ── */
+  .tools-grid {
+    @apply bg-xp-border
+           border-t-2 border-l-2 border-white
+           border-b-2 border-r-2 border-xp-statusDark;
+  }
+
+  .tool-btn {
+    @apply bg-xp-panel
+           border-t border-l border-white
+           border-b border-r border-xp-border
+           hover:bg-xp-toolHover;
+  }
+
+  .tool-btn.active {
+    @apply bg-xp-toolActive
+           border-t border-l border-xp-border
+           border-b border-r border-white;
+  }
+
+  /* ── Séparateur ── */
+  .sidebar-sep {
+    @apply border-t border-xp-border border-b border-white;
+  }
+
+  /* ── Palette ── */
+  .palette-preview-small .bg {
+    @apply bg-white border border-black;
+  }
+
+  .palette-preview-small .fg {
+    @apply bg-black border border-black;
+  }
+
+  .color-swatch {
+    @apply border-t border-l border-white
+           border-b border-r border-xp-border
+           hover:border-2 hover:border-black;
+  }
+
+  /* ── Panels ── */
+  .side-panel {
+    @apply bg-xp-panel
+           border-t-2 border-l-2 border-white
+           border-b-2 border-r-2 border-xp-statusDark;
+  }
+
+  .side-panel-title {
+    @apply text-black border-b border-xp-border;
+  }
+
+  /* Leaderboard */
+  .leaderboard li {
+    @apply border-b border-xp-lbBorder last:border-b-0;
+  }
+
+  .lb-rank {
+    @apply text-xp-lbRank;
+  }
+
+  .lb-score {
+    @apply text-xp-blue font-bold;
+  }
+
+  /* Chat */
+  .chat-messages {
+    @apply bg-white
+           border-t border-l border-xp-border
+           border-b border-r border-xp-borderLight;
+  }
+
+  .chat-name {
+    @apply font-bold text-xp-blue;
+  }
+
+  .chat-input-row input {
+    @apply bg-white
+           border-t border-l border-xp-border
+           border-b border-r border-xp-borderLight;
+  }
+
+  .chat-input-row button {
+    @apply bg-gradient-to-b from-xp-grayBtnFrom to-xp-panel
+           border-t border-l border-white
+           border-b border-r border-xp-border;
+  }
+
+  /* ── Barre de statut ── */
+  .statusbar {
+    @apply bg-xp-panel border-t-2 border-white;
+  }
+
+  .status-cell {
+    @apply text-black
+           border-t border-l border-xp-border
+           border-b border-r border-white;
+  }
+}

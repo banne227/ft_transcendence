@@ -89,3 +89,21 @@ export async function getcolor(username: string): Promise<string> {
 	console.log('methode getcolor ', username, data)
 	return data.color
 }
+
+export async function callDecodeJWT(tokenValue: string) {
+	const url = `http://internal:1111/jwt/decode?jwt=${tokenValue}`
+
+	const response = await fetch(url, {
+		method: 'GET',
+		headers: {
+			Authorization: `${tokenValue}`, // Error here
+		},
+	})
+	const json = await response.json()
+	if (response.status == 200) {
+		const data = JSON.parse(json)
+		return data
+	} else {
+		throw `${response.status}`
+	}
+}

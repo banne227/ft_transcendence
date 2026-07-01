@@ -22,7 +22,7 @@ export function displayState(state: Game): void {
 // }
 
 export function extractJwt(input: any) {
-	console.log("input: ", input)
+	// console.log("input: ", input)
 	let cookies: string[] = [];
 
 	if (!input) return null;

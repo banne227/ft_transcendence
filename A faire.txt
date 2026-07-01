@@ -8,3 +8,9 @@ Trie du plus long au plus court :
 
 - Faire un /status qui ping tous les service et qui detect si un des services est down
 ---> rajouter un /health dans chaque services et dans la gateway je check tous les /health des services
+
+
+
+
+verifier nom vide visualizer 
+neutraliser les inputs utilisateur 

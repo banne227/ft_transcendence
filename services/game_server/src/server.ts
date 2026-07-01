@@ -7,7 +7,7 @@ import { state, startGameLoop, Vector } from './game'
 import { addPlayer, removePlayer, setBoost } from './player'
 import { sendMessage } from './chat'
 import { updateDirMouse, updateDirArrow } from './movement'
-import { changeSkin, register, login } from './api'
+import { changeSkin, register, login, callDecodeJWT } from './api'
 import { extractJwt } from './utils'
 
 const { join } = require('node:path')
@@ -31,27 +31,15 @@ app.get('/health', (_req, res) => {
 	res.json({ status: 'ok' })
 })
 
-// io.engine.on('connection_error', (err) => {
-// 	console.log('Code :', err.code)
-// 	console.log('Message :', err.message)
-// 	console.log('Contexte :', err.context)
-// })
-
-// io.on('connection', (socket) => {
-// 	console.log(socket.conn.transport.name)
-
-// 	socket.conn.on('upgrade', () => {
-// 		console.log('Upgrade :', socket.conn.transport.name)
-// 	})
-// })
-
 io.on('connection', (socket) => {
 	socket.on('join', (name: string, token: string) => {
 		// console.log(`${name} log with jwt: ${token}`)
 		socket.emit('joined', { id: socket.id })
 	})
 
-	socket.on('addplayer', (name: string) => {
+	socket.on('addplayer', async (token: string) => {
+		const res = await callDecodeJWT(token)
+		const name = res.username	
 		addPlayer(socket.id, name)
 	})
 

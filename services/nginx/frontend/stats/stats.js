@@ -2,11 +2,13 @@ async function loadPlayer() {
     try 
     {
         const username = document.getElementById("username").value; //recupere le username tape
-
+        if (!username || username === "")
+            return
         const res = await fetch(`https://transcendence.42.fr/api/history/${username}`); //await attent une reonse avant de passer a la suite
         const data = await res.json(); //recupere lle json avec fetch rempli auparavent coter api
 
-        renderChart(data);
+        if (res.status === 200)
+            renderChart(data);
     }
     catch (err) 
     {

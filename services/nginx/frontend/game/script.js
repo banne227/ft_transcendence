@@ -33,8 +33,8 @@ socket.on('connect', () => {
 const playBtn = document.getElementById('play-btn')
 
 playBtn.addEventListener('click', () => {
-	const username = localStorage.getItem('username') ?? 'anonymous'
-	socket.emit('addplayer', username)
+	const token = localStorage.getItem('token')
+	socket.emit('addplayer', token)
 	document.getElementById('start-msg').style.display = 'none'
 })
 
