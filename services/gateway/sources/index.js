@@ -8,7 +8,7 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const { createProxyMiddleware } = require('http-proxy-middleware')
 
-const PORT = process.env.GATEWAY_PORT // The port used by the gateway
+const PORT = 2222 // The port used by the gateway
 const rateLimit = 20 // The number of req per minutes max
 const interval = 60 * 1000 // Interval that define when the IP list should be wipe (1 minutes)
 const requestLogged = {} // Who will contain every ip with the number of request they have done in the last 1 minutes

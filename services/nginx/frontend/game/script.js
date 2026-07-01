@@ -40,7 +40,6 @@ playBtn.addEventListener('click', () => {
 
 socket.on('asktoken', () => {
 	const token = localStorage.getItem('token')
-
 	socket.emit('gettoken', token)
 })
 

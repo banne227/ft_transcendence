@@ -2,7 +2,7 @@ import { state } from './game'
 
 //j'envoie une requete POST pour connecter un player a la db
 export async function login(email: string, password: string) {
-	const response = await fetch('http://api:4444/login', {
+	const response = await fetch('http://auth:9999/login', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ export async function login(email: string, password: string) {
 
 //j'envoie une requete POST pour ajouter un player a la db
 export async function register(name: string, email: string, password: string) {
-	const response = await fetch('http://api:4444/register', {
+	const response = await fetch('http://auth:9999/register', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -38,9 +38,10 @@ export async function register(name: string, email: string, password: string) {
 
 	const data = await response.json() // récupère la réponse du serveur
 	if (!response.ok) {
-		console.error('register échoué:', data.message)
+		console.log('register échoué:', data)
 		return null
 	}
+	console.log('register ok:', data.message)
 	return response.headers.getSetCookie() // retourne les infos du joueur
 }
 
@@ -62,7 +63,7 @@ export function addScore(id: string, to_add: number) {
 //j'envoie une requete PUT pour changer le skin dun joueur
 export async function changeSkin(token: string, color: string) {
 	// console.log("mthode change color for", color)
-	const response = await fetch('http://api:4444/changecolor', {
+	const response = await fetch('http://internal:1111/user/changecolor', {
 		method: 'PUT',
 		headers: {
 			Authorization: token,
