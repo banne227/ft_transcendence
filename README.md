@@ -2,8 +2,8 @@
 
 # ft_transcendence
 ## Description:
-
-## Usage:
+- "ft_transcendence" is the last project of the 42 Common Core. On this project we had to create a fully fonctionnal and secured website
+## Instructions:
 1. Create a .env or copy template.env file who will contain every environment variable that will be use in the infrastructure
 ```plaintext
 # --- API ---
@@ -65,16 +65,14 @@ make debug A=mongo		# Will put on the mongodb container
 make debug A=ngi			# Will put on the nginx container
 ```
 
-## Docs :
+## Ressources :
 - [Game Server](https://github.com/banne227/ft_transcendence/blob/main/docs/GAME_SERVER.md)
 - [Infrastructures](https://github.com/banne227/ft_transcendence/blob/main/docs/INFRA.md)
 - [API](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md)
 
 ## Preview: 
 <div align=center>
-	<img src="">
-	<img src="">
-	<img src="">
+	<img src="./images/showcase.gif">
 </div>
 
 <!-- "Powered By:" badges -->
