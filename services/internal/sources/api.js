@@ -21,12 +21,11 @@ const url = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@mongo
 // Create the webserver with ExpressJS
 const api = express()
 
-api.get("/health", (_req, res) => {
-    res.status(200).json({
-        status: "UP"
-    });
-});
-
+api.get('/health', (_req, res) => {
+	res.status(200).json({
+		status: 'UP',
+	})
+})
 
 // Initialized connection to the database
 mongoose
@@ -53,7 +52,7 @@ process.on('SIGTERM', (code_signal_error) => {
 	process.exit(0)
 })
 
-api.get('/jwt/validate', (req, res) => {
+api.get('/jwt/validate', async (req, res) => {
 	// Take the JWT from the authorization section in the header
 	const currentToken = req.headers.authorization
 
@@ -62,16 +61,16 @@ api.get('/jwt/validate', (req, res) => {
 		return res.status(400).json({ error: 'No token provided' })
 	}
 
+	if (currentToken.match(/^((?:\.?(?:[A-Za-z0-9-_]+)){3})$/) === null)
+		return res.status(400).json({ error: 'Invalid token' })
 	// Use the function to check if the token was not altered
 	try {
 		const valid = jwt.verify(currentToken, process.env.JWT_SECRET)
-		if (valid) {
-			return res.status(200).json({ succes: 'The JWT is valid' })
-		} else {
+		if (!valid) {
 			return res.status(401).json({ error: 'Invalid JWT' })
 		}
+		return res.status(200).json({ succes: 'The JWT is valid' })
 	} catch (err) {
-		console.log(err)
 		return res.status(500).json({ error: 'Failed to verify the JWT' })
 	}
 })
@@ -119,7 +118,6 @@ api.get('/jwt/regenerate', async (req, res) => {
 api.get('/jwt/generate', (req, res) => {
 	const { email, uuid } = req.query
 
-	console.log(email, uuid)
 	// Check if we got something in parameter
 	if (email === undefined)
 		return res.status(400).json({ error: 'Missing email' })
@@ -138,7 +136,6 @@ api.get('/jwt/generate', (req, res) => {
 		const currentToken = jwt.sign(payload, process.env.JWT_SECRET, {
 			expiresIn: '1d',
 		})
-		console.log(currentToken)
 		return res.status(200).json({ jwt: currentToken })
 	} catch (err) {
 		return res.status(500).json({ error: 'Failed to generate JWT' })
@@ -149,10 +146,24 @@ api.get('/jwt/decode', async (req, res) => {
 	// const { jwt } = req.query
 	const jwt = req.headers.authorization
 	// Check if we have a jwt
-	console.log(jwt)
 	if (jwt === undefined) {
 		return res.status(400).json({ error: 'Missing JWT' })
 	}
+
+	// Check if the provided jwt is valid
+	const request = await fetch(`http://internal:1111/jwt/validate`, {
+		method: 'GET',
+		headers: {
+			authorization: `${jwt}`,
+		},
+	})
+	const response = await request.json()
+	if (request.status !== 200) {
+		return res.status(request.status).json({
+			error: 'The provided JWT is not valid!',
+		})
+	}
+
 	// Split our jwt in three part
 	let jwtData = jwt.split('.')
 	// Return the payload decoded in plain text

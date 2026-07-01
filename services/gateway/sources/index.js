@@ -32,44 +32,41 @@ process.on('SIGTERM', (code_signal_error) => {
 
 // function for checking if service is UP
 async function checkService(name, url) {
-    try {
-        const response = await fetch(url);
+	try {
+		const response = await fetch(url)
 
-        if (!response.ok) {
-            return { name, status: "DOWN" };
-        }
+		if (!response.ok) {
+			return { name, status: 'DOWN' }
+		}
 
-        return { name, status: "UP" };
-    } catch {
-        return { name, status: "DOWN" };
-    }
+		return { name, status: 'UP' }
+	} catch {
+		return { name, status: 'DOWN' }
+	}
 }
 
-gateway.get("/status", async (_req, res) => {
-
+gateway.get('/status', async (_req, res) => {
 	// Send health check requests to all microservice
-    const results = await Promise.all([
-        checkHealth("auth", "http://auth:9999/health"),
-        checkHealth("api", "http://api:4444/health"),
-        checkHealth("internal", "http://internal:1111/health"),
-        checkHealth("game", "http://game:3000/health"),
-    ]);
+	const results = await Promise.all([
+		checkService('auth', 'http://auth:9999/health'),
+		checkService('api', 'http://api:4444/health'),
+		checkService('internal', 'http://internal:1111/health'),
+		checkService('game', 'http://game:3000/health'),
+	])
 
 	// Check if all services are UP
-    // .every() returns true only if ALL services satisfy the condition
-    const status = results.every(s => s.status === "UP") ? "OK" : "ERROR";
+	// .every() returns true only if ALL services satisfy the condition
+	const status = results.every((s) => s.status === 'UP') ? 'OK' : 'ERROR'
 
 	// Build object: { auth: "UP", api: "DOWN", ... }
-	const services = Object.fromEntries( 
-            results.map(s => [s.name, s.status])
-        )
+	const services = Object.fromEntries(results.map((s) => [s.name, s.status]))
 
 	// 200 if everything is OK, 503 if at least one service is DOWN
-    return res.status(status === "OK" ? 200 : 503).json({
-        status,
-        services
-    });
-});
+	return res.status(status === 'OK' ? 200 : 503).json({
+		status,
+		services,
+	})
+})
 
 // Reset The number of request done by an IP
 setInterval(() => {
@@ -107,7 +104,6 @@ function rateLimitAndTimeout(req, res, next) {
 		})
 		req.abort() // Abort the request
 	})
-	console.log(req.body)
 	next() // Continue to the next middleware
 }
 
