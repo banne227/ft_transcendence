@@ -73,6 +73,7 @@ export async function changeSkin(token: string, color: string) {
 			color: color,
 		}),
 	})
+	console.log(response.status)
 
 	const data = await response.json() // récupère la réponse du serveur
 	if (!response.ok) {

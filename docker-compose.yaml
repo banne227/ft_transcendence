@@ -62,8 +62,6 @@ services:
         networks:
             - internal
         restart: 'on-failure:5'
-        environment:
-            - GATEWAY_PORT=$GATEWAY_PORT
         depends_on:
             - auth
     auth:
@@ -78,7 +76,6 @@ services:
             - MONGO_USER=$MONGO_USER
             - MONGO_PASS=$MONGO_PASS
             - JWT_SECRET=$JWT_SECRET
-            - AUTH_PORT=$AUTH_PORT
     api:
         build:
             context: ./services/api
@@ -91,7 +88,6 @@ services:
             - MONGO_USER=$MONGO_USER
             - MONGO_PASS=$MONGO_PASS
             - JWT_SECRET=$JWT_SECRET
-            - AUTH_PORT=$AUTH_PORT
     internal:
         build:
             context: ./services/internal

@@ -71,7 +71,7 @@ api.get('/jwt/validate', async (req, res) => {
 		}
 		return res.status(200).json({ succes: 'The JWT is valid' })
 	} catch (err) {
-		if (err.message !== undefined && err.message === "invalid token")
+		if (err.message !== undefined && err.message === 'invalid token')
 			return res.status(401).json({ error: 'Invalid JWT' })
 		return res.status(500).json({ error: 'Failed to verify the JWT' })
 	}
@@ -192,7 +192,6 @@ api.post('/addScore', async (req, res) => {
 	// Get the current date
 	const timestamp = new Date()
 
-	console.log(username, score)
 	// Pushing our new score into the history array
 	const debug = await newUser
 		.updateOne(
@@ -213,7 +212,6 @@ api.post('/addScore', async (req, res) => {
 				.status(500)
 				.json({ error: 'Failed to add score to the history' })
 		})
-	console.log(debug)
 	return res.status(200).json({
 		succes: `Added ${username}:${score}`,
 	})
@@ -252,7 +250,7 @@ api.put('/user/changecolor', async (req, res) => {
 						{ uuid: jwtPayload.uuid },
 					],
 				},
-				{ colors: newColor },
+				{ color: newColor },
 			)
 		} catch (err) {
 			console.log(err)
