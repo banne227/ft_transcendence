@@ -1,24 +1,24 @@
 async function loadPlayer() {
-    try 
-    {
-        const username = document.getElementById("username").value; //recupere le username tape
-        if (!username || username === "")
-            return
-        const res = await fetch(`https://transcendence.42.fr/api/history/${username}`); //await attent une reonse avant de passer a la suite
-        const data = await res.json(); //recupere lle json avec fetch rempli auparavent coter api
+    const username = document.getElementById("username").value; //recupere le username tape
+    if (!username || username === "")
+        return
+    const res = await fetch(`https://transcendence.42.fr/api/history/${username}`); //await attent une reonse avant de passer a la suite
 
-        if (res.status === 200)
-            renderChart(data);
-    }
-    catch (err) 
+    if (res.status === 200)
     {
-        console.error(err);
+        const data = await res.json(); //recupere lle json avec fetch rempli auparavent coter api
+        renderChart(data, username);
     }   
+    else
+    {
+        // console.log(data.error)
+        alert("User not found")
+    }
 }
 
 let chart;
 
-function renderChart(history) {
+function renderChart(history, username) {
     const scores = history.map(entry => entry.score);
 
     const time = history.map(entry =>
@@ -40,7 +40,7 @@ function renderChart(history) {
         data: {
             labels: time,
             datasets: [{
-                label: history.username,
+                label: "SCORE",
                 data: scores,
                 borderColor: "blue",
                 tension: 0.3

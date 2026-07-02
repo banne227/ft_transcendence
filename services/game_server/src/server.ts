@@ -12,10 +12,12 @@ import { extractJwt } from './utils'
 
 const { join } = require('node:path')
 const app = express() //gestion requete http
+app.set('trust proxy', true)
 const httpServer = createServer(app) //socket.io pour la transmission client serv
 const io = new Server(httpServer, {
 	cors: { origin: '*' },
 	path: '/socket.io/',
+	trustProxy: true,
 })
 
 app.use('/leaderboard', express.static(join(__dirname, 'leaderboard')))

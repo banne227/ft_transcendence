@@ -87,7 +87,7 @@ api.get('/history/:userName', async (req, res) => {
 		.lean()
 	// if the user doesnt exist
 	if (data === null)
-		return res.status(404).json({ error: `cannot find ${username}` })
+		return res.status(204).json({ error: `cannot find ${username}` })
 	// if the user exist but it doesnt played a single match
 	if (data.history == '[]')
 		return res

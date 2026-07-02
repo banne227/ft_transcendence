@@ -1,16 +1,1 @@
-
-Trie du plus long au plus court :
-- Adapater Front/game_server a la nouvelle infra
-- Switch des fonction comme decodejwt() vers les endpoint interne
-- Meilleur condition d'erreur endpoint
-- Mettre des port par default si les vars d'env sont pas set
-- Passer tous sous bun
-
-- Faire un /status qui ping tous les service et qui detect si un des services est down
----> rajouter un /health dans chaque services et dans la gateway je check tous les /health des services
-
-
-
-
 verifier nom vide visualizer
-neutraliser les inputs utilisateur 

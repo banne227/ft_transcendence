@@ -116,7 +116,8 @@
 
   /* ── Left column (Leaderboard & Mini-map) ── */
   .left-col {
-    @apply w-[170px] border-r border-gray-700 flex flex-col flex-shrink-0 bg-gray-400;
+    @apply w-[18vw] min-w-[130px] max-w-[220px]
+        border-r border-gray-700 flex flex-col flex-shrink-0 bg-gray-400;
   }
 
   /* ── Panel header ── */
@@ -252,7 +253,8 @@
 
   /* ── Right column (Chat) ── */
   .right-col {
-    @apply w-40 border-l border-gray-700 flex flex-col flex-shrink-0 bg-gray-400;
+    @apply w-[18vw] min-w-[130px] max-w-[220px]
+        border-r border-gray-700 flex flex-col flex-shrink-0 bg-gray-400;
   }
 
   /* ── Chat ── */
