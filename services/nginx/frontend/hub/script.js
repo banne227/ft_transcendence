@@ -213,3 +213,32 @@ document.getElementById("form-login").addEventListener("submit", function (e) {
 	console.log(`socket connec: ${socket.connected}`);
     socket.emit("login", username, email, password);
 });
+
+function masquerfenetre() {
+	document.getElementById("window-log").style.display = "none";
+	document.getElementById("window-login").style.display = "none";
+	document.getElementById("window-register").style.display = "none";
+}
+
+function alreadyconnected() {
+	setInterval(async () => {
+		const token = localStorage.getItem('token')
+		if (!token) return
+
+		const res = await fetch("/api/jwt/validate", {
+			method: 'GET',
+			headers: {
+				Authorization: token,
+				'Content-Type': 'application/json',
+			},
+		})
+		if (res.status === 200)
+		{
+			masquerfenetre()
+			console.log("already connected")
+		}
+		else if (res.status !== 429) localStorage.clear();
+	}, 5000)
+}
+
+alreadyconnected()

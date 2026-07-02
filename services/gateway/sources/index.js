@@ -21,6 +21,7 @@ gateway.use(morgan('combined')) // Logged on the console every connection done
 
 gateway.disable('x-powered-by') // Disable x-powered-by on the header of the response
 const services = [
+	{ route: '/jwt/validate', target: 'http://internal:1111/jwt/validate' }, // Where the request should go when accessing to /api
 	{ route: '/auth', target: 'http://auth:9999/' }, // Where the request should go when accessing to /auth
 	{ route: '/', target: 'http://api:4444/' }, // Where the request should go when accessing to /api
 ]

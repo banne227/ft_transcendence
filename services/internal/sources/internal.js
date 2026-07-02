@@ -71,6 +71,8 @@ api.get('/jwt/validate', async (req, res) => {
 		}
 		return res.status(200).json({ succes: 'The JWT is valid' })
 	} catch (err) {
+		if (err.message !== undefined && err.message === "invalid token")
+			return res.status(401).json({ error: 'Invalid JWT' })
 		return res.status(500).json({ error: 'Failed to verify the JWT' })
 	}
 })
