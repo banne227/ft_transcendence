@@ -1,5 +1,11 @@
-Minor: Use a backend framework (Express, Fastify, NestJS, Django, etc.).
-banne
+Major: Use a framework for both the frontend and backend
+
+Minor: Use a frontend framework (React, Vue, Angular, Svelte, etc.).
+
+Minor: Use a backend framework (Express, Fastify, NestJS, Django, etc.)
+
+Major: Allow users to interact with other users. The minimum requirements are:
+
 Major: Implement real-time features using WebSockets or similar technology.
 
 Major: A public API to interact with the database with a secured API key, rate
@@ -25,3 +31,7 @@ Major: Multiplayer game (more than two players).
 Minor: Game customization options.
 
 Minor: Implement spectator mode for games
+
+Major: Backend as microservices
+
+Major: Advanced analytics dashboard with data visualization
