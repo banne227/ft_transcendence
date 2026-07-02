@@ -71,8 +71,8 @@ make debug A=ngi			# Will put on the nginx container
 
 ## Preview: 
 <div align=center>
-	<img src="./images/showcase.gif">
-	<img src="./images/showcase2.gif">
+	<img src="./videos/showcase.gif">
+	<img src="./videos/showcase2.gif">
 </div>
 
 <!-- "Powered By:" badges -->
