@@ -2,15 +2,14 @@
 
 # ft_transcendence
 ## Description:
-- "ft_transcendence" is the last project of the 42 Common Core. On this project we had to create a fully fonctionnal and secured website
+- "ft_transcendence" is the last project of the 42 Common Core. On this project we had to create a an web application that has a frontend, backend, and a database containerized on multiple containers.
+- We have chosen to replicate a game that we played when we were children called "slither.io" on a old MSDOS/Windows98 theme. In this game, you play a snake eat food to grow. A snake can die when its head touches the border of the map or the body of another snake. This game doesn't really have an end, you play on the map until you die or you close the window.
 ## Instructions:
 1. Create a .env or copy template.env file who will contain every environment variable that will be use in the infrastructure
 ```plaintext
 # --- API ---
-// The secrete to generate user JWT (Json Web Token)
+// The password to generate user JWT (Json Web Token)
 (required) JWT_SECRET=SECRET
-// Will be usefull later by idk
-(required) JWT_HEADER_KEY=KEY
 
 # --- MONGODB ---
 // Username of the administator user of every databases
@@ -66,13 +65,14 @@ make debug A=ngi			# Will put on the nginx container
 ```
 
 ## Ressources :
-- [Game Server](https://github.com/banne227/ft_transcendence/blob/main/docs/GAME_SERVER.md)
-- [Infrastructures](https://github.com/banne227/ft_transcendence/blob/main/docs/INFRA.md)
-- [API](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md)
+- [Game Server](https://github.com/banne227/ft_transcendence/blob/main/docs/game_server.md)
+- [Infrastructures](https://github.com/banne227/ft_transcendence/blob/main/docs/infra.md)
+- [API](https://github.com/banne227/ft_transcendence/blob/main/docs/api.md)
 
 ## Preview: 
 <div align=center>
 	<img src="./images/showcase.gif">
+	<img src="./images/showcase2.gif">
 </div>
 
 <!-- "Powered By:" badges -->

@@ -160,6 +160,7 @@ auth.post('/login', async (req, res) => {
 	// Check if the user with the provided email exist
 	const exist = await newUser.findOne({ email: { $eq: email } })
 	if (exist === null) {
+		await new Promise((r) => setTimeout(r, 1000))
 		return res.status(404).json({ error: `User ${email} not found` })
 	}
 

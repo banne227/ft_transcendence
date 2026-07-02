@@ -24,7 +24,4 @@ elif [ "$(cat $FILENAME | grep "MONGO_PASS" | awk -F= '{print $2}')" == "" ]; th
 elif [ "$(cat $FILENAME | grep "JWT_SECRET" | awk -F= '{print $2}')" == "" ]; then
 	printf "\e[0;31m[!] Missing JWT_SECRET environment variable in $FILENAME, exiting ...\n\e[0m"
 	exit 1
-elif [ "$(cat $FILENAME | grep "JWT_HEADER_KEY" | awk -F= '{print $2}')" == "" ]; then
-	printf "\e[0;31m[!] Missing JWT_HEADER_KEY environment variable in $FILENAME, exiting ...\n\e[0m"
-	exit 1
 fi

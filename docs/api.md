@@ -56,8 +56,8 @@
 
 ### Description
 - This endpoint allow a user to create a account on the website (not perfect for now)
-- Actually no protection against raid/spam is provided, i will put humain verification when someone will register a new account
-- The password of the user should be superior that 12 character, less that 128 character and use only alpha numerical character
+- The password of the user should be superior that 8 character, less that 128 character.
+- The input of the user will be sanitized, only those character is allow to prevent user injection: a-z, A-Z, 0-9, $, !, #, ., ?, /, \, @, &, _, -, *
 ### Body
 - The user need to provide those information in the body of the request: 
 1. username = The username of the user to register
@@ -75,12 +75,14 @@
 {"username": "user","password": "password","email": "user@domain.ext"}
 ```
 ### HTTP status code
-- 200: No error
-- 400 : The body of request is not valid.
-- 401: The username or the email of the user is already taken
+- 200 : No error
+- 400 : The entier or an element of request body is not valid.
+- 401 : The username or the email of the user is already taken
+- 409 : The user is already logged.
+- 500 : Error during the creation of the user on the database
 
 ### Usage
-- Send the proper constructed request to `https://transcendence.42.fr/api/register`
+- Send the proper constructed request to `https://transcendence.42.fr/api/auth/register`
 
 
 <div align=left>
@@ -89,7 +91,7 @@
 
 ### Description
 - This endpoint allow a user to log into an account on the website (not perfect for now)
-- Actually no protection against raid/spam is provided, i will put humain verification when someone will register a new account
+- The input of the user will be sanitized, only those character is allow to prevent user injection: a-z, A-Z, 0-9, $, !, #, ., ?, /, \, @, &, _, -, *
 ### Body
 - The user need to provide those information in the body of the request: 
 1. email = The email of the user to register
@@ -106,63 +108,34 @@
 ```
 ### HTTP status code
 - 200 : No error
-- 400 : The body of request is not valid.
+- 400 : The entier or an element of request body is not valid.
 - 401 : The password provided is not valid
 - 404 : The user doesnt exist
+- 409 : The user is already logged.
+- 500 : Error during the creation of the user on the database
 
 ### Usage
 - Send the proper constructed request to `https://transcendence.42.fr/api/login`
-
-<div align=left>
-	<h2>/forget : POST</h2>
-</div>
-
-### Description
-- This endpoint allow a non authentificated user to change the password of his account on the website (not perfect for now)
-- Actually no protection against raid/spam is provided, i will put humain verification when someone will register a new account
-### Body
-- The user need to provide those information in the body of the request: 
-1. email = The email of the user to register
-2. password = The new password of the user
-```cjson
-/* What the body should look like */
-{
-	"email": "user@domain.ext",
-	"password": "password",
-}
-
-/* or from a more compact way */
-{"email": "user@domain.ext","password": "password"}
-```
-### HTTP status code
-- 200 : No error
-- 400 : The body of request is not valid.
-- 401 : The password provided is not valid
-
-### Usage
-- Send the proper constructed request to `https://transcendence.42.fr/api/forget`
 
 <div align=left>
 	<h2>/addscore : POST</h2>
 </div>
 
 ### Description
-- This endpoint will be only used by the game to append last game played to the played game history. Actually no authentification is required but it will have authentification later
+- This endpoint is available in internal by the game to append last game played to the played game history.
 ### Body
 - The user need to provide those information in the body of the request: 
 1. username = The username of the user
 2. score = The new score of the user, it can be string or Number what ever the score will be store in BigInt on the database
-3. win = Is a boolean who are at true if the user have win his game
 ```cjson
 /* What the body should look like */
 {
 	"username": "user",
 	"score": "444",
-	"win": 0 | 1
 }
 
 /* or from a more compact way */
-{"username": "user","score": "444","win": 0 | 1}
+{"username": "user","score": "444"}
 ```
 ### HTTP status code
 - 200 : No error
@@ -170,40 +143,15 @@
 
 
 ### Usage
-- Send the proper constructed request to `https://transcendence.42.fr/api/addscore`
+- Send the proper constructed request to `https://internal:1111/addscore`
 
 <div align=left>
-	<h2>/health : GET</h2>
+	<h2>/status : GET</h2>
 </div>
 
 ### Description
-- This endpoint is used to check if our api is down from the client
-- If the API is up, it will respond a 200 and a success json. If not a single response was send, the API is down
-
-<div align=left>
-	<h2>/countuser : GET</h2>
-</div>
-
-### Usage
-- Send the proper constructed request to `https://transcendence.42.fr/api/health`
-
-### Description
-- This endpoint give the number of user register on the database
-- If the API is up, it will respond a 200 and a success json with the number of user register on the database. If not a single response was send, the API is down
-
-### Usage
-- Send the proper constructed request to `https://transcendence.42.fr/api/countuser`
-
-<div align=left>
-	<h2>/logout : GET</h2>
-</div>
-
-### Description
-- This endpoint disconnect the current logged user on the site
-- (NOT FINISH FOR NOW)
-
-### Usage
-- Send the proper constructed request to `https://transcendence.42.fr/api/logout`
+- This endpoint is used to check if one of our microservices is down
+- Give a list with every microservice + there state (UP/DOWN)
 
 <div align=left>
 	<h2>/delete : DELETE</h2>
@@ -215,7 +163,6 @@
 - The user need to provide those information in the header of the request: 
 1. authorization = The token of the user
 ### Body
-- (The body will be empty when we will have a correct authentification system)
 - The user need to provide those information in the body of the request: 
 1. email = The email of the user 
 ```cjson
@@ -248,9 +195,10 @@
 - 200 : No error
 - 400 : The token is missing
 - 401 : The provided token is not valid
+- 500 : Failed to verify the user token
 
 ### Usage
-- Send the proper constructed request to `https://transcendence.42.fr/api/jwt/validate`
+- Send the proper constructed request to `http://internal:1111/jwt/validate`
 
 <div align=left>
 	<h2>/jwt/regenerate : GET</h2>
