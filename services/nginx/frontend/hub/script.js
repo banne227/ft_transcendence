@@ -125,14 +125,14 @@ document.getElementById('CGU').addEventListener('click', function () {
 	fetch('confi/CGU.md')
 		.then((response) => response.text())
 		.then((markdown) => {
-			document.getElementById('privacy-content').innerHTML =
+			document.getElementById('privacy-CGU').innerHTML =
 				markdownToHtml(markdown)
-			document.getElementById('window-privacy').style.display = 'block'
+			document.getElementById('window-CGU').style.display = 'block'
 		})
 		.catch((error) => {
-			document.getElementById('privacy-content').innerText =
+			document.getElementById('privacy-CGU').innerText =
 				'Impossible de charger le document.'
-			document.getElementById('window-privacy').style.display = 'block'
+			document.getElementById('window-CGU').style.display = 'block'
 		})
 })
 
@@ -142,8 +142,8 @@ makeDraggable(
 )
 
 makeDraggable(
-	document.querySelector('#window-privacy'),
-	document.querySelector('#window-privacy .titlebar'),
+	document.querySelector('#window-CGU'),
+	document.querySelector('#window-CGU .titlebar'),
 )
 
 // Convertisseur Markdown -> HTML très simple (titres, gras, listes, paragraphes)
@@ -228,7 +228,6 @@ async function alreadyconnected() {
 
 async function checkToken() {
 	const token = localStorage.getItem('token')
-	console.log('eeee', document.getElementById('window-log').style.display)
 	if (!token) return
 
 	const res = await fetch('/api/jwt/validate', {
