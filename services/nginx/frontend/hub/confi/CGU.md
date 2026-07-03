@@ -1,11 +1,11 @@
 Conditions Générales d'Utilisation
 
-Projet : [Nom de votre jeu]
-Dernière mise à jour : [À compléter]
+Projet : painter.io
+Dernière mise à jour : 03/07/2026
 
 1. Objet
 
-Les présentes Conditions Générales d'Utilisation (ci-après « CGU ») définissent les modalités et conditions d'utilisation du jeu en ligne [Nom du jeu] (ci-après « le Service »), un jeu multijoueur en temps réel inspiré du concept de Slither.io, développé dans le cadre du cursus de l'École 42.
+Les présentes Conditions Générales d'Utilisation (ci-après « CGU ») définissent les modalités et conditions d'utilisation du jeu en ligne painter.io (ci-après « le Service »), un jeu multijoueur en temps réel inspiré du concept de Slither.io, développé dans le cadre du cursus de l'École 42.
 
 Toute utilisation du Service implique l'acceptation pleine et entière des présentes CGU.
 
@@ -102,4 +102,4 @@ Les présentes CGU peuvent être modifiées à tout moment. Les utilisateurs ser
 
 11. Contact
 
-Pour toute question relative aux présentes CGU, vous pouvez contacter l'équipe du projet à l'adresse suivante : [à compléter]
+Pour toute question relative aux présentes CGU, vous pouvez contacter l'équipe du projet à l'adresse suivante : contact@transcendence.com

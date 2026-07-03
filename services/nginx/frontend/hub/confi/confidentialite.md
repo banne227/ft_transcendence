@@ -1,6 +1,6 @@
 Politique de confidentialité — ft_transcendence
 
-Dernière mise à jour : [À COMPLÉTER]
+Dernière mise à jour : 03/07/2026
 
 1. Introduction
 
@@ -13,7 +13,7 @@ Ce projet est un projet pédagogique. L'Application n'a pas de finalité commerc
 
 Projet : ft_transcendence
 Contexte : projet étudiant — École 42
-Contact : [NOM(S) DES ÉTUDIANT(S) / EMAIL DE CONTACT]
+Contact : contact@transcendence.com
 
 
 3. Données collectées
@@ -125,7 +125,7 @@ Droit d'opposition : s'opposer à un traitement spécifique ;
 Droit de retirer son consentement à tout moment (notamment pour les connexions OAuth).
 
 
-Pour exercer ces droits, l'utilisateur peut contacter : [EMAIL DE CONTACT].
+Pour exercer ces droits, l'utilisateur peut contacter : contact@transcendence.com
 
 11. Mineurs
 
@@ -139,8 +139,7 @@ Cette politique peut être mise à jour pour refléter des évolutions du projet
 
 Pour toute question relative à cette politique de confidentialité ou à l'utilisation de vos données, contactez :
 
-aronnet, banne, nclavel, jrochet, thlibers, jhauville
-ronnetanthony@gmail.com
+contact@transcendence.com
 
 
 Ce document a été rédigé dans le cadre du projet pédagogique ft_transcendence de l'École 42, conformément aux exigences du sujet en matière de protection des données et de conformité RGPD.
