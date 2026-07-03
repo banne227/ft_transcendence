@@ -5,12 +5,13 @@
 # "ft_transcendence" infrastructure :
 ## Description
 - "ft_transcendence" infrastructure is composed by four services who are containerized in docker container:
+![Infra](https://raw.githubusercontent.com/banne227/ft_transcendence/refs/heads/main/images/Infra.png)
 ### NGINX
 - Nginx is a free and opensource software that can do a lot of thing different like web server, reverse proxy, load balancer, mail proxy or HTTP cache.
 - In our infrastructure NGINX are acting like a web server that serve the html pages statically and secured with encryption between the client and the NGINX server using TLS 1.2 or TLS 1.3
 - Every client-side content should be put on the "frontend" directory in services/nginx
-### mongoDB
-- mongoDB is a free source-available NoSQL (Not Only SQL) documents-oriented databased who use BJSON (Binary JavaScript Object Notation) instead of SQL to perform operation of any type like adding, deleting or finding data.
+### MongoDB
+- MongoDB is a free source-available NoSQL (Not Only SQL) documents-oriented databased who use BSON (Binary Object Notation) instead of SQL to perform operation of any type like adding, deleting or finding data.
 - When the container start, a shell script that create a admin user (defined with MONGO_ADMIN_USER and MONGO_ADMIN_PASS environments variables) who manage every databases and a second user (defined with MONGO_USER and MONGO_PASS environments variables) who manage a databases called "databases" which store users information like the username, email, hashed/salted password and a subtable which contain an history of every passed match of the user
 - You can go into the started mongodb container with :
 ```sh
@@ -23,9 +24,16 @@ mongosh "mongodb://$MONGO_USER:$MONGO_PASS@127.0.0.1/databases"
 mongosh "mongodb://$MONGO_ADMIN_USER:$MONGO_ADMIN_PASS@127.0.0.1/databases"
 ```
 ### game_server
-- Host the game server
+- Host the game server and handle every user connection
 ### API
-- The API provide endpoint to communicate with other services
+- The API is composed by two main part: 
+	1. The gateway
+		- Redistributes request to the right microservices
+		- Temporarily block IP who have done to many request to our API
+	2. Endpoint
+		- Is composed by multiple microservices based on what they do like the auth container handle authentification endpoint like /register, /login, etc
+		- The internal endpoint is not accesssible outside the docker network
+- For more information on the API, see the [API documentation](https://github.com/banne227/ft_transcendence/blob/main/docs/api.md)
 
 ## TROUBLESHOOT
 ```

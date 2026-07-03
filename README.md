@@ -52,7 +52,7 @@ sudo make setup IP=127.0.0.1
 # SUDO IS REQUIRED TO ADD YOUR USER TO THE DOCKER GROUP AND APPEND YOUR IP TO /etc/hosts
 sudo make setup IP=IP_GET_FROM_THE_SERVER_IPADDR
 ```
-- To go into a docker container easly ()
+- To debug a container easly
 ```sh
 make debug A=container_name
 
@@ -74,6 +74,44 @@ make debug A=ngi			# Will put on the nginx container
 	<img src="./videos/showcase.gif">
 	<img src="./videos/showcase2.gif">
 </div>
+
+## Point earned:
+### Major: 
+- Use a framework for both the frontend and backend
+	- We use TailwindCSS for the frontend and ExpressJS for the backend
+- Allow users to interact with other users.
+	- User can play and chat with each other
+- Implement real-time features using WebSockets or similar technology.
+	- We use a websocket to generate frame and message send on the chat
+- A public API to interact with the database with a secured API key, rate limiting, documentation, and at least 5 endpoints:
+	- Our public API doesnt really interact with the database. The request rate is capped to 60 req/min by the API gateway, and our documentation is on /docs/api.md
+- Implement a complete web-based game where users can play against each other.
+	- The main goal of our game is to kill other player
+- Remote players — Enable two players on separate computers to play the same game in real-time.
+	- You need a little setup thing but it 100% possible (look **make setup** makefile rule)
+- Multiplayer game (more than two players).
+	- You dont really have a limited of player, the max we have played is 4 players
+- Backend as microservices
+	- Endpoint behind /api/auth is on the auth container
+	- Endpoint behind /api is on the api container
+	- Endpoint behind /jwt/validate is on the internal container
+- Advanced analytics dashboard with data visualization
+	- On /status you can get statistics based on the score you have done on passed game
+### Minor: 
+- Use a frontend framework (React, Vue, Angular, Svelte, etc.)
+	- Like sayed before we use Tailwind
+- Use a backend framework (Express, Fastify, NestJS, Django, etc.)
+	- Like sayed before we use ExpressJS
+- Use an ORM for the database.
+	- We doesnt really use an ORM. ORM do the bridge between our OOP language and the SQL database, but us we use a NoSQL databases called Mongodb who use documents instead of relational for the database. So we use ODM instead of ORM
+- Custom-made design system with reusable components, including a proper color palette, typography, and icons (minimum: 10 reusable components).
+	- We have a custom color palette based on windows XP/98
+- Game statistics and match history (requires a game module).
+	- You can access to your game history on /api/history/USERNAME or on the /stats statistics page
+- Game customization options.
+	- You can change your skin. The desired skin will be keeped
+- Implement spectator mode for games
+	- When you die you are in specator mode
 
 <!-- "Powered By:" badges -->
 <div align="center">
