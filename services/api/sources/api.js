@@ -109,13 +109,13 @@ api.get('/user/:user/getcolor', async (req, res) => {
 })
 
 // --- TO COMMENT ---
-api.get('/debug/db', async (req, res) => {
-	const rrr = await newUser.find()
+// api.get('/debug/db', async (req, res) => {
+// 	const rrr = await newUser.find()
 
-	if (rrr === undefined || rrr.length == 0)
-		res.status(200).json({ info: 'The database is empty' })
-	res.status(200).json(rrr)
-})
+// 	if (rrr === undefined || rrr.length == 0)
+// 		res.status(200).json({ info: 'The database is empty' })
+// 	res.status(200).json(rrr)
+// })
 
 // Start our API
 api.listen(PORT, (err) => {

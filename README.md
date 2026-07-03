@@ -75,6 +75,10 @@ make debug A=ngi			# Will put on the nginx container
 	<img src="./videos/showcase2.gif">
 </div>
 
+## Team organization : 
+
+
+
 ## Point earned:
 ### Major: 
 - Use a framework for both the frontend and backend
