@@ -16,11 +16,13 @@
 - [/health](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#health--get)
 - [/countuser](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#countuser--get)
 - [/logout](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#logout--get)
-- [/delete](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#delete--get)
 - [/jwt/validate](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#jwtvalidate--get)
 - [/jwt/regenerate](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#jwtregenerate--get)
 - [/history/user](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#historyuser--get)
 - [/debug/db](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#debugdb--get)
+
+### DELETE Endpoint
+- [/delete](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#delete--get)
 
 ### PUT Endpoint
 - [/changeSkin](https://github.com/banne227/ft_transcendence/blob/main/docs/API.md#changeskin--get)
@@ -115,7 +117,7 @@
 - 500 : Error during the creation of the user on the database
 
 ### Usage
-- Send the proper constructed request to `https://transcendence.42.fr/api/login`
+- Send the proper constructed request to `https://transcendence.42.fr/api/auth/login`
 
 <div align=left>
 	<h2>/addscore : POST</h2>
@@ -180,7 +182,7 @@
 - 400 : The email is missing
 
 ### Usage
-- Send the proper constructed request to `https://transcendence.42.fr/api/delete`
+- Send the proper constructed request to `https://transcendence.42.fr/api/auth/delete`
 
 <div align=left>
 	<h2>/jwt/validate : GET</h2>
