@@ -76,8 +76,10 @@ make debug A=ngi			# Will put on the nginx container
 </div>
 
 ## Team organization : 
-
-
+### Product Owner, Developper : Baidy ANNE
+### Technical Lead, Developper : Anthony RONNET
+### Project Manager, Developper : Nathan CLAVEL
+### Developper : Jonas CROCHET
 
 ## Point earned:
 ### Major: 
