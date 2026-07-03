@@ -18,7 +18,7 @@ export async function login(email: string, password: string) {
 		console.error('Login échoué:', data.message)
 		return null
 	}
-	console.log(`login succes for ${email}`)
+	// console.log(`login succes for ${email}`)
 	return response.headers.getSetCookie() // retourne les infos du joueur
 }
 
@@ -38,10 +38,10 @@ export async function register(name: string, email: string, password: string) {
 
 	const data = await response.json() // récupère la réponse du serveur
 	if (!response.ok) {
-		console.log('register échoué:', data)
+		// console.log('register échoué:', data)
 		return null
 	}
-	console.log('register ok:', data.message)
+	// console.log('register ok:', data.message)
 	return response.headers.getSetCookie() // retourne les infos du joueur
 }
 
@@ -73,21 +73,21 @@ export async function changeSkin(token: string, color: string) {
 			color: color,
 		}),
 	})
-	console.log(response.status)
+	// console.log(response.status)
 
 	const data = await response.json() // récupère la réponse du serveur
 	if (!response.ok) {
 		console.error('changeSkin échoué:', data.message)
 		return null
 	}
-	console.log(data)
+	// console.log(data)
 	return data // retourne les infos du joueur
 }
 
 export async function getcolor(username: string): Promise<string> {
 	const response = await fetch(`http://api:4444/user/${username}/getcolor`)
 	const data = await response.json()
-	console.log('methode getcolor ', username, data)
+	// console.log('methode getcolor ', username, data)
 	return data.color
 }
 

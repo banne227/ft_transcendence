@@ -163,7 +163,7 @@ function markdownToHtml(md) {
 }
 
 socket.on('register?', (data) => {
-	console.log(`register emit here data.succes= ${data.succes}`)
+	// console.log(`register emit here data.succes= ${data.succes}`)
 	if (data.succes) {
 		afficherFenetreCompte('window-login')
 		localStorage.setItem('token', data.token)
@@ -185,7 +185,7 @@ document
 	.addEventListener('submit', function (e) {
 		e.preventDefault()
 
-		console.log('submit register')
+		// console.log('submit register')
 
 		const username = document.getElementById('register-username').value
 		const password = document.getElementById('register-password').value
@@ -198,14 +198,14 @@ document
 			alert('Les mots de passe ne correspondent pas.')
 			return
 		}
-		console.log(`socket connec: ${socket.connected}`)
+		// console.log(`socket connec: ${socket.connected}`)
 		socket.emit('register', username, password, email)
 	})
 
 document.getElementById('form-login').addEventListener('submit', function (e) {
 	e.preventDefault()
 
-	console.log('submit login')
+	// console.log('submit login')
 
 	const email = document.getElementById('login-email').value
 	const username = document.getElementById('login-username').value
@@ -237,7 +237,7 @@ async function checkToken() {
 			'Content-Type': 'application/json',
 		},
 	})
-	console.log(res.status)
+	// console.log(res.status)
 	if (res.status === 200) {
 		masquerfenetre()
 		console.log('already connected')
